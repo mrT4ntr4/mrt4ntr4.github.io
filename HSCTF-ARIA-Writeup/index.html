@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="article">
+<meta property="og:title" content="HSCTF 6 [ ARIA ]">
+<meta property="og:url" content="https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/index.html">
+<meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/hsctf/thumb.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/hsctf/chall.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/hsctf/1.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/hsctf/2.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/hsctf/3.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/hsctf/4.PNG">
+<meta property="article:published_time" content="2019-06-07T23:00:00.000Z">
+<meta property="article:modified_time" content="2020-12-30T05:07:45.888Z">
+<meta property="article:author" content="Suraj Malhotra">
+<meta property="article:tag" content="hsctf">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="scraping">
+<meta property="article:tag" content="aria">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrt4ntr4.github.io/img/hsctf/thumb.PNG">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HSCTF 6 [ ARIA ]</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/feed.xml" title="mrT4ntr4&#39;s Blog" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<div class="background">
+    <div class="banner">
+<div id="blogtitle" class="blogtitle">mrT4ntr4&#39;s Blog</div>
+<ul id="wrapper" class="wrapper">
+  <div class="sun">
+    <div class="star"></div>
+  </div>
+  <div class="mercury">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="venus">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="earth">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="mars">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="jupiter">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+</ul>
+</div>
+
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/BCACTF-LargeData-Writeup/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/Win-Crackme1/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&text=HSCTF 6 [ ARIA ]"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&title=HSCTF 6 [ ARIA ]"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&is_video=false&description=HSCTF 6 [ ARIA ]"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HSCTF 6 [ ARIA ]&body=Check out this article: https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&title=HSCTF 6 [ ARIA ]"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&title=HSCTF 6 [ ARIA ]"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&title=HSCTF 6 [ ARIA ]"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&title=HSCTF 6 [ ARIA ]"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&name=HSCTF 6 [ ARIA ]&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&t=HSCTF 6 [ ARIA ]"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        HSCTF 6 [ ARIA ]
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Suraj Malhotra</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-06-07T23:00:00.000Z" itemprop="datePublished">2019-06-08</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/CTF-Writeups/">CTF Writeups</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/aria/" rel="tag">aria</a>, <a class="tag-link-link" href="/tags/hsctf/" rel="tag">hsctf</a>, <a class="tag-link-link" href="/tags/scraping/" rel="tag">scraping</a>, <a class="tag-link-link" href="/tags/web/" rel="tag">web</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/hsctf/thumb.PNG" title="banner" class="gallery-item"><img src="/img/hsctf/thumb.PNG" alt="banner"></a></p>
+<p><a target="_blank" rel="noopener" href="https://ctftime.org/event/">HSCTF</a> was a medium level 5 day long CTF.<br>New Challenges were being released every day, so basically it was fun.  </p>
+<blockquote>
+<p>Our Team Dc1ph3R finished 19th globally.  </p>
+</blockquote>
+<p>I will be discussing a web challenge today which is more likely to be a scripting challenge according to me.  </p>
+<p><a href="/img/hsctf/chall.PNG" class="gallery-item"><img src="/img/hsctf/chall.PNG"></a></p>
+<blockquote>
+<p>Download <a href="/files/hsctf/index.html"  target="_blank">index.html</a></p>
+</blockquote>
+<p>After opening the index.html in our browser we see a Label “Magic Number Generator” along with an input field..  </p>
+<p><a href="/img/hsctf/1.PNG" class="gallery-item"><img src="/img/hsctf/1.PNG"></a></p>
+<p>So I tried to tinker around with the web app.<br>I entered some text randomly and it redirected me to a google search with “I like 1”.   </p>
+<p><a href="/img/hsctf/2.PNG" class="gallery-item"><img src="/img/hsctf/2.PNG"></a></p>
+<p>I tried once more and again got the same search text…  </p>
+<p>Viewing the source gave some gibberish text within the script tags.  </p>
+<p><a href="/img/hsctf/3.PNG" class="gallery-item"><img src="/img/hsctf/3.PNG"></a></p>
+<p>But after opening the Dev Console on the Browser gave some meaningful Javascript and HTML code.  </p>
+<p><a href="/img/hsctf/4.PNG" class="gallery-item"><img src="/img/hsctf/4.PNG"></a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">role</span>=<span class="string">&quot;option&quot;</span> <span class="attr">aria-posinset</span>=<span class="string">&quot;291&quot;</span> <span class="attr">aria-setsize</span>=<span class="string">&quot;1040&quot;</span>&gt;</span>0<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>There is a DIV with an ID <strong>list</strong> and which is using ARIA (Accessible Rich Internet Applications).<br>More info about ARIA <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/WAI-ARIA">here</a>.  </p>
+<p>So the JS Code basically selects a random child from the DIV and gets the binary digit.<br>It checks whether the key pressed is “ENTER” and then carries a Google search by concatenating the binary digit to the string <strong>“I like “</strong>.<br>So Technically there is no use of our input.. XD  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"> <span class="built_in">window</span>.onload = <span class="function">() =&gt;</span> </span><br><span class="line">    <span class="built_in">document</span>.getElementById(<span class="string">&quot;search-box&quot;</span>).onkeypress = <span class="function">(<span class="params">e</span>) =&gt;</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(e.keyCode === <span class="number">13</span>)</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="built_in">window</span>.location = <span class="string">&quot;https://www.google.com/search?q=i+like+&quot;</span> +  </span><br><span class="line">          <span class="built_in">document</span>.getElementById(<span class="string">&quot;list&quot;</span>).children[<span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() *  </span><br><span class="line">          <span class="built_in">document</span>.getElementById(<span class="string">&quot;list&quot;</span>).children.length)].innerText;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; </span><br><span class="line"><span class="string">``</span><span class="string">`  </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">It came me that these binary digits can give out an ascii text after joining them.</span></span><br><span class="line"><span class="string">But the order of arrangement was not right...  </span></span><br><span class="line"><span class="string">After looking into another property of the div items defined in the source, I observed that the [aria-posinset](https://www.maxability.co.in/2015/09/27/aria-posinset-property/) property is used to give an element’s number or position in the current set of listitems or treeitems.  </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Next I fired up Sublime to bake some Python and make use of my favourite library **BeautifulSoup**.  </span></span><br><span class="line"><span class="string">As the original index.html contained obfuscated code, I copied the code from the Dev Console and created a new html file named aria.html.   </span></span><br><span class="line"><span class="string">At first, we may want to know the number of digits and see if their total is divisible by 8 so as to confirm that it is a perfect binary to text conversion case.  </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>py</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&quot;aria.html&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    soup = BeautifulSoup(fp,<span class="string">&quot;html.parser&quot;</span>)</span><br><span class="line"></span><br><span class="line">binDig = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> soup.find_all(<span class="string">&#x27;div&#x27;</span>, &#123;<span class="string">&#x27;role&#x27;</span>:<span class="string">&quot;option&quot;</span>&#125;):</span><br><span class="line">    binDig.append(int(item[<span class="string">&#x27;aria-posinset&#x27;</span>]))</span><br><span class="line"></span><br><span class="line">print(len(binDig))</span><br></pre></td></tr></table></figure>
+<p>After running the above script, the total no. of items came out to be 1040 which is perfectly divisible by 8.  </p>
+<blockquote>
+<p>1040/8 = 130  </p>
+</blockquote>
+<p>It confirms that we’ll get 130 chars after scraping the binary digits. </p>
+<p>Now we sort them according to their corresponding aria-posinset property and convert all the scraped binaries into ascii with the following python script.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">binary2ascii</span>(<span class="params">s</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join(<span class="built_in">chr</span>(<span class="built_in">int</span>(s[i*<span class="number">8</span>:i*<span class="number">8</span>+<span class="number">8</span>],<span class="number">2</span>)) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s)//<span class="number">8</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;aria.html&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    soup = BeautifulSoup(fp,<span class="string">&quot;html.parser&quot;</span>)</span><br><span class="line"></span><br><span class="line">a=<span class="number">0</span></span><br><span class="line">flag=[]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="number">1040</span>):</span><br><span class="line">    flag.append(soup.find(<span class="string">&#x27;div&#x27;</span>,&#123;<span class="string">&#x27;aria-posinset&#x27;</span>:<span class="built_in">str</span>(i)&#125;).contents[<span class="number">0</span>])</span><br><span class="line">    a+=<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> a%<span class="number">8</span>==<span class="number">0</span>:</span><br><span class="line">        print(binary2ascii(<span class="string">&quot;&quot;</span>.join(flag)),end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">        flag.clear()</span><br></pre></td></tr></table></figure>
+<p>And finally we are presented with the some text along with our flag.  </p>
+<blockquote>
+<p>im gonna add some filler text here so the page is a bit longer. lorem ipsum… here’s the flag btw, flag{accessibility_is_crucial}</p>
+</blockquote>
+<p>Coming up are some writeups from BCA CTF.</p>
+<p>So Make sure to subscribe to the newsletter to learn together with me.<br>Also Comment your feedbacks and share this writeup with your friends.  </p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&text=HSCTF 6 [ ARIA ]"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&title=HSCTF 6 [ ARIA ]"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&is_video=false&description=HSCTF 6 [ ARIA ]"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HSCTF 6 [ ARIA ]&body=Check out this article: https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&title=HSCTF 6 [ ARIA ]"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&title=HSCTF 6 [ ARIA ]"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&title=HSCTF 6 [ ARIA ]"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&title=HSCTF 6 [ ARIA ]"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&name=HSCTF 6 [ ARIA ]&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/&t=HSCTF 6 [ ARIA ]"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021
+    Suraj Malhotra
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"CTRL+C\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight .code").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+      setTimeout(function() {
+        e.trigger.setAttribute('aria-label', "CTRL+C");
+      }, 2000);
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

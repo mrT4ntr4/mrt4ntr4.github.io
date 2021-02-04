@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="article">
+<meta property="og:title" content="justCTF 2020 [debug_me_if_you_can-RE]">
+<meta property="og:url" content="https://mrt4ntr4.github.io/JustCTF-debugme/index.html">
+<meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/justctf/thumb.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/justctf/child_main_enc.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/justctf/supervisor_main.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/justctf/supervisor1.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/justctf/supervisor2.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/justctf/supervisor3.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/justctf/codeblock.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/justctf/flow_poketext.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/justctf/crackme_main_patched.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/justctf/fileop.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/justctf/real_key_check.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/justctf/flag_decoded.PNG">
+<meta property="article:published_time" content="2021-02-02T22:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-04T04:58:06.701Z">
+<meta property="article:author" content="Suraj Malhotra">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="reversing">
+<meta property="article:tag" content="protector">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrt4ntr4.github.io/img/justctf/thumb.PNG">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+        
+      
+    
+    <!-- title -->
+    <title>justCTF 2020 [debug_me_if_you_can-RE]</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/feed.xml" title="mrT4ntr4&#39;s Blog" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<div class="background">
+    <div class="banner">
+<div id="blogtitle" class="blogtitle">mrT4ntr4&#39;s Blog</div>
+<ul id="wrapper" class="wrapper">
+  <div class="sun">
+    <div class="star"></div>
+  </div>
+  <div class="mercury">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="venus">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="earth">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="mars">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="jupiter">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+</ul>
+</div>
+
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/GoogleCTF-dotNet/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/JustCTF-debugme/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/JustCTF-debugme/&text=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/JustCTF-debugme/&title=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/JustCTF-debugme/&is_video=false&description=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=justCTF 2020 [debug_me_if_you_can-RE]&body=Check out this article: https://mrt4ntr4.github.io/JustCTF-debugme/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/JustCTF-debugme/&title=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/JustCTF-debugme/&title=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/JustCTF-debugme/&title=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/JustCTF-debugme/&title=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/JustCTF-debugme/&name=justCTF 2020 [debug_me_if_you_can-RE]&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/JustCTF-debugme/&t=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Challenge"><span class="toc-number">1.</span> <span class="toc-text">Challenge</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TL-DR"><span class="toc-number">2.</span> <span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Role-of-Father-Process"><span class="toc-number">3.</span> <span class="toc-text">Role of Father Process</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Tracing-Execution-with-strace"><span class="toc-number">4.</span> <span class="toc-text">Tracing Execution with strace</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Analysing-Decryption-Algorithm"><span class="toc-number">5.</span> <span class="toc-text">Analysing Decryption Algorithm</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Writing-an-Unprotector"><span class="toc-number">6.</span> <span class="toc-text">Writing an Unprotector</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Analysing-Unprotected-Crackme"><span class="toc-number">7.</span> <span class="toc-text">Analysing Unprotected Crackme</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Solution-Files"><span class="toc-number">8.</span> <span class="toc-text">Solution Files</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        justCTF 2020 [debug_me_if_you_can-RE]
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Suraj Malhotra</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-02-02T22:00:00.000Z" itemprop="datePublished">2021-02-03</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/CTF-Writeups/">CTF Writeups</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/ctf/" rel="tag">ctf</a>, <a class="tag-link-link" href="/tags/protector/" rel="tag">protector</a>, <a class="tag-link-link" href="/tags/reversing/" rel="tag">reversing</a>, <a class="tag-link-link" href="/tags/writeup/" rel="tag">writeup</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/justctf/thumb.PNG" title="banner" class="gallery-item"><img src="/img/justctf/thumb.PNG" alt="banner"></a></p>
+<p>I had some time over the weekend and decided to try some reversing challenges from justCTF[*] 2020. Although I didn’t participate in the ctf seriously but solved an interesting challenge which deserves a writeup for sure.  </p>
+<hr>
+<h1 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h1><blockquote>
+<p>I bet you can’t crack this binary protected with my custom bl33d1ng edg3 pr0t3c70r!!!111oneoneone<br><strong>Download :</strong> <a href="/files/justctf/supervisor"  target="_blank">supervisor</a> <a href="/files/justctf/crackme.enc"  target="_blank">crackme.enc</a> <a href="/files/justctf/flag.png.enc"  target="_blank">flag.png.enc</a></p>
+</blockquote>
+<hr>
+<h1 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h1><ul>
+<li>Protector uses Nanomite technique </li>
+<li>Using strace to analyse execution</li>
+<li>Code is decrypted on the fly and then again encrypted</li>
+<li>Rebuilding a clean unprotected binary with IdaPython</li>
+<li>Keygenning</li>
+</ul>
+<hr>
+<h1 id="Role-of-Father-Process"><a href="#Role-of-Father-Process" class="headerlink" title="Role of Father Process"></a>Role of Father Process</h1><p>The crackme.enc binary is encrypted. I tried forcing some of it to code but that didn’t help me enough. So it looks that it is only encrypted at some marked positions in the function. Also that int3 looks suspicious.  </p>
+<p><a href="/img/justctf/child_main_enc.PNG" title="child_main_enc" class="gallery-item"><img src="/img/justctf/child_main_enc.PNG" alt="child_main_enc"></a></p>
+<p>So I shifted my focus to another binary from the provided files ie. supervisor. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">└──╼ $.&#x2F;supervisor</span><br><span class="line">Hello there!</span><br><span class="line">Error! https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v&#x3D;Khk6SEQ-K-k</span><br><span class="line">0xCCya!</span><br><span class="line">: No such process</span><br></pre></td></tr></table></figure>
+<p>supervisor begins by initializing some data. Later it forks a child process and executes crackme.enc with <code>ptrace(PTRACE_TRACEME)</code> which means that crackme.enc is being traced by the supervisor.  </p>
+<p><a href="/img/justctf/supervisor_main.PNG" title="supervisor_main" class="gallery-item"><img src="/img/justctf/supervisor_main.PNG" alt="supervisor_main"></a></p>
+<p>The child logic starts with continuing the child process until it encounters an interrupt.. ahh ok!. So simply after an interrupt is generated it transfers control to the father and father handles its execution from that point.<br>This is a typical case of nanomite.<br><a target="_blank" rel="noopener" href="https://www.apriorit.com/white-papers/293-nanomite-technology">https://www.apriorit.com/white-papers/293-nanomite-technology</a></p>
+<p>Later it gets the rip from the child’s interrupt context and peeks 4 bytes from it. These can be either <code>13 37 BA BE</code> or <code>DE AD C0 DE</code> and exits if it is neither of them.<br>If <code>13 37 BA BE</code>, then it also peeks the other 4 bytes in succession.  </p>
+<p>Also if you aren’t much familiar with ptrace flags I recommend you to read this :<br><a target="_blank" rel="noopener" href="https://www.linuxjournal.com/article/6100">https://www.linuxjournal.com/article/6100</a>  </p>
+<p><a href="/img/justctf/supervisor1.PNG" title="supervisor1" class="gallery-item"><img src="/img/justctf/supervisor1.PNG" alt="supervisor1"></a></p>
+<p>Then it notes the address of first occurences of bytes <code>FE ED C0 DE</code> and <code>DE AD C0 DE</code>. </p>
+<p><a href="/img/justctf/supervisor2.PNG" title="supervisor2" class="gallery-item"><img src="/img/justctf/supervisor2.PNG" alt="supervisor2"></a></p>
+<p>It is often useful to display opcodes bytes along with the disassembly in IDA, especially in cases like these.<br><strong>Options -&gt; General -&gt; Disassembly -&gt; Number of opcode bytes (non-graph)</strong></p>
+<p>Now it decrypts some specific bytes after the noted <code>FE ED C0 DE</code> address, sets rip to it and continues execution.</p>
+<p><a href="/img/justctf/supervisor3.PNG" title="supervisor3" class="gallery-item"><img src="/img/justctf/supervisor3.PNG" alt="supervisor3"></a></p>
+<p>So we arrive at the following code block structure:</p>
+<p><a href="/img/justctf/codeblock.PNG" title="codeblock" class="gallery-item"><img src="/img/justctf/codeblock.PNG" alt="codeblock"></a></p>
+<hr>
+<h1 id="Tracing-Execution-with-strace"><a href="#Tracing-Execution-with-strace" class="headerlink" title="Tracing Execution with strace"></a>Tracing Execution with strace</h1><p>The execution flow can simply be traced with the help of strace. Since it does all of the work with ptrace we see a lot of calls in strace output.<br>As we found out through static analysis, it starts off by comparing 4 bytes after an interrupt with <code>1337BABE</code>, and looks out for <code>FEEDC0DE</code> and <code>DEADC0DE</code> afterwards.  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">wait4(<span class="number">-1</span>, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="literal">NULL</span>)                = <span class="number">5962</span></span><br><span class="line">--- SIGCHLD &#123;si_signo=SIGCHLD, si_code=CLD_TRAPPED, si_pid=<span class="number">5962</span>, si_uid=<span class="number">1000</span>, si_status=SIGTRAP, si_utime=<span class="number">0</span>, si_stime=<span class="number">0</span>&#125; ---</span><br><span class="line">ptrace(PTRACE_CONT, <span class="number">5962</span>, <span class="literal">NULL</span>, <span class="number">0</span>)      = <span class="number">0</span></span><br><span class="line">wait4(<span class="number">-1</span>, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="literal">NULL</span>)                = <span class="number">5962</span></span><br><span class="line">--- SIGCHLD &#123;si_signo=SIGCHLD, si_code=CLD_TRAPPED, si_pid=<span class="number">5962</span>, si_uid=<span class="number">1000</span>, si_status=SIGTRAP, si_utime=<span class="number">0</span>, si_stime=<span class="number">0</span>&#125; ---</span><br><span class="line">ptrace(PTRACE_GETREGS, <span class="number">5962</span>, <span class="literal">NULL</span>, <span class="number">0x7ffdd357e660</span>) = <span class="number">0</span></span><br><span class="line"><span class="comment">//v18 = ptrace(PTRACE_PEEKTEXT, c_pid, v19, 0LL);</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7dd</span>, [<span class="number">0x909003011337babe</span>]) = <span class="number">0</span></span><br><span class="line"><span class="comment">//v17 = ptrace(PTRACE_PEEKTEXT, c_pid, v19 + 4, 0LL);</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7e1</span>, [<span class="number">0x9090909090900301</span>]) = <span class="number">0</span></span><br><span class="line"><span class="comment">//v16 = peek_until_match(c_pid, v19, 0xFEEDC0DELL) + 4; </span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7dd</span>, [<span class="number">0x909003011337babe</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7de</span>, [<span class="number">0x90909003011337ba</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7df</span>, [<span class="number">0x9090909003011337</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7e0</span>, [<span class="number">0x9090909090030113</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7e1</span>, [<span class="number">0x9090909090900301</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7e2</span>, [<span class="number">0x9090909090909003</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7e3</span>, [<span class="number">0x9090909090909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7e4</span>, [<span class="number">0x9090909090909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7e5</span>, [<span class="number">0x9090909090909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7e6</span>, [<span class="number">0x9090909090909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7e7</span>, [<span class="number">0x9090909090909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7e8</span>, [<span class="number">0x9090909090909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7e9</span>, [<span class="number">0x9090909090909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7ea</span>, [<span class="number">0x9090909090909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7eb</span>, [<span class="number">0x9090909090909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7ec</span>, [<span class="number">0x9090909090909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7ed</span>, [<span class="number">0x9090909090909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7ee</span>, [<span class="number">0xde90909090909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7ef</span>, [<span class="number">0xc0de909090909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7f0</span>, [<span class="number">0xedc0de9090909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7f1</span>, [<span class="number">0xfeedc0de90909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7f2</span>, [<span class="number">0x48feedc0de909090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7f3</span>, [<span class="number">0x8d48feedc0de9090</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7f4</span>, [<span class="number">0x3d8d48feedc0de90</span>]) = <span class="number">0</span></span><br><span class="line"><span class="comment">//found feedc0de</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7f5</span>, [<span class="number">0x8d3d8d48feedc0de</span>]) = <span class="number">0</span></span><br><span class="line"><span class="comment">//v7 = peek_until_match(c_pid, v19, 0xDEADC0DELL);</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b7dd</span>, [<span class="number">0x909003011337babe</span>]) = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>Also if the 4 bytes after an interrupt is <code>DEADCODE</code> it starts encrypting the code previously decrypted. <code>PTRACE_PEEKTEXT</code> and <code>PTRACE_POKETEXT</code> are used consecutively for decryption/encryption.  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">ptrace(PTRACE_GETREGS, <span class="number">5962</span>, <span class="literal">NULL</span>, <span class="number">0x7ffdd357e660</span>) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b39a</span>, [<span class="number">0x9090aabb1337babe</span>]) = <span class="number">0</span>  <span class="comment">//decryption</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b39e</span>, [<span class="number">0x909090909090aabb</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3b9</span>, [<span class="number">0x5bb0b08e0fb609f6</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_POKETEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3b9</span>, <span class="number">0xb0335b0de435e275</span>) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3bd</span>, [<span class="number">0xc0410636b0335b0d</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_POKETEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3bd</span>, <span class="number">0x28c1eeb658b3b38d</span>) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3c4</span>, [<span class="number">0xe86a15c4607e2828</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_POKETEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3c4</span>, <span class="number">0x1ebfc4589ffc1a9</span>) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3ba</span>, [<span class="number">0xb658b3b38de435e2</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_POKETEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3ba</span>, <span class="number">0x3bbd3e560001b807</span>) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3be</span>, [<span class="number">0xc1a9c1ee3bbd3e56</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_POKETEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3be</span>, <span class="number">0xffffffb805eb0000</span>) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_GETREGS, <span class="number">5962</span>, <span class="literal">NULL</span>, <span class="number">0x7ffdd357e660</span>) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_SETREGS, <span class="number">5962</span>, <span class="literal">NULL</span>, <span class="number">0x7ffdd357e660</span>) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_CONT, <span class="number">5962</span>, <span class="literal">NULL</span>, <span class="number">0</span>)      = <span class="number">0</span></span><br><span class="line">--- SIGCHLD &#123;si_signo=SIGCHLD, si_code=CLD_TRAPPED, si_pid=<span class="number">5962</span>, si_uid=<span class="number">1000</span>, si_status=SIGTRAP, si_utime=<span class="number">0</span>, si_stime=<span class="number">0</span>&#125; ---</span><br><span class="line">wait4(<span class="number">-1</span>, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="literal">NULL</span>)                = <span class="number">5962</span></span><br><span class="line">ptrace(PTRACE_GETREGS, <span class="number">5962</span>, <span class="literal">NULL</span>, <span class="number">0x7ffdd357e660</span>) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3ce</span>, [<span class="number">0x5dfc458bdeadc0de</span>]) = <span class="number">0</span>  <span class="comment">//encryption</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3b9</span>, [<span class="number">0xeb00000001b80775</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_POKETEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3b9</span>, <span class="number">0x88eb88ea30ecfd</span>) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3bd</span>, [<span class="number">0xffffb8050088eb88</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_POKETEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3bd</span>, <span class="number">0x1774508ee8030303</span>) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3c4</span>, [<span class="number">0x1ebfc4589ffff17</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_POKETEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3c4</span>, <span class="number">0xe86115cf6075169d</span>) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3ba</span>, [<span class="number">0x8ee8030303ea30ec</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_POKETEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3ba</span>, <span class="number">0x3068eed8e04bd02</span>) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_PEEKTEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3be</span>, [<span class="number">0x169d745003068eed</span>]) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_POKETEXT, <span class="number">5962</span>, <span class="number">0x56468f86b3be</span>, <span class="number">0x28c04a0d3d5bb0b0</span>) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_GETREGS, <span class="number">5962</span>, <span class="literal">NULL</span>, <span class="number">0x7ffdd357e660</span>) = <span class="number">0</span></span><br><span class="line">ptrace(PTRACE_SETREGS, <span class="number">5962</span>, <span class="literal">NULL</span>, <span class="number">0x7ffdd357e660</span>) = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>So the final code flow can be depicted as follows:</p>
+<p><a href="/img/justctf/flow_poketext.PNG" title="flow_poketext" class="gallery-item"><img src="/img/justctf/flow_poketext.PNG" alt="flow_poketext"></a>  </p>
+<hr>
+<h1 id="Analysing-Decryption-Algorithm"><a href="#Analysing-Decryption-Algorithm" class="headerlink" title="Analysing Decryption Algorithm"></a>Analysing Decryption Algorithm</h1><p>The decryption algorithm is simple indeed!</p>
+<p>It uses the qwords initialised earlier and references those according to the two specific bytes after <code>13 37 BA BE</code>.<br>Each decryption cycle uses 5 specific qwords at a time.  </p>
+<p>The layout is as follows :</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x5607d9b68d60</span> <span class="number">0x0000000000007777</span></span><br><span class="line"><span class="number">0x5607d9b68d68</span> <span class="number">0x0000000700000018</span></span><br><span class="line"><span class="number">0x5607d9b68d70</span> <span class="number">0x0000000000000008</span></span><br><span class="line"><span class="number">0x5607d9b68d78</span> <span class="number">0x0000000000000041</span></span><br><span class="line"><span class="number">0x5607d9b68d80</span> <span class="number">0x0000000000000000</span></span><br><span class="line"></span><br><span class="line"><span class="number">0x5607d9b68d88</span> <span class="number">0x0000000000007777</span></span><br><span class="line"><span class="number">0x5607d9b68d90</span> <span class="number">0x0000007000000018</span></span><br><span class="line"><span class="number">0x5607d9b68d98</span> <span class="number">0x0000000000000008</span></span><br><span class="line"><span class="number">0x5607d9b68da0</span> <span class="number">0x0000000000000042</span></span><br><span class="line"><span class="number">0x5607d9b68da8</span> <span class="number">0x0000000000000000</span></span><br></pre></td></tr></table></figure>
+
+<p>Here is the psuedocode implemented in python :</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">dec_key_data = [<span class="number">0x0000000000000301</span>,</span><br><span class="line">                <span class="number">0x0000000700000018</span>,</span><br><span class="line">                <span class="number">0x0000000000000008</span>,</span><br><span class="line">                <span class="number">0x0000000000000041</span>,</span><br><span class="line">                <span class="number">0x0000000000000000</span>]</span><br><span class="line"></span><br><span class="line">crackme_bytes = <span class="number">0xffffffffbdb809a8</span></span><br><span class="line"></span><br><span class="line">xor_elem = (dec_key_data[<span class="number">0</span>] + dec_key_data[<span class="number">4</span>])</span><br><span class="line"></span><br><span class="line">x = dec_key_data[<span class="number">3</span>] ^ (xor_elem &amp; <span class="number">0xff</span>)  </span><br><span class="line">y = dec_key_data[<span class="number">3</span>] ^ (xor_elem &gt;&gt; <span class="number">8</span>)     </span><br><span class="line"></span><br><span class="line">xor_res = x ^ (y&lt;&lt;<span class="number">8</span>)\</span><br><span class="line">        ^ (x &lt;&lt; <span class="number">16</span>) ^ (y &lt;&lt; <span class="number">24</span>)\</span><br><span class="line">        ^ (x &lt;&lt; <span class="number">32</span>) ^ (y &lt;&lt; <span class="number">40</span>)\</span><br><span class="line">        ^ (x &lt;&lt; <span class="number">48</span>) ^ (y &lt;&lt; <span class="number">56</span>)</span><br><span class="line"></span><br><span class="line">dec_bytes = crackme_bytes ^ xor_res</span><br><span class="line">print(<span class="built_in">hex</span>(dec_bytes))   <span class="comment">#0xbdbfbdbffff84be8</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Writing-an-Unprotector"><a href="#Writing-an-Unprotector" class="headerlink" title="Writing an Unprotector"></a>Writing an Unprotector</h1><p>I thought of several ways to approach it such as :</p>
+<ul>
+<li>Patching encryption function call in supervisor and use strace</li>
+<li>Use a regex to filter out the good bytes from the strace log</li>
+<li>Use IDAPython to patch some bytes and unprotect it</li>
+<li>Use emulation to only decrypt code</li>
+</ul>
+<p>For the first one, its not that easy there’s a catch, simply patching the encryption call will not work as the decryption key is also generated from the encrypted bytes afterwards.<br>The second one stands out as it will surely give us the flag easily but its not fun and not the best way to solve it imo.<br>The last two would require us to understand the decryption process as well but will help us in the long run if we are given another binary protected with the same fancy bl33d1ng edg3 pr0t3c70r!!!<br>I’ll use the third one here.  </p>
+<p>We begin by finding all the 1337babes in the text section.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_1337babes</span>():</span></span><br><span class="line">    res = []</span><br><span class="line">    ea = idaapi.get_segm_by_name(<span class="string">&#x27;.text&#x27;</span>).startEA</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        found_addr = FindBinary(ea, SEARCH_NEXT|SEARCH_DOWN, <span class="string">&quot;BE BA 37 13&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> found_addr != <span class="number">0xFFFFFFFFFFFFFFFF</span>:</span><br><span class="line">            res.append(found_addr)</span><br><span class="line">            ea = found_addr</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">  	<span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<p>Those 1337babes addresses are used for identifying a code block as encrypted and then we look for first occurences of feedc0de and deadc0de.<br>I also wrote a short script to dump the qwords data from the supervisor binary.<br>Then we mark the addresses to be patched by our decrypt function.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">patch_addr = leetbabe_addr + <span class="number">4</span> + (qword[<span class="number">1</span>] &amp; <span class="number">0xff</span>) + (qword[<span class="number">1</span>] &gt;&gt; <span class="number">32</span>)</span><br></pre></td></tr></table></figure>
+<p>And at the end we replace useless bytes with nops.  </p>
+<p>The patching function is as follows : </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">start_patch</span>(<span class="params">leetbabes</span>):</span></span><br><span class="line">    dec_key_data = [[<span class="string">&#x27;0x7777&#x27;</span>, <span class="string">&#x27;0x700000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x41&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x7777&#x27;</span>, <span class="string">&#x27;0x7000000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x42&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x7777&#x27;</span>, <span class="string">&#x27;0xdb00000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x43&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x7777&#x27;</span>, <span class="string">&#x27;0x3b00000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x27&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x7777&#x27;</span>, <span class="string">&#x27;0xa300000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x94&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x707&#x27;</span>, <span class="string">&#x27;0x700000014&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x41&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x707&#x27;</span>, <span class="string">&#x27;0x800000014&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x42&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x707&#x27;</span>, <span class="string">&#x27;0xb00000014&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x43&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x707&#x27;</span>, <span class="string">&#x27;0x700000014&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x27&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x707&#x27;</span>, <span class="string">&#x27;0x700000014&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x94&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0xaabb&#x27;</span>, <span class="string">&#x27;0x700000014&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x41&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0xaabb&#x27;</span>, <span class="string">&#x27;0xb00000014&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x42&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0xaabb&#x27;</span>, <span class="string">&#x27;0x1200000014&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x43&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0xaabb&#x27;</span>, <span class="string">&#x27;0x800000014&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x27&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0xaabb&#x27;</span>, <span class="string">&#x27;0xc00000014&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x94&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x202&#x27;</span>, <span class="string">&#x27;0x700000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x41&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x202&#x27;</span>, <span class="string">&#x27;0x9000000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x42&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x202&#x27;</span>, <span class="string">&#x27;0x11b00000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x43&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x202&#x27;</span>, <span class="string">&#x27;0x4b00000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x27&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x202&#x27;</span>, <span class="string">&#x27;0xd300000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x94&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0xabcd&#x27;</span>, <span class="string">&#x27;0x700000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x41&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0xabcd&#x27;</span>, <span class="string">&#x27;0x9000000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x42&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0xabcd&#x27;</span>, <span class="string">&#x27;0x11c00000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x43&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0xabcd&#x27;</span>, <span class="string">&#x27;0x4b00000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x27&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0xabcd&#x27;</span>, <span class="string">&#x27;0xd300000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x94&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x1234&#x27;</span>, <span class="string">&#x27;0x700000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x41&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x1234&#x27;</span>, <span class="string">&#x27;0x7700000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x42&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x1234&#x27;</span>, <span class="string">&#x27;0xe900000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x43&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x1234&#x27;</span>, <span class="string">&#x27;0x3e00000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x27&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x1234&#x27;</span>, <span class="string">&#x27;0xad00000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x94&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x301&#x27;</span>, <span class="string">&#x27;0x700000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x41&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x301&#x27;</span>, <span class="string">&#x27;0x7800000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x42&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x301&#x27;</span>, <span class="string">&#x27;0xec00000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x43&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x301&#x27;</span>, <span class="string">&#x27;0x3f00000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x27&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>], [<span class="string">&#x27;0x301&#x27;</span>, <span class="string">&#x27;0xaf00000018&#x27;</span>, <span class="string">&#x27;0x8&#x27;</span>, <span class="string">&#x27;0x94&#x27;</span>, <span class="string">&#x27;0x0&#x27;</span>]]</span><br><span class="line">    dec_key_data = [[<span class="built_in">int</span>(x,<span class="number">16</span>) <span class="keyword">for</span> x <span class="keyword">in</span> lst] <span class="keyword">for</span> lst <span class="keyword">in</span> dec_key_data]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> leetbabe_addr <span class="keyword">in</span> leetbabes:</span><br><span class="line">        feedcode_addr = FindBinary(leetbabe_addr, SEARCH_DOWN , <span class="string">&quot;DE C0 ED FE&quot;</span>)</span><br><span class="line">        deadcode_addr = FindBinary(leetbabe_addr, SEARCH_DOWN , <span class="string">&quot;DE C0 AD DE&quot;</span>)</span><br><span class="line"></span><br><span class="line">        print(<span class="string">&quot;1337BABE @ &quot;</span>+<span class="built_in">hex</span>(leetbabe_addr))</span><br><span class="line">        print(<span class="string">&quot;FEEDC0DE @ &quot;</span>+<span class="built_in">hex</span>(feedcode_addr))</span><br><span class="line">        print(<span class="string">&quot;DEADC0DE @ &quot;</span>+<span class="built_in">hex</span>(deadcode_addr))</span><br><span class="line"></span><br><span class="line">        ref_bytes = Qword(leetbabe_addr+<span class="number">4</span>) &amp; <span class="number">0xffff</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> qword <span class="keyword">in</span> dec_key_data:</span><br><span class="line">            <span class="keyword">if</span> qword[<span class="number">0</span>] == ref_bytes:</span><br><span class="line">                patch_addr = leetbabe_addr + <span class="number">4</span> + (qword[<span class="number">1</span>] &amp; <span class="number">0xff</span>) + (qword[<span class="number">1</span>] &gt;&gt; <span class="number">32</span>)</span><br><span class="line">                crackme_bytes = Qword(patch_addr)</span><br><span class="line">                dec_res = decrypt(crackme_bytes, qword)</span><br><span class="line">                print(<span class="string">&quot;Patching &quot;</span> + <span class="built_in">hex</span>(crackme_bytes) + <span class="string">&quot; with &quot;</span> + <span class="built_in">hex</span>(dec_res) + <span class="string">&quot; @ &quot;</span> + <span class="built_in">hex</span>(patch_addr))</span><br><span class="line">                ida_bytes.patch_qword(patch_addr, dec_res)</span><br><span class="line"></span><br><span class="line">        print(<span class="string">&quot;Patching unnecessary code with NOPS :)&quot;</span>)</span><br><span class="line">        ida_bytes.patch_bytes(leetbabe_addr-<span class="number">1</span>, <span class="string">&quot;\x90&quot;</span>*<span class="number">7</span>) <span class="comment"># 0xcc + 1337babe + 2 bytes</span></span><br><span class="line">        ida_bytes.patch_bytes(feedcode_addr, <span class="string">&quot;\x90&quot;</span>*<span class="number">4</span>)   <span class="comment"># feedc0de</span></span><br><span class="line">        ida_bytes.patch_bytes(deadcode_addr-<span class="number">1</span>, <span class="string">&quot;\x90&quot;</span>*<span class="number">5</span>) <span class="comment"># 0xcc + deadc0de</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Analysing-Unprotected-Crackme"><a href="#Analysing-Unprotected-Crackme" class="headerlink" title="Analysing Unprotected Crackme"></a>Analysing Unprotected Crackme</h1><p>Lets verify if we have successfully patched it.  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">└──╼ $.&#x2F;crackme.enc</span><br><span class="line">Hello there!</span><br><span class="line">Error! https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v&#x3D;Khk6SEQ-K-k</span><br></pre></td></tr></table></figure>
+<p>Clean! We can now start working on the crackme.<br>The crackme looks for a file named <code>secret_key</code>, checks it and then later decryptd the <code>flag.png.enc</code> file with AES.  </p>
+<p><a href="/img/justctf/crackme_main_patched.PNG" title="crackme_main_patched" class="gallery-item"><img src="/img/justctf/crackme_main_patched.PNG" alt="crackme_main_patched"></a></p>
+<p>If there are some errors in file operations we get an error.  </p>
+<p><a href="/img/justctf/fileop.PNG" title="fileop" class="gallery-item"><img src="/img/justctf/fileop.PNG" alt="fileop"></a></p>
+<p>The key checking algorithm is not too complex either.  It looks like it is somewhat similar to a custom binary to decimal conversion algo. It looks for a <code>?</code> that indicates a decimal has been processed. The result is then used as an index to some predefined bytes which it later compares with another index(1-127).  </p>
+<p><a href="/img/justctf/real_key_check.PNG" title="real_key_check" class="gallery-item"><img src="/img/justctf/real_key_check.PNG" alt="real_key_check"></a></p>
+<p>I dumped those bytes and wrote a short keygen script.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#empty string =&gt; 0</span></span><br><span class="line">bin_dic = &#123;<span class="number">0</span>:<span class="string">&#x27;&#x27;</span>&#125;</span><br><span class="line">j = <span class="number">1</span></span><br><span class="line"><span class="comment">#generates all binary strings of n bits</span></span><br><span class="line"><span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">7</span>):</span><br><span class="line">    maxint = <span class="built_in">int</span>(<span class="string">&#x27;1&#x27;</span>*n,<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(maxint+<span class="number">1</span>):</span><br><span class="line">        data = (<span class="built_in">bin</span>(i)[<span class="number">2</span>:].rjust(n,<span class="string">&#x27;0&#x27;</span>))</span><br><span class="line">        bin_dic[j] = data</span><br><span class="line">        j+=<span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bin_list = [<span class="number">0x1b</span>, <span class="number">0x59</span>, <span class="number">0x29</span>, <span class="number">0x4c</span>, <span class="number">0x3d</span>, <span class="number">0x6f</span>, <span class="number">0x22</span>, <span class="number">0x7f</span>, <span class="number">0x26</span>, <span class="number">0x1c</span>, <span class="number">0x2c</span>, <span class="number">0x2f</span>, <span class="number">0x07</span>, <span class="number">0x4e</span>, <span class="number">0x17</span>, <span class="number">0x1e</span>, <span class="number">0x61</span>, <span class="number">0x0a</span>, <span class="number">0x53</span>, <span class="number">0x10</span>, <span class="number">0x34</span>, <span class="number">0x65</span>, <span class="number">0x4a</span>, <span class="number">0x42</span>, <span class="number">0x58</span>, <span class="number">0x08</span>, <span class="number">0x1d</span>, <span class="number">0x60</span>, <span class="number">0x33</span>, <span class="number">0x55</span>, <span class="number">0x37</span>, <span class="number">0x44</span>, <span class="number">0x52</span>, <span class="number">0x39</span>, <span class="number">0x2e</span>, <span class="number">0x72</span>, <span class="number">0x0f</span>, <span class="number">0x6e</span>, <span class="number">0x7e</span>, <span class="number">0x3f</span>, <span class="number">0x32</span>, <span class="number">0x47</span>, <span class="number">0x5a</span>, <span class="number">0x13</span>, <span class="number">0x19</span>, <span class="number">0x06</span>, <span class="number">0x7a</span>, <span class="number">0x51</span>, <span class="number">0x18</span>, <span class="number">0x1a</span>, <span class="number">0x63</span>, <span class="number">0x48</span>, <span class="number">0x02</span>, <span class="number">0x77</span>, <span class="number">0x3e</span>, <span class="number">0x54</span>, <span class="number">0x35</span>, <span class="number">0x16</span>, <span class="number">0x04</span>, <span class="number">0x5e</span>, <span class="number">0x4f</span>, <span class="number">0x49</span>, <span class="number">0x30</span>, <span class="number">0x03</span>, <span class="number">0x15</span>, <span class="number">0x71</span>, <span class="number">0x4d</span>, <span class="number">0x11</span>, <span class="number">0x38</span>, <span class="number">0x12</span>, <span class="number">0x05</span>, <span class="number">0x45</span>, <span class="number">0x27</span>, <span class="number">0x68</span>, <span class="number">0x3a</span>, <span class="number">0x75</span>, <span class="number">0x09</span>, <span class="number">0x20</span>, <span class="number">0x01</span>, <span class="number">0x40</span>, <span class="number">0x69</span>, <span class="number">0x23</span>, <span class="number">0x6a</span>, <span class="number">0x3b</span>, <span class="number">0x41</span>, <span class="number">0x5f</span>, <span class="number">0x7b</span>, <span class="number">0x57</span>, <span class="number">0x3c</span>, <span class="number">0x1f</span>, <span class="number">0x66</span>, <span class="number">0x56</span>, <span class="number">0x5c</span>, <span class="number">0x0c</span>, <span class="number">0x36</span>, <span class="number">0x73</span>, <span class="number">0x2d</span>, <span class="number">0x67</span>, <span class="number">0x43</span>, <span class="number">0x5d</span>, <span class="number">0x4b</span>, <span class="number">0x28</span>, <span class="number">0x76</span>, <span class="number">0x78</span>, <span class="number">0x7d</span>, <span class="number">0x31</span>, <span class="number">0x6d</span>, <span class="number">0x25</span>, <span class="number">0x14</span>, <span class="number">0x74</span>, <span class="number">0x5b</span>, <span class="number">0x6b</span>, <span class="number">0x0d</span>, <span class="number">0x50</span>, <span class="number">0x70</span>, <span class="number">0x64</span>, <span class="number">0x0e</span>, <span class="number">0x62</span>, <span class="number">0x2b</span>, <span class="number">0x0b</span>, <span class="number">0x46</span>, <span class="number">0x2a</span>, <span class="number">0x7c</span>, <span class="number">0x79</span>, <span class="number">0x6c</span>, <span class="number">0x24</span>, <span class="number">0x21</span>]</span><br><span class="line">key = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">128</span>):</span><br><span class="line">    num = bin_list.index(i)</span><br><span class="line">    key += bin_dic[num]+<span class="string">&#x27;?&#x27;</span></span><br><span class="line"></span><br><span class="line">print(key)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">001111?10101?000000?11011?000111?01110?101?1010?001101?0010?111000?011110?110001?110101?00101?0100?000100?000110?01100?101101?000001?11010?111?10001?01101?10010??010?1011?0000?011010?001110?111111?11?010010?111110?101100?001?001001?100110?1?111010?110111?011?100001?00011?100?11111?101010?01001?1101?0101?11001?011111?1111?000101?00010?001011?010100?011001?01?10111?01000?010000?010101?1000?100011?00000?001000?111001?01010?10100?11110?0111?100101?00?000011?110?11101?110010?10000?00001?0011?11000?1110?011100?011000?1001?0?01011?101111?011101?100100?11100?010110?1100?0001?110110?10011?110100?0110?011011?100010?001010?010001?010011?110000?111101?101011?00110?10?110011?000010?00100?100000?101110?001100?100111?10110?101000?111100?01111?010111?111011?101001?00111?000?</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">└──╼ $.&#x2F;crackme.enc</span><br><span class="line">Hello there!</span><br><span class="line">Decoding done!</span><br><span class="line">Check out flag_decoded.png</span><br></pre></td></tr></table></figure>
+<p>And finally we have the flag! 0xCC~0xCC</p>
+<p><a href="/img/justctf/flag_decoded.PNG" title="flag_decoded" class="gallery-item"><img src="/img/justctf/flag_decoded.PNG" alt="flag_decoded"></a></p>
+<hr>
+<p>This was an awesome crackme and can prove a good resource for practicing tooling too..<br>I hope we get to see bl33d1ng edg3 pr0t3c70r v2, the next year! </p>
+<h1 id="Solution-Files"><a href="#Solution-Files" class="headerlink" title="Solution Files"></a>Solution Files</h1><p>You can find the unprotector script along with the idb files on my github here :</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrT4ntr4/Challenge-Solution-Files/tree/master/justCTF_2020_debugme">mrT4ntr4/Challenge-Solution-Files/justCTF_2020_debugme</a></p>
+</blockquote>
+<hr>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Challenge"><span class="toc-number">1.</span> <span class="toc-text">Challenge</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TL-DR"><span class="toc-number">2.</span> <span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Role-of-Father-Process"><span class="toc-number">3.</span> <span class="toc-text">Role of Father Process</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Tracing-Execution-with-strace"><span class="toc-number">4.</span> <span class="toc-text">Tracing Execution with strace</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Analysing-Decryption-Algorithm"><span class="toc-number">5.</span> <span class="toc-text">Analysing Decryption Algorithm</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Writing-an-Unprotector"><span class="toc-number">6.</span> <span class="toc-text">Writing an Unprotector</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Analysing-Unprotected-Crackme"><span class="toc-number">7.</span> <span class="toc-text">Analysing Unprotected Crackme</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Solution-Files"><span class="toc-number">8.</span> <span class="toc-text">Solution Files</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/JustCTF-debugme/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/JustCTF-debugme/&text=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/JustCTF-debugme/&title=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/JustCTF-debugme/&is_video=false&description=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=justCTF 2020 [debug_me_if_you_can-RE]&body=Check out this article: https://mrt4ntr4.github.io/JustCTF-debugme/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/JustCTF-debugme/&title=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/JustCTF-debugme/&title=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/JustCTF-debugme/&title=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/JustCTF-debugme/&title=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/JustCTF-debugme/&name=justCTF 2020 [debug_me_if_you_can-RE]&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/JustCTF-debugme/&t=justCTF 2020 [debug_me_if_you_can-RE]"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021
+    Suraj Malhotra
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"CTRL+C\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight .code").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+      setTimeout(function() {
+        e.trigger.setAttribute('aria-label', "CTRL+C");
+      }, 2000);
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

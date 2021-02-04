@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="article">
+<meta property="og:title" content="Matrix-1 Writeup">
+<meta property="og:url" content="https://mrt4ntr4.github.io/Matrix-Writeup/index.html">
+<meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/matrix3.jpg">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/s1.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/s2.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/s3.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/s4.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/s5.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/s6.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/s7.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/s8.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/s9.png">
+<meta property="og:image" content="https://media.giphy.com/media/26h0q99fxHrZaMWm4/giphy.gif">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/s10.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/s11.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/s12.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/s13.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/s14.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix/s15.png">
+<meta property="article:published_time" content="2019-01-10T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-12-30T07:06:19.552Z">
+<meta property="article:author" content="Suraj Malhotra">
+<meta property="article:tag" content="boot2root">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="matrix">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrt4ntr4.github.io/img/matrix/matrix3.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Matrix-1 Writeup</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/feed.xml" title="mrT4ntr4&#39;s Blog" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<div class="background">
+    <div class="banner">
+<div id="blogtitle" class="blogtitle">mrT4ntr4&#39;s Blog</div>
+<ul id="wrapper" class="wrapper">
+  <div class="sun">
+    <div class="star"></div>
+  </div>
+  <div class="mercury">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="venus">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="earth">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="mars">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="jupiter">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+</ul>
+</div>
+
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/Android4-VM%20Writeup/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/Matrix-Writeup/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/Matrix-Writeup/&text=Matrix-1 Writeup"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/Matrix-Writeup/&title=Matrix-1 Writeup"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/Matrix-Writeup/&is_video=false&description=Matrix-1 Writeup"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Matrix-1 Writeup&body=Check out this article: https://mrt4ntr4.github.io/Matrix-Writeup/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/Matrix-Writeup/&title=Matrix-1 Writeup"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/Matrix-Writeup/&title=Matrix-1 Writeup"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/Matrix-Writeup/&title=Matrix-1 Writeup"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/Matrix-Writeup/&title=Matrix-1 Writeup"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/Matrix-Writeup/&name=Matrix-1 Writeup&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/Matrix-Writeup/&t=Matrix-1 Writeup"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Dirb-Scan"><span class="toc-number">1.</span> <span class="toc-text">Dirb Scan</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Enumerating-Manually-from-Hints"><span class="toc-number">2.</span> <span class="toc-text">Enumerating Manually from Hints</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#User-Enumeration"><span class="toc-number">3.</span> <span class="toc-text">User Enumeration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mp64"><span class="toc-number">4.</span> <span class="toc-text">mp64</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hydra"><span class="toc-number">5.</span> <span class="toc-text">Hydra </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Escaping-Restricted-Shell"><span class="toc-number">6.</span> <span class="toc-text">Escaping Restricted Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Privilege-Escalation"><span class="toc-number">7.</span> <span class="toc-text">Privilege Escalation</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Matrix-1 Writeup
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Suraj Malhotra</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-01-10T00:00:00.000Z" itemprop="datePublished">2019-01-10</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/boot2root-VMs/">boot2root VMs</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/boot2root/" rel="tag">boot2root</a>, <a class="tag-link-link" href="/tags/matrix/" rel="tag">matrix</a>, <a class="tag-link-link" href="/tags/writeup/" rel="tag">writeup</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<h2 id="Nmap-Scan"><a href="#Nmap-Scan" class="headerlink" title="Nmap Scan"></a>Nmap Scan</h2><p><a href="/img/matrix/matrix3.jpg" title="banner" class="gallery-item"><img src="/img/matrix/matrix3.jpg" alt="banner"></a></p>
+<p>We perform a Stealth Scan on our VM.</p>
+<p><a href="/img/matrix/s1.png" class="gallery-item"><img src="/img/matrix/s1.png"></a></p>
+<p>We got 3 Ports 22, 80, 31337.<br>Lets Begin with Port 80(HTTP) as always.<br>It welcomes Neo to the real world and also instructs us to<br> follow the “White Rabbit”.</p>
+<p><a href="/img/matrix/s2.png" class="gallery-item"><img src="/img/matrix/s2.png"></a></p>
+<h2 id="Dirb-Scan"><a href="#Dirb-Scan" class="headerlink" title="Dirb Scan"></a>Dirb Scan</h2><p>Using Common.txt<br>(Got a CODE: 301) Found assets dir</p>
+<p><a href="/img/matrix/s3.png" class="gallery-item"><img src="/img/matrix/s3.png"></a></p>
+<h2 id="Enumerating-Manually-from-Hints"><a href="#Enumerating-Manually-from-Hints" class="headerlink" title="Enumerating Manually from Hints"></a>Enumerating Manually from Hints</h2><p>Taking a peep through all directories,<br>We find some common JS, CSS and other scripts which are<br>basically necessary for the main page to load </p>
+<p><a href="/img/matrix/s4.png" class="gallery-item"><img src="/img/matrix/s4.png"></a></p>
+<p>We get a rabbit img at assets/img<br>It has been named as “ p0rt 31337”..</p>
+<p><a href="/img/matrix/s5.png" class="gallery-item"><img src="/img/matrix/s5.png"></a></p>
+<p>It strikes to me that this might be a hint to enumerate port<br>31337 which was previously discovered by nmap<br>FYI 31337 can also be read as ‘ELEET’ in leet language ..<br> For Simplicity take it as a Cipher for now.<br> Take a look at  <a href="https://www.gamehouse.com/blog/leet-speak-cheat-sheet/" target="_blank">this</a> to get more details. It’s a beauty in itself.<br>Taking a look at the nmap Scan once again, we see that there is a HTTP service on it.<br>So Opening it in our browser we see nothing but only hints.</p>
+<p><a href="/img/matrix/s6.png" class="gallery-item"><img src="/img/matrix/s6.png"></a></p>
+<p>Viewing the Source gives us some base64 encoded data and a video URL.<br>The Youtube Video URL is technically for the Bulbs that are lightening on the background of the WebPage.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;service-wrapper&quot;</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- service --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;service&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--p class=&quot;service__text&quot;&gt;ZWNobyAiVGhlbiB5b3UnbGwgc2VlLCB0aGF0IGl0IGlzIG5vdCB0aGUgc3Bvb24gdGhhdCBiZW5kcywgaXQgaXMgb25seSB5b3Vyc2VsZi4gIiA+IEN5cGhlci5tYXRyaXg=&lt;/p--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="comment">&lt;!-- End / service --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Decoding the base64 data, we see that the output is echoed out to “Cypher.matrix”</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> ZWNobyAiVGhlbiB5b3UnbGwgc2VlLCB0aGF0IGl0IGlzIG5vdCB0aGUgc3Bvb24gdGhhdCBiZW5kcywgaXQgaXMgb25seSB5b3Vyc2VsZi4gIiA+IEN5cGhlci5tYXRyaXg= | base64  -d</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Then you&#x27;ll see, that it is not the spoon that bends, it is only yourself. &quot;</span> &gt; Cypher.matrix</span><br></pre></td></tr></table></figure>
+<p>Browsing to 192.168.42.18/Cypher.matrix we download the file to our local Machine.</p>
+<p>Now by using the “file” command we see the format of the file.</p>
+<p><a href="/img/matrix/s7.png" class="gallery-item"><img src="/img/matrix/s7.png"></a></p>
+<p>OH!! its a ASCII Text file.<br>So we simply cat that file out.<br>We get BrainFuck code (an Esoteric programming language)</p>
+<p>We move over to an<br> <a href="https://www.splitbrain.org/_static/ook/" target="_blank">Online Brainfuck Decoder</a> and Translate Brainfuck to Text</p>
+<p><a href="/img/matrix/s8.png" class="gallery-item"><img src="/img/matrix/s8.png"></a></p>
+<h2 id="User-Enumeration"><a href="#User-Enumeration" class="headerlink" title="User Enumeration"></a>User Enumeration</h2><p>We get the Creds of a Guest user but the password is not complete.<br>So, Now we brute force the last two characters of the password marked as ‘XX’.</p>
+<h2 id="mp64"><a href="#mp64" class="headerlink" title="mp64"></a>mp64</h2><p>For this task, I found an awesome tool known as<br> <a href="https://github.com/hashcat/maskprocessor/releases" target="_blank">mp64</a> which is best for brute forcing characters on a predefined text.</p>
+<p>We generate a wordlist by the following command:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mp64 k1ll0r?a?a &gt; wordlist</span><br></pre></td></tr></table></figure>
+<h2 id="Hydra"><a href="#Hydra" class="headerlink" title="Hydra "></a>Hydra </h2><p>Now we’ll use the wordlist to login to ssh service as ‘guest’ user using hydra.</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -l guest -P wordlist ssh://192.168.42.18</span><br></pre></td></tr></table></figure>
+<p><a href="/img/matrix/s9.png" class="gallery-item"><img src="/img/matrix/s9.png"></a></p>
+<p>Hurrah!! Found the correct password as ‘k1ll0r7n’<br>We quickly login using the found credentials.</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh guest@192.168.42.18</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://media.giphy.com/media/26h0q99fxHrZaMWm4/giphy.gif" class="gallery-item"><img src="https://media.giphy.com/media/26h0q99fxHrZaMWm4/giphy.gif"></a></p>
+<h2 id="Escaping-Restricted-Shell"><a href="#Escaping-Restricted-Shell" class="headerlink" title="Escaping Restricted Shell"></a>Escaping Restricted Shell</h2><p>Now we find that we have a restricted shell.</p>
+<p><a href="/img/matrix/s10.png" class="gallery-item"><img src="/img/matrix/s10.png"></a></p>
+<p>For More Info please check out the <a href="https://pen-testing.sans.org/blog/2012/06/06/escaping-restricted-linux-shells" target="_blank">SANS article</a>.<br>We are basicallly not allowed to execute some commands.<br>To Escape the restricted shell, we can Type ‘export’ to see the exported variables and know which variables are read-only.</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"><span class="built_in">export</span></span></span><br><span class="line"> declare -rx PATH=&quot;/home/guest/prog&quot;</span><br><span class="line"> declare -rx SHELL=&quot;/bin/rbash&quot;</span><br></pre></td></tr></table></figure>
+<p>We see that the PATH and SHELL variables are ‘-rx’, we means you execute them, but not write to them.<br>So we have confirmed that this is a Restricted Shell.</p>
+<p>Lets see how can we escape this shell.<br>We can use ‘echo’ in place of ‘ls’.<br>So I type echo on our base path.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> /home/guest/prog/*</span><br></pre></td></tr></table></figure>
+<p><a href="/img/matrix/s11.png" class="gallery-item"><img src="/img/matrix/s11.png"></a></p>
+<p>We find that we have vim installed on our base path.<br>Then I type the following into vim.</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:!/bin/bash</span><br></pre></td></tr></table></figure>
+<p><a href="/img/matrix/s12.png" class="gallery-item"><img src="/img/matrix/s12.png"></a><br><a href="/img/matrix/s13.png" class="gallery-item"><img src="/img/matrix/s13.png"></a></p>
+<p>Now we have a proper shell.</p>
+<h2 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h2><p>To escalate the Priveleges we use the simple One Liner</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=/usr/bin:/bin</span><br></pre></td></tr></table></figure>
+<p>We can check the commands which the users of different groups can execute.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -l</span><br></pre></td></tr></table></figure>
+<p><a href="/img/matrix/s14.png" class="gallery-item"><img src="/img/matrix/s14.png"></a></p>
+<p>Now We simply try to gain root using :</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo su</span><br></pre></td></tr></table></figure>
+<p>We type in the same password ie. ‘k1ll0r7n’</p>
+<p>and BoomYa!! we are in…<br><a href="/img/matrix/s15.png" class="gallery-item"><img src="/img/matrix/s15.png"></a><br>&nbsp;</p>
+<p>This was a cooool VM and Lets wish for another one in the Matrix Series.</p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Dirb-Scan"><span class="toc-number">1.</span> <span class="toc-text">Dirb Scan</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Enumerating-Manually-from-Hints"><span class="toc-number">2.</span> <span class="toc-text">Enumerating Manually from Hints</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#User-Enumeration"><span class="toc-number">3.</span> <span class="toc-text">User Enumeration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mp64"><span class="toc-number">4.</span> <span class="toc-text">mp64</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hydra"><span class="toc-number">5.</span> <span class="toc-text">Hydra </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Escaping-Restricted-Shell"><span class="toc-number">6.</span> <span class="toc-text">Escaping Restricted Shell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Privilege-Escalation"><span class="toc-number">7.</span> <span class="toc-text">Privilege Escalation</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/Matrix-Writeup/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/Matrix-Writeup/&text=Matrix-1 Writeup"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/Matrix-Writeup/&title=Matrix-1 Writeup"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/Matrix-Writeup/&is_video=false&description=Matrix-1 Writeup"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Matrix-1 Writeup&body=Check out this article: https://mrt4ntr4.github.io/Matrix-Writeup/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/Matrix-Writeup/&title=Matrix-1 Writeup"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/Matrix-Writeup/&title=Matrix-1 Writeup"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/Matrix-Writeup/&title=Matrix-1 Writeup"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/Matrix-Writeup/&title=Matrix-1 Writeup"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/Matrix-Writeup/&name=Matrix-1 Writeup&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/Matrix-Writeup/&t=Matrix-1 Writeup"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021
+    Suraj Malhotra
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"CTRL+C\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight .code").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+      setTimeout(function() {
+        e.trigger.setAttribute('aria-label', "CTRL+C");
+      }, 2000);
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

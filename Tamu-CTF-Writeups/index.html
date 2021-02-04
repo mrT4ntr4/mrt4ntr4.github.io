@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="article">
+<meta property="og:title" content="TAMU CTF 2019">
+<meta property="og:url" content="https://mrt4ntr4.github.io/Tamu-CTF-Writeups/index.html">
+<meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/tamuThumb.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/science!Thumb.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/science/1.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/science/2.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/science/3.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/science/4.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/science/5.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/science/6.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/science/7.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/science/8.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/bucketsThumb.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/buckets/1.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/buckets/2.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/buckets/3.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/buckets/4.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/loginappThumb.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/login/1.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/login/2.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/login/3.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/login/4.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/login/5.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/login/6.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/login/7.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/1337Thumb.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/1337/1.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/1337/2.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/1337/3.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/1337/4.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/1337/5.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/1337/6.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/1337/7.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/1337/8.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/1337/9.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/1337/10.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/1337/11.png">
+<meta property="og:image" content="https://media.giphy.com/media/xsMJyTdf4BQKk/giphy.gif">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/1337/12.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/sc/sql.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/sc/pwn.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/sc/science.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/sc/loginapp2.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/keygenmeThumb.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/keygenme/1.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/keygenme/2.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/keygenme/flag.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/noccbytesThumb.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/noccbytes/1.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/noccbytes/2.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/noccbytes/4.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/noccbytes/5.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/noccbytes/flag.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/crackcodeThumb.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/tamu/crackcode/crackcodeflag.png">
+<meta property="og:image" content="https://media.giphy.com/media/9Jcw5pUQlgQLe5NonJ/giphy-downsized.gif">
+<meta property="article:published_time" content="2019-03-03T22:00:00.000Z">
+<meta property="article:modified_time" content="2020-12-30T07:07:24.409Z">
+<meta property="article:author" content="Suraj Malhotra">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="2019">
+<meta property="article:tag" content="tamuctf">
+<meta property="article:tag" content="tamu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrt4ntr4.github.io/img/tamu/tamuThumb.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+        
+      
+    
+    <!-- title -->
+    <title>TAMU CTF 2019</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/feed.xml" title="mrT4ntr4&#39;s Blog" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<div class="background">
+    <div class="banner">
+<div id="blogtitle" class="blogtitle">mrT4ntr4&#39;s Blog</div>
+<ul id="wrapper" class="wrapper">
+  <div class="sun">
+    <div class="star"></div>
+  </div>
+  <div class="mercury">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="venus">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="earth">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="mars">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="jupiter">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+</ul>
+</div>
+
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/UTCTF-RegularZips-Writeup/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/Seasides-CTF-Writeups/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&text=TAMU CTF 2019"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&title=TAMU CTF 2019"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&is_video=false&description=TAMU CTF 2019"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=TAMU CTF 2019&body=Check out this article: https://mrt4ntr4.github.io/Tamu-CTF-Writeups/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&title=TAMU CTF 2019"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&title=TAMU CTF 2019"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&title=TAMU CTF 2019"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&title=TAMU CTF 2019"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&name=TAMU CTF 2019&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&t=TAMU CTF 2019"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web"><span class="toc-number">1.</span> <span class="toc-text">Web</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Secure-Coding"><span class="toc-number">2.</span> <span class="toc-text">Secure Coding</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reversing"><span class="toc-number">3.</span> <span class="toc-text">Reversing</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web-1"><span class="toc-number"></span> <span class="toc-text">Web</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Science1"><span class="toc-number"></span> <span class="toc-text">Science1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Buckets"><span class="toc-number"></span> <span class="toc-text">Buckets</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LoginApp"><span class="toc-number"></span> <span class="toc-text">LoginApp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1337Secur1ty"><span class="toc-number"></span> <span class="toc-text">1337Secur1ty</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Secure-Coding-1"><span class="toc-number"></span> <span class="toc-text">Secure Coding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Universal-Instruction"><span class="toc-number">1.</span> <span class="toc-text">Universal Instruction</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL"><span class="toc-number"></span> <span class="toc-text">SQL</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Replace"><span class="toc-number">0.1.</span> <span class="toc-text">Replace :</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#With"><span class="toc-number">0.2.</span> <span class="toc-text">With :</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PWN"><span class="toc-number"></span> <span class="toc-text">PWN</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Replace-1"><span class="toc-number">0.1.</span> <span class="toc-text">Replace :</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Science2"><span class="toc-number"></span> <span class="toc-text">Science2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Replace-2"><span class="toc-number">0.1.</span> <span class="toc-text">Replace :</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#With-1"><span class="toc-number">0.2.</span> <span class="toc-text">With:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LoginApp2"><span class="toc-number"></span> <span class="toc-text">LoginApp2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Replace-3"><span class="toc-number">0.1.</span> <span class="toc-text">Replace :</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#With-2"><span class="toc-number">0.2.</span> <span class="toc-text">With :</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reversing-1"><span class="toc-number"></span> <span class="toc-text">Reversing</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#KeyGenMe"><span class="toc-number"></span> <span class="toc-text">KeyGenMe</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#noCCBytes"><span class="toc-number"></span> <span class="toc-text">noCCBytes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cr4ckZ33C0d3"><span class="toc-number"></span> <span class="toc-text">Cr4ckZ33C0d3</span></a>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        TAMU CTF 2019
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Suraj Malhotra</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-03-03T22:00:00.000Z" itemprop="datePublished">2019-03-04</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/CTF-Writeups/">CTF Writeups</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/2019/" rel="tag">2019</a>, <a class="tag-link-link" href="/tags/ctf/" rel="tag">ctf</a>, <a class="tag-link-link" href="/tags/tamu/" rel="tag">tamu</a>, <a class="tag-link-link" href="/tags/tamuctf/" rel="tag">tamuctf</a>, <a class="tag-link-link" href="/tags/writeup/" rel="tag">writeup</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/tamu/tamuThumb.png" title="banner" class="gallery-item"><img src="/img/tamu/tamuThumb.png" alt="banner"></a></p>
+<p>TamuCTF 2019 had some pretty good challenges which actually forced you to learn things. It was a 9 days long CTF, and I personally felt it somewhat boring too as all the challenges were disclosed in the beginning. I also at some point found it fun to solve some challenges from SeasidesCTF 2019 and I left Tamu for 2-3 days. </p>
+<p>This Post includes the writeup to the following Challenges.</p>
+<h3 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h3><p><a href="#science1">Science 1</a><br><a href="#buckets">Buckets</a><br><a href="#loginapp">Login App</a><br><a href="#1337secur1ty">1337 Secur1ty</a>  </p>
+<h3 id="Secure-Coding"><a href="#Secure-Coding" class="headerlink" title="Secure Coding"></a>Secure Coding</h3><p><a href="#sql">SQL</a><br><a href="#pwn">PWN</a><br><a href="#science2">Science 2</a><br><a href="#loginapp2">Login App 2</a></p>
+<h3 id="Reversing"><a href="#Reversing" class="headerlink" title="Reversing"></a>Reversing</h3><p><a href="#keygenme">KeyGenMe</a><br><a href="#noccbytes">NoCCBytes</a><br><a href="#cr4ckz33c0d3">Cr4ckZ33C0d3</a></p>
+<p>Ok lets get our hands dirty !! in the Binary World. XD</p>
+<hr>
+<hr>
+<h1 id="Web-1"><a href="#Web-1" class="headerlink" title="Web"></a>Web</h1><h2 id="Science1"><a href="#Science1" class="headerlink" title="Science1"></a>Science1</h2><p><a href="/img/tamu/science!Thumb.png" class="gallery-item"><img src="/img/tamu/science!Thumb.png"></a></p>
+<p>After navigating to the web address, I observe the hint <strong>(Flask as a Service)</strong>.<br>The first thing to check with sites made with Flask is <em>SSTI(Server Side Template Injection)</em>.<br>You can read more about it <a target="_blank" rel="noopener" href="https://www.netsparker.com/blog/web-security/server-side-template-injection">here</a>.<br><a href="/img/tamu/science/1.png" class="gallery-item"><img src="/img/tamu/science/1.png"></a>  </p>
+<p>Here I got to know that the inputs are reflecting in the output.<br><a href="/img/tamu/science/2.png" class="gallery-item"><img src="/img/tamu/science/2.png"></a>  </p>
+<p> Once XSS also came to mind and it was also vulnerable to it but as mentioned, lets exploit it using Flask.<br> I quickly intercepted the POST Request and tried </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;%raw%&#125;</span><br><span class="line">&#123;&#123;config&#125;&#125;</span><br><span class="line">&#123;%endraw%&#125;</span><br></pre></td></tr></table></figure>
+<p>  in chem1 input field.<br> And to my surprise it was vulnerable.  </p>
+<p><a href="/img/tamu/science/3.png" class="gallery-item"><img src="/img/tamu/science/3.png"></a></p>
+<p><a href="/img/tamu/science/4.png" class="gallery-item"><img src="/img/tamu/science/4.png"></a>  </p>
+<p>Then I tried some payloads from this <a target="_blank" rel="noopener" href="https://www.we45.com/blog/server-side-template-injection-a-crash-course-">site</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;%raw%&#125;</span><br><span class="line">&#123;&#123; <span class="string">&#x27;&#x27;</span>.__class__.__mro__[<span class="number">2</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/etc/passwd&#x27;</span>).read() &#125;&#125;</span><br><span class="line">&#123;%endraw%&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="/img/tamu/science/5.png" class="gallery-item"><img src="/img/tamu/science/5.png"></a></p>
+<p>It shows us the <strong>/etc/passwd</strong> dir.  </p>
+<p><a href="/img/tamu/science/6.png" class="gallery-item"><img src="/img/tamu/science/6.png"></a></p>
+<p>Now its a clear path if you know the right directory where the flag is stored.  </p>
+<p><a href="/img/tamu/science/7.png" class="gallery-item"><img src="/img/tamu/science/7.png"></a></p>
+<p>After some brute-forcing I found the directory as <strong>/opt/tamuctf/</strong>.</p>
+<p><a href="/img/tamu/science/8.png" class="gallery-item"><img src="/img/tamu/science/8.png"></a></p>
+<hr>
+<h2 id="Buckets"><a href="#Buckets" class="headerlink" title="Buckets"></a>Buckets</h2><p><a href="/img/tamu/bucketsThumb.png" class="gallery-item"><img src="/img/tamu/bucketsThumb.png"></a></p>
+<p>This challenge was very easy who knew something about how aws works.<br>If you have solved flaws.cloud or read some of it’s walkthroughs, then this challenge is a cakewalk.</p>
+<p>So just tinkering around a bit…<br><a href="/img/tamu/buckets/1.png" class="gallery-item"><img src="/img/tamu/buckets/1.png"></a></p>
+<p>We can’t leave the source alone .. haha</p>
+<p><a href="/img/tamu/buckets/2.png" class="gallery-item"><img src="/img/tamu/buckets/2.png"></a></p>
+<p>So both the Source and original page gives us a hint for <strong>DOGS</strong></p>
+<p>We have to simply modify the url given to us for the challenge to get a tree of keys.</p>
+<p><a href="/img/tamu/buckets/3.png" class="gallery-item"><img src="/img/tamu/buckets/3.png"></a></p>
+<p>And if we follow our hint, flag can’t be missed.</p>
+<p><a href="/img/tamu/buckets/4.png" class="gallery-item"><img src="/img/tamu/buckets/4.png"></a></p>
+<hr>
+<h2 id="LoginApp"><a href="#LoginApp" class="headerlink" title="LoginApp"></a>LoginApp</h2><p><a href="/img/tamu/loginappThumb.png" class="gallery-item"><img src="/img/tamu/loginappThumb.png"></a>  </p>
+<p>FYI : This was hell of a challenge for me.<br>So, we head over to the given link, and it is a simple login page.  </p>
+<p><a href="/img/tamu/login/1.png" class="gallery-item"><img src="/img/tamu/login/1.png"></a>  </p>
+<p>After going through the source, I also found a <strong>Register-Form</strong> which was hidden.</p>
+<p><a href="/img/tamu/login/2.png" class="gallery-item"><img src="/img/tamu/login/2.png"></a>  </p>
+<p>We can modify the display statement to the following using Dev Tools in our browser :</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">display</span>: <span class="selector-tag">block</span>;</span><br></pre></td></tr></table></figure>
+<p>We see a beatiful Create and Login form side by side.  </p>
+<p><a href="/img/tamu/login/3.png" class="gallery-item"><img src="/img/tamu/login/3.png"></a>  </p>
+<p>Then I used Burpsuite to intercept the CREATE request and saw that it was pointing to nothing. And also there was no source code available for the Register form submit button to POST some JSON data as in the case of Login Button. And then I closed this challenge for like 2 days.<br>Fortunately, when I began to solve it with a fresh mind I was able to succeed though. </p>
+<p>Now I began trying some SQL Payloads at first and then I was lucky that I tried NoSQL at last though.    </p>
+<p>I tried some payloads from <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/NoSQL%20injection"  target="_blank">here</a> on the login page.</p>
+<p>The following worked for me :</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">&quot;username&quot;</span>: &#123;<span class="attr">&quot;$ne&quot;</span>: <span class="string">&quot;foo&quot;</span>&#125;, <span class="attr">&quot;password&quot;</span>: &#123;<span class="attr">&quot;$ne&quot;</span>: <span class="string">&quot;bar&quot;</span>&#125; &#125;</span><br></pre></td></tr></table></figure>
+<p><a href="/img/tamu/login/4.png" class="gallery-item"><img src="/img/tamu/login/4.png"></a>  </p>
+<p>And I was just mad now to know that it really worked and we were logged in as a user named <strong>bob</strong>.<br><a href="/img/tamu/login/5.png" class="gallery-item"><img src="/img/tamu/login/5.png"></a> </p>
+<p>But out motive is to find the flag.. ryt.<br>So I simply changed the Username Value to the following:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;username&quot;: &#123;&quot;$ne&quot;: &quot;bob&quot;&#125;,</span><br></pre></td></tr></table></figure>
+<p><a href="/img/tamu/login/6.png" class="gallery-item"><img src="/img/tamu/login/6.png"></a>  </p>
+<p>and BoomYa!!</p>
+<p><a href="/img/tamu/login/7.png" class="gallery-item"><img src="/img/tamu/login/7.png"></a>  </p>
+<hr>
+<h2 id="1337Secur1ty"><a href="#1337Secur1ty" class="headerlink" title="1337Secur1ty"></a>1337Secur1ty</h2><p><a href="/img/tamu/1337Thumb.png" class="gallery-item"><img src="/img/tamu/1337Thumb.png"></a></p>
+<p>Spoiler:<br>This challenge was pretty ez pz if you used sqlmap like me.<br>And also if you have found the right path. XD</p>
+<p>The link takes us to a Company’s (1337 Secur1ty) website where we are presented with a login page and a registration at first..<br>After registering with some random id, I got in and began tinkering with how did the site work, what features does it provide, etc.</p>
+<p><a href="/img/tamu/1337/1.png" class="gallery-item"><img src="/img/tamu/1337/1.png"></a></p>
+<p>There was an <strong>Employees Section</strong> which displayed the registered users.</p>
+<p><a href="/img/tamu/1337/2.png" class="gallery-item"><img src="/img/tamu/1337/2.png"></a></p>
+<p>Also the most interesting was the <strong>Message Section</strong>.<br><a href="/img/tamu/1337/3.png" class="gallery-item"><img src="/img/tamu/1337/3.png"></a></p>
+<p>I tried simple XSS first.</p>
+<p><a href="/img/tamu/1337/4.png" class="gallery-item"><img src="/img/tamu/1337/4.png"></a></p>
+<p>But with no luck, it was not vulnerable, as the challenge difficulty level specified <strong>hard</strong>. ;D </p>
+<p>But at the same time i observed that the id can be changed in the URL and this led me to think that SQLi might be the right thing to try here.<br><a href="/img/tamu/1337/5.png" class="gallery-item"><img src="/img/tamu/1337/5.png"></a></p>
+<p>Also when I checked the cookies, there was a cookie named as <strong>secret</strong>.<br>And obviously the <strong>userid</strong>.<br>Till now we know that the admin has the <strong>userid = 1</strong> by referring to the Employees Section.</p>
+<p><a href="/img/tamu/1337/6.png" class="gallery-item"><img src="/img/tamu/1337/6.png"></a></p>
+<p>I fired up my favorite tool ie. SqlMap and used : </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u http://web6.tamuctf.com/message?id=6  --dbs</span><br></pre></td></tr></table></figure>
+<p>To guess the back-end DBMS and database names.<br><a href="/img/tamu/1337/7.png" class="gallery-item"><img src="/img/tamu/1337/7.png"></a></p>
+<p>Afterwards we can check for columns.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u http://web6.tamuctf.com/message?id=6  --dump</span><br></pre></td></tr></table></figure>
+<p><a href="/img/tamu/1337/8.png" class="gallery-item"><img src="/img/tamu/1337/8.png"></a></p>
+<p>And at last we can dump the value of secret along with its UserID.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u http://web6.tamuctf.com/message?id=6  -D 1337_Secur1ty -T Users -C UserID,Secret --dump</span><br></pre></td></tr></table></figure>
+<p><a href="/img/tamu/1337/9.png" class="gallery-item"><img src="/img/tamu/1337/9.png"></a></p>
+<p>Now, we have got everything.<br>We just need to change our Secret and UserID cookie in BurpSuite Repeater.</p>
+<p><a href="/img/tamu/1337/10.png" class="gallery-item"><img src="/img/tamu/1337/10.png"></a></p>
+<p>Aww our flag was waiting for us …</p>
+<p><a href="/img/tamu/1337/11.png" class="gallery-item"><img src="/img/tamu/1337/11.png"></a></p>
+<p>Finally solved !!   </p>
+<p><a target="_blank" rel="noopener" href="https://media.giphy.com/media/xsMJyTdf4BQKk/giphy.gif" class="gallery-item"><img src="https://media.giphy.com/media/xsMJyTdf4BQKk/giphy.gif"></a></p>
+<p>BTW we can also use EditThisCookie Extension in our browser to change cookie and or We can forward the request as well with request to see the Rendered Page.</p>
+<p><a href="/img/tamu/1337/12.png" class="gallery-item"><img src="/img/tamu/1337/12.png"></a></p>
+<hr>
+<hr>
+<h1 id="Secure-Coding-1"><a href="#Secure-Coding-1" class="headerlink" title="Secure Coding"></a>Secure Coding</h1><h3 id="Universal-Instruction"><a href="#Universal-Instruction" class="headerlink" title="Universal Instruction"></a>Universal Instruction</h3><p>To solve this challenge you must first fork the challenge and then modify the files in this repository and attempt to fix the vulnerability that you found.<br>Everytime you make a commit your files are tested on the backend system. The results can be found under CI/CD-&gt;Jobs and then the last test ran.<br>If you pass all of the tests the flag will be printed at the bottom of the CI/CD display. Otherwise you will either get an error or statement saying what happened.</p>
+<h2 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h2><p><em>Now that you have broken the SQL Injection challenge it’s your turn to fix it!</em>   </p>
+<p><a href="/files/tamu/login.php"  target="_blank">Unsecure Code(login.php)</a></p>
+<h4 id="Replace"><a href="#Replace" class="headerlink" title="Replace :"></a>Replace :</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$user</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>];</span><br><span class="line"><span class="variable">$pass</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>];</span><br></pre></td></tr></table></figure>
+<h4 id="With"><a href="#With" class="headerlink" title="With :"></a>With :</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$user</span> = filter_var(<span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>], FILTER_SANITIZE_STRING);</span><br><span class="line"><span class="variable">$pass</span> = filter_var(<span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>], FILTER_SANITIZE_STRING);</span><br></pre></td></tr></table></figure>
+
+
+<p><a href="https://www.johnmorrisonline.com/validate-sanitize-user-input-php-using-filter_input-filter_var/"  target="_blank">Reference</a></p>
+<p><a href="/img/tamu/sc/sql.png" class="gallery-item"><img src="/img/tamu/sc/sql.png"></a></p>
+<hr>
+<h2 id="PWN"><a href="#PWN" class="headerlink" title="PWN"></a>PWN</h2><p><em>Now that you have broken a PWN challenge it’s your turn to fix it!</em></p>
+<p><a href="/files/tamu/PWN.c" target="_blank">Unsecure Code(PWN.c)</a></p>
+<h4 id="Replace-1"><a href="#Replace-1" class="headerlink" title="Replace :"></a>Replace :</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    gets(buf);</span><br><span class="line">```  </span><br><span class="line">#### With :</span><br><span class="line">```c</span><br><span class="line">    fgets(buf,<span class="number">128</span>,<span class="built_in">stdin</span>);</span><br></pre></td></tr></table></figure>
+
+<p><a href="http://web.mit.edu/6.s096/www/lecture/lecture03/secure-C.pdf"  target="_blank">Reference</a></p>
+<p><a href="/img/tamu/sc/pwn.png" class="gallery-item"><img src="/img/tamu/sc/pwn.png"></a></p>
+<hr>
+<h2 id="Science2"><a href="#Science2" class="headerlink" title="Science2"></a>Science2</h2><p><em>Now that you have broken the Jinja2 Template Injection challenge it’s your turn to fix it!</em></p>
+<p><a href="/files/tamu/views.py"  target="_blank">Unsecure Code(views.py)</a></p>
+<h4 id="Replace-2"><a href="#Replace-2" class="headerlink" title="Replace :"></a>Replace :</h4><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chem1 = request.form[<span class="string">&#x27;chem1&#x27;</span>]</span><br><span class="line">chem2 = request.form[<span class="string">&#x27;chem2&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="With-1"><a href="#With-1" class="headerlink" title="With:"></a>With:</h4><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;%raw%&#125;</span><br><span class="line">        chem1 = request.form[<span class="string">&#x27;chem1&#x27;</span>].replace(<span class="string">&quot;&#123;&#123;&quot;</span>,<span class="string">&quot;\&#x27;&#123;&#123;\&#x27;&quot;</span>).replace(<span class="string">&quot;&#125;&#125;&quot;</span>,<span class="string">&quot;\&#x27;&#125;&#125;\&#x27;&quot;</span>)</span><br><span class="line">        chem2 = request.form[<span class="string">&#x27;chem2&#x27;</span>].replace(<span class="string">&quot;&#123;&#123;&quot;</span>,<span class="string">&quot;\&#x27;&#123;&#123;\&#x27;&quot;</span>).replace(<span class="string">&quot;&#125;&#125;&quot;</span>,<span class="string">&quot;\&#x27;&#125;&#125;\&#x27;&quot;</span>)&#123;%endraw%&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://nvisium.com/blog/2016/03/09/exploring-ssti-in-flask-jinja2.html"  target="_blank">Reference</a></p>
+<p><a href="/img/tamu/sc/science.png" class="gallery-item"><img src="/img/tamu/sc/science.png"></a></p>
+<hr>
+<h2 id="LoginApp2"><a href="#LoginApp2" class="headerlink" title="LoginApp2"></a>LoginApp2</h2><p><em>Now that you have broken the NoSQL Injection challenge it’s your turn to fix it!</em></p>
+<p><a href="/files/tamu/server.js"  target="_blank">Unsecure Code(server.js)</a></p>
+<h4 id="Replace-3"><a href="#Replace-3" class="headerlink" title="Replace :"></a>Replace :</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> query = &#123;</span><br><span class="line">    username: sanitize(req.body.username),</span><br><span class="line">    password: sanitize(req.body.password)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">c.collection(<span class="string">&#x27;users&#x27;</span>).findOne(query, <span class="function"><span class="keyword">function</span> (<span class="params">err, user</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(user == <span class="literal">null</span>) &#123;</span><br><span class="line">        res.send(<span class="built_in">JSON</span>.stringify(<span class="string">&quot;Login Failed&quot;</span>))</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        resp = <span class="string">&quot;Welcome: &quot;</span> + user[<span class="string">&#x27;username&#x27;</span>] + <span class="string">&quot;!&quot;</span>;</span><br><span class="line">        res.send(<span class="built_in">JSON</span>.stringify(resp));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="With-2"><a href="#With-2" class="headerlink" title="With :"></a>With :</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var username &#x3D; req.body.username;</span><br><span class="line">var password &#x3D; req.body.password;</span><br><span class="line"></span><br><span class="line">c.collection(&#39;users&#39;).findOne(&#123;&#39;username&#39;: &#123; $in: [username] &#125;,&#39;password&#39;: &#123; $in: [password] &#125;&#125;, function (err, user) &#123;</span><br><span class="line">    if(err)&#123;</span><br><span class="line">        res.send(JSON.stringify(&quot;Login Failed&quot;));</span><br><span class="line">    &#125;else if(user)&#123;</span><br><span class="line">        resp &#x3D; &quot;Welcome: &quot; + user[&#39;username&#39;] + &quot;!&quot;;</span><br><span class="line">        res.send(JSON.stringify(resp));</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        res.send(JSON.stringify(&quot;Login Failed&quot;));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;); </span><br></pre></td></tr></table></figure>
+
+<p><a href="https://scotch.io/@401/mongodb-injection-in-nodejs"  target="_blank">Reference</a></p>
+<p><a href="/img/tamu/sc/loginapp2.png" class="gallery-item"><img src="/img/tamu/sc/loginapp2.png"></a></p>
+<hr>
+<hr>
+<h1 id="Reversing-1"><a href="#Reversing-1" class="headerlink" title="Reversing"></a>Reversing</h1><h2 id="KeyGenMe"><a href="#KeyGenMe" class="headerlink" title="KeyGenMe"></a>KeyGenMe</h2><p><a href="/img/tamu/keygenmeThumb.png" class="gallery-item"><img src="/img/tamu/keygenmeThumb.png"></a></p>
+<p><a href="/files/tamu/keygenme"  target="_blank">Download File</a></p>
+<p>About This Challenge I’d only tell that I learnt the most from it tho.</p>
+<p>Going through basic assembly of the main function I found that it was calling another function named as <strong>verify_key</strong>.<br><a href="/img/tamu/keygenme/1.PNG" class="gallery-item"><img src="/img/tamu/keygenme/1.PNG"></a></p>
+<p>And later focusing on <strong>verify_key</strong>, I observe that it was calling <strong>enc()</strong> and then comparing our input string to some weird encrypted text.  </p>
+<p><a href="/img/tamu/keygenme/2.PNG" class="gallery-item"><img src="/img/tamu/keygenme/2.PNG"></a></p>
+<p>Pseudocode (<strong>enc()</strong>)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">_BYTE *__fastcall <span class="title">enc</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *a1)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> __int8 v2; </span><br><span class="line">  <span class="keyword">int</span> i; </span><br><span class="line">  <span class="keyword">int</span> v4; </span><br><span class="line">  _BYTE *v5; </span><br><span class="line">  v5 = <span class="built_in">malloc</span>(<span class="number">0x40</span>uLL);</span><br><span class="line">  v4 = <span class="built_in">strlen</span>(a1);</span><br><span class="line">  v2 = <span class="number">72</span>;</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; v4; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    v5[i] = ((a1[i] + <span class="number">12</span>) * v2 + <span class="number">17</span>) % <span class="number">70</span> + <span class="number">48</span>;</span><br><span class="line">    v2 = v5[i];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> v5;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>So Now we have the encrypted version of our key. So we can simply brute-force for chars in the range (33, 127).<br>Refer to <a href="https://www.asciitable.com"  target="_blank">asciitable</a>.</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">v2 = <span class="number">72</span></span><br><span class="line">s = <span class="string">&#x27;&#x27;</span> </span><br><span class="line"><span class="keyword">for</span> encC <span class="keyword">in</span> <span class="string">&quot;[OIonU2_&lt;__nK&lt;Ks&quot;</span>:</span><br><span class="line">    <span class="keyword">for</span> orgC <span class="keyword">in</span> <span class="built_in">map</span>(<span class="built_in">chr</span>, xrange(<span class="number">33</span>, <span class="number">127</span>)):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">ord</span>(encC) == (((<span class="built_in">ord</span>(orgC) + <span class="number">12</span>) * v2 + <span class="number">17</span>) % <span class="number">70</span> + <span class="number">48</span>):</span><br><span class="line">            s += orgC</span><br><span class="line">            v2 = <span class="built_in">ord</span>(encC)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"><span class="built_in">print</span> s</span><br></pre></td></tr></table></figure>
+<p>We get </p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">*Z2S<span class="string">&quot;+&#x27;)&quot;</span><span class="string">&quot;+&#x27;+<span class="subst">$(</span></span></span></span><br></pre></td></tr></table></figure>
+
+<p>And we r finally done here. </p>
+<p><a href="/img/tamu/keygenme/flag.png" class="gallery-item"><img src="/img/tamu/keygenme/flag.png"></a></p>
+<hr>
+<h2 id="noCCBytes"><a href="#noCCBytes" class="headerlink" title="noCCBytes"></a>noCCBytes</h2><p><a href="/img/tamu/noccbytesThumb.png" class="gallery-item"><img src="/img/tamu/noccbytesThumb.png"></a></p>
+<p><a href="/files/tamu/noccbytes"  target="_blank">Download File</a></p>
+<p>This challenge required us to set the right breakpoint but I wonder why it had somewhat less solves though.</p>
+<p>So We have to bypass the password.  </p>
+<p><a href="/img/tamu/noccbytes/1.png" class="gallery-item"><img src="/img/tamu/noccbytes/1.png"></a></p>
+<p>So I fire up GDB and load the executable.<br>And the main function was calling a function named <strong>passCheck()</strong><br><a href="/img/tamu/noccbytes/2.png" class="gallery-item"><img src="/img/tamu/noccbytes/2.png"></a></p>
+<p>You can see it’s exact name using <strong>info function</strong>.  </p>
+<p><a href="/img/tamu/noccbytes/3.png"></a></p>
+<p>After disassembling <strong>passCheck()</strong> I observed that it had a <strong>strcmp</strong> instruction.</p>
+<p><a href="/img/tamu/noccbytes/4.png" class="gallery-item"><img src="/img/tamu/noccbytes/4.png"></a></p>
+<p>Now moving on, I simply set a breakpoint on the <strong>strcmp</strong> instruction we found.</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b *passCheck(char*)+120</span><br></pre></td></tr></table></figure>
+<p>And after runnning the executable again, We can see our password residing in memory.   </p>
+<p><a href="/img/tamu/noccbytes/5.png" class="gallery-item"><img src="/img/tamu/noccbytes/5.png"></a></p>
+<p>Now we can head over to input our password using the netcat service and get the flag.</p>
+<p><a href="/img/tamu/noccbytes/flag.png" class="gallery-item"><img src="/img/tamu/noccbytes/flag.png"></a></p>
+<hr>
+<h2 id="Cr4ckZ33C0d3"><a href="#Cr4ckZ33C0d3" class="headerlink" title="Cr4ckZ33C0d3"></a>Cr4ckZ33C0d3</h2><p><a href="/img/tamu/crackcodeThumb.png" class="gallery-item"><img src="/img/tamu/crackcodeThumb.png"></a></p>
+<p><a href="/files/tamu/prodkey"  target="_blank">Download File</a></p>
+<p>This challenge was the hardest in the reversing category acc. to me.  </p>
+<p>At First I took the help of IDA Pro to get some Pseudocode.<br>I found that the main function is calling a <strong>verify_key</strong> function which later calls various <strong>check()</strong> functions and and checks if we have supplied the correct input by comparing it to some basic calculations.<br>I’ve basically broke down various check levels for you to take a look.  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> chk1 = a1[<span class="number">5</span>] == <span class="number">45</span> &amp;&amp; a1[<span class="number">11</span>] == <span class="number">45</span> &amp;&amp; a1[<span class="number">17</span>] == <span class="number">45</span> &amp;&amp; a1[<span class="number">23</span>] == <span class="number">45</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> chk2 = (<span class="keyword">unsigned</span> <span class="keyword">int</span>)(a1[<span class="number">1</span>] - <span class="number">48</span>) &lt;= <span class="number">9</span></span><br><span class="line">      &amp;&amp; (<span class="keyword">unsigned</span> <span class="keyword">int</span>)(a1[<span class="number">4</span>] - <span class="number">48</span>) &lt;= <span class="number">9</span></span><br><span class="line">      &amp;&amp; (<span class="keyword">unsigned</span> <span class="keyword">int</span>)(a1[<span class="number">6</span>] - <span class="number">48</span>) &lt;= <span class="number">9</span></span><br><span class="line">      &amp;&amp; (<span class="keyword">unsigned</span> <span class="keyword">int</span>)(a1[<span class="number">9</span>] - <span class="number">48</span>) &lt;= <span class="number">9</span></span><br><span class="line">      &amp;&amp; (<span class="keyword">unsigned</span> <span class="keyword">int</span>)(a1[<span class="number">15</span>] - <span class="number">48</span>) &lt;= <span class="number">9</span></span><br><span class="line">      &amp;&amp; (<span class="keyword">unsigned</span> <span class="keyword">int</span>)(a1[<span class="number">18</span>] - <span class="number">48</span>) &lt;= <span class="number">9</span></span><br><span class="line">      &amp;&amp; (<span class="keyword">unsigned</span> <span class="keyword">int</span>)(a1[<span class="number">22</span>] - <span class="number">48</span>) &lt;= <span class="number">9</span></span><br><span class="line">      &amp;&amp; (<span class="keyword">unsigned</span> <span class="keyword">int</span>)(a1[<span class="number">27</span>] - <span class="number">48</span>) &lt;= <span class="number">9</span></span><br><span class="line">      &amp;&amp; (<span class="keyword">unsigned</span> <span class="keyword">int</span>)(a1[<span class="number">28</span>] - <span class="number">48</span>) &lt;= <span class="number">9</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> chk3 = a1[<span class="number">4</span>] - <span class="number">48</span> == <span class="number">2</span> * (a1[<span class="number">1</span>] - <span class="number">48</span>) + <span class="number">1</span> &amp;&amp; a1[<span class="number">4</span>] - <span class="number">48</span> &gt; <span class="number">7</span> &amp;&amp; a1[<span class="number">9</span>] == a1[<span class="number">4</span>] - (a1[<span class="number">1</span>] - <span class="number">48</span>) + <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> chk4 = (a1[<span class="number">27</span>] + a1[<span class="number">28</span>]) % <span class="number">13</span> == <span class="number">8</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> chk5 = (a1[<span class="number">27</span>] + a1[<span class="number">22</span>]) % <span class="number">22</span> == <span class="number">18</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> chk6 = (a1[<span class="number">18</span>] + a1[<span class="number">22</span>]) % <span class="number">11</span> == <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> chk7 = (a1[<span class="number">22</span>] + a1[<span class="number">28</span>] + a1[<span class="number">18</span>]) % <span class="number">26</span> == <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> chk8 = (a1[<span class="number">1</span>] + a1[<span class="number">4</span>] * a1[<span class="number">6</span>]) % <span class="number">41</span> == <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> v1 = (<span class="keyword">unsigned</span> <span class="keyword">int</span>)((a1[<span class="number">15</span>] - a1[<span class="number">28</span>]) &gt;&gt; <span class="number">31</span>) &gt;&gt; <span class="number">30</span>;</span><br><span class="line"><span class="keyword">bool</span> chk9 = ((v1 + a1[<span class="number">15</span>] - a1[<span class="number">28</span>]) &amp; <span class="number">3</span>) - v1 == <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> v2 = (<span class="keyword">unsigned</span> <span class="keyword">int</span>)((a1[<span class="number">22</span>] + a1[<span class="number">4</span>]) &gt;&gt; <span class="number">31</span>) &gt;&gt; <span class="number">30</span>;</span><br><span class="line"><span class="keyword">bool</span> chk10 = ((v2 + a1[<span class="number">22</span>] + a1[<span class="number">4</span>]) &amp; <span class="number">3</span>) - v2 == <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> chk11 = a1[<span class="number">20</span>] == <span class="number">66</span> &amp;&amp; a1[<span class="number">21</span>] == <span class="number">66</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> chk12 = (a1[<span class="number">6</span>] + a1[<span class="number">15</span>] * a1[<span class="number">9</span>]) % <span class="number">10</span> == <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> v3 = (<span class="keyword">unsigned</span> <span class="keyword">int</span>)((a1[<span class="number">15</span>] + a1[<span class="number">4</span>] + a1[<span class="number">27</span>] - <span class="number">18</span>) &gt;&gt; <span class="number">31</span>) &gt;&gt; <span class="number">28</span>;</span><br><span class="line"><span class="keyword">bool</span> chk13 = ((v3 + a1[<span class="number">15</span>] + a1[<span class="number">4</span>] + a1[<span class="number">27</span>] - <span class="number">18</span>) &amp; <span class="number">0xF</span>) - v3 == <span class="number">8</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> v4 = a1[<span class="number">28</span>] &lt; a1[<span class="number">9</span>];</span><br><span class="line"><span class="keyword">bool</span> chk14 = ((v4 + a1[<span class="number">28</span>] - a1[<span class="number">9</span>]) &amp; <span class="number">1</span>) - v4 == <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> chk15 = a1[<span class="number">0</span>] == <span class="number">77</span>;</span><br></pre></td></tr></table></figure>
+<p>After realizing that this could be brute-forced, I pulled out Sublime to code some mellow python.<br>And also, some characters don’t need to be guessed as there were some if statements which were just comparing the ascii value straightaway. </p>
+<p>From the pseudocode we can observe that the <strong>chk2</strong> checks whether the specified value is particularly an integer value or not.<br>So I fixed the range from (48,58) in decimal .. You can check the ascii table <a href="https://www.asciitable.com"  target="_blank">here</a></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">key = [<span class="number">120</span>] * <span class="number">29</span></span><br><span class="line"></span><br><span class="line">key[<span class="number">5</span>] = <span class="number">45</span></span><br><span class="line">key[<span class="number">11</span>] = <span class="number">45</span> </span><br><span class="line">key[<span class="number">17</span>] = <span class="number">45</span></span><br><span class="line">key[<span class="number">23</span>] = <span class="number">45</span></span><br><span class="line">key[<span class="number">0</span>] = <span class="number">77</span></span><br><span class="line">key[<span class="number">20</span>] = <span class="number">66</span></span><br><span class="line">key[<span class="number">21</span>] = <span class="number">66</span></span><br><span class="line"></span><br><span class="line">charRange = <span class="built_in">map</span>(<span class="built_in">int</span>, xrange(<span class="number">48</span>, <span class="number">58</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> charRange:</span><br><span class="line">    <span class="keyword">for</span> b <span class="keyword">in</span> charRange:</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> charRange:</span><br><span class="line">            <span class="keyword">for</span> d <span class="keyword">in</span> charRange:</span><br><span class="line">                <span class="keyword">if</span> (b - <span class="number">48</span> == <span class="number">2</span> * (a - <span class="number">48</span>) + <span class="number">1</span> <span class="keyword">and</span> b - <span class="number">48</span> &gt; <span class="number">7</span> <span class="keyword">and</span> c == b - (a - <span class="number">48</span>) + <span class="number">2</span>):</span><br><span class="line">                    key[<span class="number">1</span>] = a  </span><br><span class="line">                    key[<span class="number">4</span>] = b</span><br><span class="line">                    key[<span class="number">9</span>] = c</span><br><span class="line">                <span class="keyword">if</span> (c + d) % <span class="number">13</span> == <span class="number">8</span> <span class="keyword">and</span> (c + b) % <span class="number">22</span> == <span class="number">18</span> <span class="keyword">and</span> (a + b) % <span class="number">11</span> == <span class="number">5</span> <span class="keyword">and</span> (b + d + a) % <span class="number">26</span> == <span class="number">4</span>:</span><br><span class="line">                    key[<span class="number">18</span>] = a</span><br><span class="line">                    key[<span class="number">22</span>] = b</span><br><span class="line">                    key[<span class="number">27</span>] = c</span><br><span class="line">                    key[<span class="number">28</span>] = d</span><br><span class="line">                v3 = ((a + key[<span class="number">4</span>] + key[<span class="number">27</span>] - <span class="number">18</span>) &gt;&gt; <span class="number">31</span>) &gt;&gt; <span class="number">28</span>;</span><br><span class="line">                <span class="keyword">if</span> ((v3 + a + key[<span class="number">4</span>] + key[<span class="number">27</span>] - <span class="number">18</span>) &amp; <span class="number">0xF</span>) - v3 == <span class="number">8</span>:</span><br><span class="line">                    key[<span class="number">15</span>] = a</span><br><span class="line">                <span class="keyword">if</span> (key[<span class="number">1</span>] + key[<span class="number">4</span>] * a) % <span class="number">41</span> == <span class="number">5</span>:</span><br><span class="line">                    key[<span class="number">6</span>] = a</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;&#x27;</span>.join(<span class="built_in">chr</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> key)</span><br></pre></td></tr></table></figure>
+<p>If you ran, this script you may have got :</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">M4xx9-8xx7x-xxx9x-6xBB2-xxx88</span><br></pre></td></tr></table></figure>
+<p>So There are some values which are not really checked, and I’ve assummed them to be <strong>x</strong>.</p>
+<p>Now we can head over to netcat to get our flag…<br>And Finally ..</p>
+<p><a href="/img/tamu/crackcode/crackcodeflag.png" class="gallery-item"><img src="/img/tamu/crackcode/crackcodeflag.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://media.giphy.com/media/9Jcw5pUQlgQLe5NonJ/giphy-downsized.gif" class="gallery-item"><img src="https://media.giphy.com/media/9Jcw5pUQlgQLe5NonJ/giphy-downsized.gif"></a></p>
+<p>Seriously this challenge required good logic skills. GIGS</p>
+<p>At last there were many gigems …<br>And I loved ‘em all</p>
+<p>Thanks for Reading this writeup..<br>Subscribe to my Newsletter for more updates regarding CTFs.<br>Also Feedback is always appreciated.<br>It won’t take much time though.  </p>
+<p>And Keep Escalating the Privileges<br>Happy Hacking !!</p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web"><span class="toc-number">1.</span> <span class="toc-text">Web</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Secure-Coding"><span class="toc-number">2.</span> <span class="toc-text">Secure Coding</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reversing"><span class="toc-number">3.</span> <span class="toc-text">Reversing</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web-1"><span class="toc-number"></span> <span class="toc-text">Web</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Science1"><span class="toc-number"></span> <span class="toc-text">Science1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Buckets"><span class="toc-number"></span> <span class="toc-text">Buckets</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LoginApp"><span class="toc-number"></span> <span class="toc-text">LoginApp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1337Secur1ty"><span class="toc-number"></span> <span class="toc-text">1337Secur1ty</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Secure-Coding-1"><span class="toc-number"></span> <span class="toc-text">Secure Coding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Universal-Instruction"><span class="toc-number">1.</span> <span class="toc-text">Universal Instruction</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL"><span class="toc-number"></span> <span class="toc-text">SQL</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Replace"><span class="toc-number">0.1.</span> <span class="toc-text">Replace :</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#With"><span class="toc-number">0.2.</span> <span class="toc-text">With :</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PWN"><span class="toc-number"></span> <span class="toc-text">PWN</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Replace-1"><span class="toc-number">0.1.</span> <span class="toc-text">Replace :</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Science2"><span class="toc-number"></span> <span class="toc-text">Science2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Replace-2"><span class="toc-number">0.1.</span> <span class="toc-text">Replace :</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#With-1"><span class="toc-number">0.2.</span> <span class="toc-text">With:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LoginApp2"><span class="toc-number"></span> <span class="toc-text">LoginApp2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Replace-3"><span class="toc-number">0.1.</span> <span class="toc-text">Replace :</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#With-2"><span class="toc-number">0.2.</span> <span class="toc-text">With :</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reversing-1"><span class="toc-number"></span> <span class="toc-text">Reversing</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#KeyGenMe"><span class="toc-number"></span> <span class="toc-text">KeyGenMe</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#noCCBytes"><span class="toc-number"></span> <span class="toc-text">noCCBytes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cr4ckZ33C0d3"><span class="toc-number"></span> <span class="toc-text">Cr4ckZ33C0d3</span></a>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&text=TAMU CTF 2019"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&title=TAMU CTF 2019"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&is_video=false&description=TAMU CTF 2019"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=TAMU CTF 2019&body=Check out this article: https://mrt4ntr4.github.io/Tamu-CTF-Writeups/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&title=TAMU CTF 2019"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&title=TAMU CTF 2019"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&title=TAMU CTF 2019"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&title=TAMU CTF 2019"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&name=TAMU CTF 2019&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/Tamu-CTF-Writeups/&t=TAMU CTF 2019"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021
+    Suraj Malhotra
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"CTRL+C\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight .code").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+      setTimeout(function() {
+        e.trigger.setAttribute('aria-label', "CTRL+C");
+      }, 2000);
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

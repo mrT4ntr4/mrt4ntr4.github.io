@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="article">
+<meta property="og:title" content="Cryptix CTF&#39;19 CrackIT">
+<meta property="og:url" content="https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/index.html">
+<meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/cryptix/banner.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/cryptix/0.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/cryptix/1.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/cryptix/3.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/cryptix/2.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/cryptix/4.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/cryptix/5.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/cryptix/6.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/cryptix/7.png">
+<meta property="og:image" content="https://media.giphy.com/media/lN8sg2KcDNrNqzs2cZ/giphy.gif">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/cryptix/8.png">
+<meta property="article:published_time" content="2019-10-13T07:00:00.000Z">
+<meta property="article:modified_time" content="2020-12-30T07:05:25.576Z">
+<meta property="article:author" content="Suraj Malhotra">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="cryptix">
+<meta property="article:tag" content="crackit">
+<meta property="article:tag" content="reversing">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrt4ntr4.github.io/img/cryptix/banner.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Cryptix CTF&#39;19 CrackIT</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/feed.xml" title="mrT4ntr4&#39;s Blog" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<div class="background">
+    <div class="banner">
+<div id="blogtitle" class="blogtitle">mrT4ntr4&#39;s Blog</div>
+<ul id="wrapper" class="wrapper">
+  <div class="sun">
+    <div class="star"></div>
+  </div>
+  <div class="mercury">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="venus">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="earth">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="mars">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="jupiter">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+</ul>
+</div>
+
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/UTC-Teaser-Stacks/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/RedPwn-CTF-Writeups/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&text=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&title=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&is_video=false&description=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cryptix CTF&#39;19 CrackIT&body=Check out this article: https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&title=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&title=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&title=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&title=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&name=Cryptix CTF&#39;19 CrackIT&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&t=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Cryptix CTF&#39;19 CrackIT
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Suraj Malhotra</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-10-13T07:00:00.000Z" itemprop="datePublished">2019-10-13</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/CTF-Writeups/">CTF Writeups</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/crackit/" rel="tag">crackit</a>, <a class="tag-link-link" href="/tags/cryptix/" rel="tag">cryptix</a>, <a class="tag-link-link" href="/tags/ctf/" rel="tag">ctf</a>, <a class="tag-link-link" href="/tags/reversing/" rel="tag">reversing</a>, <a class="tag-link-link" href="/tags/writeup/" rel="tag">writeup</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/cryptix/banner.png" title="banner" class="gallery-item"><img src="/img/cryptix/banner.png" alt="banner"></a></p>
+<p>So to begin with, this was one of my well spent weekend as CTFs were lined up one after the another, and fortunately some of my team members were active. There were a variety of CTFs to choose from such as, HITCON Quals, Rooters, Cryptrix, etc I just had a taste of each of them.<br>Also I’m not that much of a pro so didn’t focus too much on HITCON.<br>Difficulty level of CTFs according to me could be arranged in the following manner : </p>
+<blockquote>
+<p>HITCON Quals &gt; Rooters &gt; Hack-A-Bit &gt; Cryptrix &gt; Syskron  </p>
+</blockquote>
+<p>I didn’t like Syskron personally because It was full of guessing challenges.  </p>
+<p>I thought maybe post about my experience regarding all of them and maybe if possible a writeup too!!<br>So I’ve been practicing level2/3 crackmes on <a href="https://crackmes.one"  target="_blank">crackmes.one</a> lately and I was excited to test my skills.<br>Out of them only Cryptix and Rooters had some reversing challenges which I was able to solve.<br>But In this blog post I’m particularly interested in solving a crackme from Cryptix known as CrackIT.<br>PS I was not able to solve it during the CTF, there were many reasons for that.. one of them being that Hack-A-Bit was also live at that same time and we were doing great in it. (We ended #1 in Hack-A-Bit XD)</p>
+<p>And yeah here’s a backup for y’all so u can follow along! </p>
+<blockquote>
+<p>Download <a href="/files/cryptix/keygen"  target="_blank">keygen</a></p>
+</blockquote>
+<p>The name should’ve been keygenme according to me. IDK what did the author thought while naming it LOL<br>Well leaving that aside, we run the binary file and also check that it is 64 bit binary which is not stripped so we are lucky till now.  </p>
+<p>Well In this writeup I’ll try to as detailed as possible, So plz ignore if I’m emphasizing more on any particular topic.  </p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">└──╼ $./keygen</span><br><span class="line">Usage: ./keygen &lt;KEY&gt;</span><br><span class="line"></span><br><span class="line">└──╼ $./keygen 12345</span><br><span class="line">Sorry no flag for you</span><br></pre></td></tr></table></figure>
+<p>I’ve been using Ghidra decompilation feature and I have to say that it has lived upto my expections almost everytime.  </p>
+<p>So I look over the code and found that there are 2 functions which do the actual work ie. <strong>validate_key()</strong> and <strong>Do_Something()</strong>.<br>The main function doesn’t do anything actaully, it is solely dependent on the return value of <strong>validate_key()</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">undefined8 <span class="title">validate_key</span><span class="params">(<span class="keyword">char</span> *pcParm1)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">size_t</span> sVar1;</span><br><span class="line">  undefined8 uVar2;</span><br><span class="line">  <span class="keyword">long</span> lVar3;</span><br><span class="line">  <span class="keyword">double</span> dVar4;</span><br><span class="line">  <span class="keyword">int</span> local_20;</span><br><span class="line">  </span><br><span class="line">  sVar1 = <span class="built_in">strlen</span>(pcParm1);</span><br><span class="line">  <span class="keyword">if</span> ((<span class="keyword">int</span>)sVar1 == <span class="number">0x11</span>) &#123;</span><br><span class="line">    lVar3 = Does_Something(pcParm1,<span class="number">0x11</span>);</span><br><span class="line">    local_20 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (local_20 &lt; <span class="number">0x18</span>) &#123;</span><br><span class="line">      dVar4 = <span class="built_in">pow</span>(<span class="number">2.00000000</span>,(<span class="keyword">double</span>)(<span class="keyword">int</span>)*(<span class="keyword">char</span> *)(lVar3 + (<span class="keyword">long</span>)local_20));</span><br><span class="line">      <span class="keyword">if</span>(*(<span class="keyword">double</span> *)(_Zproc_libc_fini + (<span class="keyword">long</span>)local_20 * <span class="number">8</span>) != dVar4) &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;Sorry no flag for you&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      local_20 = local_20 + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    uVar2 = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Sorry no flag for you&quot;</span>);</span><br><span class="line">    uVar2 = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> uVar2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Get <a href="/files/cryptix/ghidra_source.c"  target="_blank">ghidra_source.c</a><br>So <strong>validate_key()</strong> checks if our input is 0x11(17<sub>10</sub>) chars long or not. and later passes our input and its length to the <strong>DoSomething()</strong> function. We see that the return value of <strong>DoSomething()</strong> will always be a 0x18(24<sub>10</sub>) char string and then their is a power operation with base as 2 on it’s each value whose result is being compared with a variable in memory, <strong>_Zproc_libc_fini</strong>. So I checked its content.  </p>
+<p><a href="/img/cryptix/0.png" class="gallery-item"><img src="/img/cryptix/0.png"></a>  </p>
+<p>But It didn’t make any sense to me and also I was missing the most crucial part ie. what does <strong>DoSomething()</strong> do?<br>So I headed over to GDB and started debugging it.   </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">disas validate_key</span><br></pre></td></tr></table></figure>
+<p><a href="/img/cryptix/1.png" class="gallery-item"><img src="/img/cryptix/1.png"></a>  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">b *validate_key+72 </span><br><span class="line">r aaaaaaaaaaaaaaaaa</span><br></pre></td></tr></table></figure>
+<p>We’ve set up a breakpoint just after the call to <strong>DoSomething()</strong> so that we can check the value it returns.<br>Now if we run it using a random 17 char string and we can see that the string returned from <strong>DoSomething()</strong> is stored in <strong>$eax</strong> and is simply base64 of our input. Oh great its just a base64 implementation function in C.  </p>
+<p><a href="/img/cryptix/3.png" class="gallery-item"><img src="/img/cryptix/3.png"></a>   </p>
+<p>Now I set up another breakpoint on the <em>ucomisd</em> instruction which is a just like compare but is specifically used for doubles. You can read more about it from <a href="https://www.felixcloutier.com/x86/ucomisd"  target="_blank">here</a>. And we simply continue the execution.  </p>
+<p><a href="/img/cryptix/2.png" class="gallery-item"><img src="/img/cryptix/2.png"></a>    </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">b *validate_key+167 </span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+
+<p>Now lets see what is being compared… Ohh here we see that registers with double-precision are used. This was something new to me.<br><a href="https://en.wikibooks.org/wiki/X86_Assembly/SSE"  target="_blank">Reference</a>  </p>
+<p>So register xmm0 now stores the value to which our b64 encrypted input char is being compared to.  </p>
+<p><a href="/img/cryptix/4.png" class="gallery-item"><img src="/img/cryptix/4.png"></a>   </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> <span class="variable">$xmm0</span></span><br></pre></td></tr></table></figure>
+<p><a href="/img/cryptix/5.png" class="gallery-item"><img src="/img/cryptix/5.png"></a>   </p>
+<p>Ok so the double value looks like what we want. So I tried this short script to check if I am in the right direction.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">33</span>,<span class="number">127</span>):</span><br><span class="line">    <span class="built_in">print</span> <span class="built_in">chr</span>(x),<span class="built_in">pow</span>(<span class="number">2</span>,x)</span><br></pre></td></tr></table></figure>
+<p>And to my surprise there was a <strong>result = 1.2676506002282294e+30</strong> for character <strong>‘d’</strong>.</p>
+<p>Now I didn’t had more time to complete it as I told earlier.<br>But I afterwards when I continued with the ghidra’s source, here is what I deduced in python: </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">encoded = Does_Something(myinput,<span class="number">0x11</span>)</span><br><span class="line"><span class="keyword">while</span> (i &lt; <span class="number">0x18</span>):</span><br><span class="line">  res = <span class="built_in">pow</span>(<span class="number">2</span>,encoded[i])</span><br><span class="line">  <span class="keyword">if</span> (Zproc_libc_fini[i]) != res):</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;Sorry no flag for you&quot;</span></span><br></pre></td></tr></table></figure>
+<p>So there will always be 0x18(24<sub>10</sub>) iterations on the encoded string because when a 17 char is base64 encoded it results in a string of length 24 everytime. And obviously if our encoded input is 24 char long the <em>Zproc_libc_fini</em> array should be of the same length.   </p>
+<p>But as I showed you I was not able to see any values as <em>1.2676506002282294e+30</em> in ghidra so I did it in gdb.<br>I repeated the previous process, ie. set 2 breakpoints and continued their execution and when it stopped at <strong>validate_key+167</strong>, I tried to get all the values stored in <em>_Zproc_libc_fini</em>. I was having a hard time doing this. Then I learnt some more things about how to examine doubles in memory. Also <a href="https://stackoverflow.com/questions/29821669/gdb-examine-long-double-array"  target="_blank">this</a> question on stackoverflow helped a lot.    </p>
+<p>Now If we want to get the first value in the array we can try this :   </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> (double)_Zproc_libc_fini</span><br></pre></td></tr></table></figure>
+<p>For examining it in memory you can use:   </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x/25gf &amp;_Zproc_libc_fini</span><br></pre></td></tr></table></figure>
+<p>where g = Giant words (8 bytes)<br>and   f = floating value<br><a href="https://sourceware.org/gdb/onlinedocs/gdb/Memory.html"  target="_blank">Reference</a>  </p>
+<p><a href="/img/cryptix/6.png" class="gallery-item"><img src="/img/cryptix/6.png"></a>   </p>
+<p>But the most appropriate way here would be this.  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> *(double*)(&amp;_Zproc_libc_fini)@24</span><br></pre></td></tr></table></figure>
+<p>We can get the address of <strong>_Zproc_libc_fini</strong> in memory using &amp; operator and specify the length of values we need ie. 24 using @ symbol after the address.<br><a href="https://sourceware.org/gdb/onlinedocs/gdb/Arrays.html#Arrays"  target="_blank">Reference</a>  </p>
+<p><a href="/img/cryptix/7.png" class="gallery-item"><img src="/img/cryptix/7.png"></a>   </p>
+<p>So its time to write a script to reverse the process of pow() using log() to get the base64 encoded key</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> base64 <span class="keyword">import</span> b64decode</span><br><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> log</span><br><span class="line"></span><br><span class="line">Zproc_libc_fini =[<span class="number">1.2676506002282294e+30</span>, <span class="number">5.3169119831396635e+36</span>, <span class="number">1.5111572745182865e+23</span>, <span class="number">281474976710656</span>, </span><br><span class="line">  <span class="number">1.5845632502852868e+29</span>, <span class="number">562949953421312</span>, <span class="number">1.4411518807585587e+17</span>, <span class="number">5.3169119831396635e+36</span>, </span><br><span class="line">  <span class="number">1.5111572745182865e+23</span>, <span class="number">1125899906842624</span>, <span class="number">3.0223145490365729e+23</span>, <span class="number">562949953421312</span>, </span><br><span class="line">  <span class="number">6.338253001141147e+29</span>, <span class="number">8.1129638414606682e+31</span>, <span class="number">1.1805916207174113e+21</span>, <span class="number">281474976710656</span>, </span><br><span class="line">  <span class="number">2.5353012004564588e+30</span>, <span class="number">7.7371252455336267e+25</span>, <span class="number">1.4411518807585587e+17</span>, <span class="number">4.1538374868278621e+34</span>, </span><br><span class="line">  <span class="number">1.5111572745182865e+23</span>, <span class="number">2.3611832414348226e+21</span>, <span class="number">6.6461399789245794e+35</span>, <span class="number">2.305843009213694e+18</span>]</span><br><span class="line"></span><br><span class="line">b64encoded_str = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> Zproc_libc_fini:</span><br><span class="line">  b64encoded_str += <span class="built_in">chr</span>(<span class="built_in">int</span>((log(item)/log(<span class="number">2</span>))))</span><br><span class="line"></span><br><span class="line">flag = b64decode(b64encoded_str)</span><br><span class="line"><span class="built_in">print</span> flag</span><br></pre></td></tr></table></figure>
+<p>By the way, we can also brute force the base64 encoded key and get it easily using the code below : </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> Zproc_libc_fini:</span><br><span class="line">  <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">33</span>,<span class="number">127</span>):</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">pow</span>(<span class="number">2</span>,x)==item):</span><br><span class="line">      b64encoded_str += <span class="built_in">chr</span>(x)</span><br></pre></td></tr></table></figure>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└──╼ $./keygen w34k_s3cur1ty_l0l</span><br><span class="line">Congratulations!! here is you flag: flag&#123;w34k_s3cur1ty_l0l&#125;</span><br></pre></td></tr></table></figure>
+<a target="_blank" rel="noopener" href="https://media.giphy.com/media/lN8sg2KcDNrNqzs2cZ/giphy.gif" title="drawing" class="gallery-item"><img src="https://media.giphy.com/media/lN8sg2KcDNrNqzs2cZ/giphy.gif" alt="drawing" width="300"/></a>
+
+<p>Also I got to know that we can change the values of <strong>Zproc_libc_fini</strong> to represent it in doubles.  </p>
+<p>Thanks to @arpox for sharing it.<br>You can just select all of the data in Zproc_libc_fini and  right click-&gt; data -&gt; double.<br>Well I learnt many things through this challenge.  </p>
+<p><a href="/img/cryptix/8.png" class="gallery-item"><img src="/img/cryptix/8.png"></a>   </p>
+<p>Also the challenge source was disclosed by the admin.  </p>
+<blockquote>
+<p>Download <a href="/files/cryptix/Crack_It.c"  target="_blank">challenge_source.c</a></p>
+</blockquote>
+<p>I’ll be posting about some of my favourite crackmes soon.  </p>
+<p>So Make sure to subscribe to the newsletter to learn together with me.<br>Also Comment your feedbacks and share this writeup with your friends.  </p>
+<p>And Keep Escalating the Priveleges Gang!!  </p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&text=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&title=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&is_video=false&description=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cryptix CTF&#39;19 CrackIT&body=Check out this article: https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&title=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&title=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&title=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&title=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&name=Cryptix CTF&#39;19 CrackIT&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/&t=Cryptix CTF&#39;19 CrackIT"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021
+    Suraj Malhotra
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"CTRL+C\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight .code").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+      setTimeout(function() {
+        e.trigger.setAttribute('aria-label', "CTRL+C");
+      }, 2000);
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

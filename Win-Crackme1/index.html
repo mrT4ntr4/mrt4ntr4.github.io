@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="article">
+<meta property="og:title" content="Windows Crackme 1">
+<meta property="og:url" content="https://mrt4ntr4.github.io/Win-Crackme1/index.html">
+<meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/winrev/try3.jpg">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/winrev/c1/1.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/winrev/c1/2.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/winrev/c1/3.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/winrev/c1/4.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/winrev/c1/5.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/winrev/c1/6.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/winrev/c1/7.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/winrev/c1/8.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/winrev/c1/9.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/winrev/c1/10.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/winrev/c1/11.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/winrev/c1/done.PNG">
+<meta property="og:image" content="https://media.giphy.com/media/3o7TKnvDNYADdLYZIQ/giphy.gif">
+<meta property="article:published_time" content="2019-05-21T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-01-05T08:28:46.524Z">
+<meta property="article:author" content="Suraj Malhotra">
+<meta property="article:tag" content="Reversing">
+<meta property="article:tag" content="Tutorial">
+<meta property="article:tag" content="Windows">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrt4ntr4.github.io/img/winrev/try3.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Windows Crackme 1</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/feed.xml" title="mrT4ntr4&#39;s Blog" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<div class="background">
+    <div class="banner">
+<div id="blogtitle" class="blogtitle">mrT4ntr4&#39;s Blog</div>
+<ul id="wrapper" class="wrapper">
+  <div class="sun">
+    <div class="star"></div>
+  </div>
+  <div class="mercury">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="venus">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="earth">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="mars">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="jupiter">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+</ul>
+</div>
+
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/HSCTF-ARIA-Writeup/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/Matrix-2-Writeup/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/Win-Crackme1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/Win-Crackme1/&text=Windows Crackme 1"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/Win-Crackme1/&title=Windows Crackme 1"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/Win-Crackme1/&is_video=false&description=Windows Crackme 1"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Windows Crackme 1&body=Check out this article: https://mrt4ntr4.github.io/Win-Crackme1/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/Win-Crackme1/&title=Windows Crackme 1"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/Win-Crackme1/&title=Windows Crackme 1"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/Win-Crackme1/&title=Windows Crackme 1"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/Win-Crackme1/&title=Windows Crackme 1"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/Win-Crackme1/&name=Windows Crackme 1&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/Win-Crackme1/&t=Windows Crackme 1"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Keygenme-Easy-1"><span class="toc-number">1.</span> <span class="toc-text">Keygenme_Easy_1 </span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#by-subminking"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">by subminking</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Windows Crackme 1
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Suraj Malhotra</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-05-21T00:00:00.000Z" itemprop="datePublished">2019-05-21</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/crackmes-one/">crackmes.one</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Reversing/" rel="tag">Reversing</a>, <a class="tag-link-link" href="/tags/Tutorial/" rel="tag">Tutorial</a>, <a class="tag-link-link" href="/tags/Windows/" rel="tag">Windows</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/winrev/try3.jpg" title="banner" class="gallery-item"><img src="/img/winrev/try3.jpg" alt="banner"></a></p>
+<p>In this post we are going to crack a windows based crackme built using cpp.<br>It has been a while since I’ve done any reversing so I grabbed some crackmes from <a target="_blank" rel="noopener" href="https://crackmes.one/">crackmes.one</a>  </p>
+<p>There is no need of WinDbg(or any other debugger) to crack it as it is somewhat easy.<br>Also no need of pseudocode as the code can easily be reversed from the assembly.<br>And obviously it is unpacked.  </p>
+<p>So Now Let’s get this baby!!</p>
+<hr>
+<h1 id="Keygenme-Easy-1"><a href="#Keygenme-Easy-1" class="headerlink" title="Keygenme_Easy_1 "></a>Keygenme_Easy_1 </h1><h4 id="by-subminking"><a href="#by-subminking" class="headerlink" title="by subminking"></a>by subminking</h4><p><a target="_blank" rel="noopener" href="https://crackmes.one/crackme/5ab77f6533c5d40ad448cb99">Download Link</a></p>
+<p>The crackme is levelled as easy and is a 1 point crackme but at the same time it acts as a good playground for learning assembly.  </p>
+<p><a href="/img/winrev/c1/1.PNG" class="gallery-item"><img src="/img/winrev/c1/1.PNG"></a>  </p>
+<p>After firing up IDA, I straightaway opened the referenced strings view and found the <em>Congratulations</em> String</p>
+<p><a href="/img/winrev/c1/2.PNG" class="gallery-item"><img src="/img/winrev/c1/2.PNG"></a>  </p>
+<p>Going through the WinMain() function there is a call to DialogFunc() which is responsible for creating a dailogbox and getting the user inputs..  </p>
+<p><a href="/img/winrev/c1/3.PNG" class="gallery-item"><img src="/img/winrev/c1/3.PNG"></a>  </p>
+<p>So we observe that all inputs are entered with the help of <strong>GetDlgItemTextA</strong> Function.<br>And further there is a call to <strong>sub_401040()</strong>. </p>
+<p><a href="/img/winrev/c1/4.PNG" class="gallery-item"><img src="/img/winrev/c1/4.PNG"></a>  </p>
+<p>So <strong>sub_401040()</strong> begins with loading some memory from the data segment into the EAX register and then XORs it with ESP and storing that on the stack at ESP+190. Ok, leaving that for a while now!!<br>We see that the offset of the name we entered is moved into EAX and then it is perfectly loaded onto the EDX register.  </p>
+<p><a href="/img/winrev/c1/5.PNG" class="gallery-item"><img src="/img/winrev/c1/5.PNG"></a>  </p>
+<p>Now the Game of Length comes into Play !!<br>It now computes the length of our Name and verifies if it is less or equal to 0x0A(Dec = 10)…  </p>
+<p>So we can enter our string accordingly…</p>
+<p>I’ll be following the condition where it’s length is &lt; 10.<br>You can also try the other one yourself.  </p>
+<p><a href="/img/winrev/c1/6.PNG" class="gallery-item"><img src="/img/winrev/c1/6.PNG"></a> </p>
+<p>Now there is a Jump to <strong>loc_4010DA</strong>.<br>And the name is stored in the stack.  </p>
+<p><a href="/img/winrev/c1/7.PNG" class="gallery-item"><img src="/img/winrev/c1/7.PNG"></a>  </p>
+<p>Also now the EAX which contains our NAME is loaded.  </p>
+<p>And Now Basically the length is computed again and put into EAX.  </p>
+<p><a href="/img/winrev/c1/8.PNG" class="gallery-item"><img src="/img/winrev/c1/8.PNG"></a>  </p>
+<p>Now the main serial generation process starts  </p>
+<p>The Various Steps are as follows:  </p>
+<p>The ESI register is given a value of 3.<br>The Value of ESI is put into EDX.<br>Then the location of NAME in the stack is assigned to EDI.<br>The value of EDX(ie. 3) is subtracted from EDI.<br>Now EDX Register holds the address of the location 3 bytes after name on stack.  </p>
+<p><a href="/img/winrev/c1/9.PNG" class="gallery-item"><img src="/img/winrev/c1/9.PNG"></a>  </p>
+<p>The Value of EAX is now assigned to EBX.  </p>
+<p>And now the Control passes to <strong>loc_401120</strong>.  </p>
+<p>Now as [EDI+EDX] = [+ 3 Bytes - 3 Bytes] taking the starting location of NAME as a reference.<br>Therefore Name[i] is assigned to the EAX Register.<br>FYI, The ASCII Value of Name[i] is loaded into EAX.<br>Now ECX is loaded with a value of EDX + EAX.<br>Now there are some simple arithmetic operations which are included in the keygen which you can refer to the Opcodes and learn what is happening behind the scene…  They are super easy!!!   </p>
+<p>There is also an operation of adding esi, ecx and 0x1341 and putting the result into esi.<br><a href="/img/winrev/c1/10.PNG" class="gallery-item"><img src="/img/winrev/c1/10.PNG"></a>  </p>
+<p>At last after getting every Character’s ASCII Value from NAME and doing various operations with it, there is an AND Operation between ESI(result) and 0xDEADBEEF whose result is added to ESI itself.<br>And Later the Serial is checked with the value of ESI and <em>Congratulations</em> statement is printed on a Dialog.  </p>
+<p><a href="/img/winrev/c1/11.PNG" class="gallery-item"><img src="/img/winrev/c1/11.PNG"></a>  </p>
+<p>Time for our Ultimate KeyGen !!!<br>I knew you were waiting for it.. weren’t you XD.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="built_in">list</span>(<span class="string">&quot;mrT4ntr4&quot;</span>)</span><br><span class="line">esi = <span class="number">3</span></span><br><span class="line">edx = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> name:</span><br><span class="line">  eax = <span class="built_in">ord</span>(i)</span><br><span class="line">  ecx = edx + eax</span><br><span class="line">  ecx *= esi</span><br><span class="line">  esi = eax*<span class="number">8</span></span><br><span class="line">  esi -= eax</span><br><span class="line">  edx = edx + <span class="number">1</span></span><br><span class="line">  esi += ecx + <span class="number">0x1341</span></span><br><span class="line">esi &amp;= <span class="number">0xDEADBEEF</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> esi</span><br></pre></td></tr></table></figure>
+<p>Run the above Python Keygen Script to get a working Serial for your NAME..   </p>
+<p><a href="/img/winrev/c1/done.PNG" class="gallery-item"><img src="/img/winrev/c1/done.PNG"></a>  </p>
+<p>And AbraKaDabra!! Magic Trick Revealed By MrT4ntr4  </p>
+<a target="_blank" rel="noopener" href="https://media.giphy.com/media/3o7TKnvDNYADdLYZIQ/giphy.gif" title="drawing" class="gallery-item"><img src="https://media.giphy.com/media/3o7TKnvDNYADdLYZIQ/giphy.gif" alt="drawing" width="300"/></a>
+
+<p>There is a variety of crackmes on my checklist built with .NET, Java, Visual C++, etc..<br>I’ll be writing about some of my favorites among them in my upcoming writeups.  </p>
+<p>So Make sure to subscribe to the newsletter to learn together with me.<br>Also Comment your feedbacks and share this writeup with your friends.  </p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Keygenme-Easy-1"><span class="toc-number">1.</span> <span class="toc-text">Keygenme_Easy_1 </span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#by-subminking"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">by subminking</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/Win-Crackme1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/Win-Crackme1/&text=Windows Crackme 1"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/Win-Crackme1/&title=Windows Crackme 1"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/Win-Crackme1/&is_video=false&description=Windows Crackme 1"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Windows Crackme 1&body=Check out this article: https://mrt4ntr4.github.io/Win-Crackme1/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/Win-Crackme1/&title=Windows Crackme 1"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/Win-Crackme1/&title=Windows Crackme 1"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/Win-Crackme1/&title=Windows Crackme 1"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/Win-Crackme1/&title=Windows Crackme 1"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/Win-Crackme1/&name=Windows Crackme 1&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/Win-Crackme1/&t=Windows Crackme 1"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021
+    Suraj Malhotra
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"CTRL+C\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight .code").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+      setTimeout(function() {
+        e.trigger.setAttribute('aria-label', "CTRL+C");
+      }, 2000);
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

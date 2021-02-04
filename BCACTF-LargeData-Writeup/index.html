@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="article">
+<meta property="og:title" content="BCACTF [ LargeData ]">
+<meta property="og:url" content="https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/index.html">
+<meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/bcactf/thumb.png">
+<meta property="og:image" content="https://media.giphy.com/media/BMA3uhBODE7teL9ISa/giphy-downsized.gif">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/bcactf/challthumb.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/bcactf/data.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/bcactf/tux_hype.png">
+<meta property="article:published_time" content="2019-06-15T23:00:00.000Z">
+<meta property="article:modified_time" content="2020-12-30T07:05:16.704Z">
+<meta property="article:author" content="Suraj Malhotra">
+<meta property="article:tag" content="bcactf">
+<meta property="article:tag" content="forensics">
+<meta property="article:tag" content="data">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrt4ntr4.github.io/img/bcactf/thumb.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+        
+      
+    
+    <!-- title -->
+    <title>BCACTF [ LargeData ]</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/feed.xml" title="mrT4ntr4&#39;s Blog" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<div class="background">
+    <div class="banner">
+<div id="blogtitle" class="blogtitle">mrT4ntr4&#39;s Blog</div>
+<ul id="wrapper" class="wrapper">
+  <div class="sun">
+    <div class="star"></div>
+  </div>
+  <div class="mercury">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="venus">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="earth">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="mars">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="jupiter">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+</ul>
+</div>
+
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/Linux-keygenme1/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/HSCTF-ARIA-Writeup/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&text=BCACTF [ LargeData ]"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&title=BCACTF [ LargeData ]"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&is_video=false&description=BCACTF [ LargeData ]"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=BCACTF [ LargeData ]&body=Check out this article: https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&title=BCACTF [ LargeData ]"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&title=BCACTF [ LargeData ]"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&title=BCACTF [ LargeData ]"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&title=BCACTF [ LargeData ]"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&name=BCACTF [ LargeData ]&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&t=BCACTF [ LargeData ]"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Challenge"><span class="toc-number">2.</span> <span class="toc-text">Challenge</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#First-Idea"><span class="toc-number">2.0.1.</span> <span class="toc-text">First Idea</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Second-Idea"><span class="toc-number">2.0.2.</span> <span class="toc-text">Second Idea</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-Successful-Attempt"><span class="toc-number">2.1.</span> <span class="toc-text">The Successful Attempt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conclusion"><span class="toc-number">2.2.</span> <span class="toc-text">Conclusion</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        BCACTF [ LargeData ]
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Suraj Malhotra</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-06-15T23:00:00.000Z" itemprop="datePublished">2019-06-16</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/CTF-Writeups/">CTF Writeups</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/bcactf/" rel="tag">bcactf</a>, <a class="tag-link-link" href="/tags/data/" rel="tag">data</a>, <a class="tag-link-link" href="/tags/forensics/" rel="tag">forensics</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/bcactf/thumb.png" title="banner" class="gallery-item"><img src="/img/bcactf/thumb.png" alt="banner"></a></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Sadly the Intro does not begin with this everytime!!<br><del><a target="_blank" rel="noopener" href="https://twitter.com/dc1ph3r">BCACTF</a> was a fun ctf competition.</del><br>TBH, BCACTF is a pure example of how a CTF competition should not be held or if it is held, then it should end within a day.<br>Some of the participants were complaining about the quality of the challs on the discord server, and here is a message which explains everything…  </p>
+<p><em>I usually try to stay polite towards organizers because I know that making a CTF is hard. But there are some issues that need to be fixed. Most importantly, every single challenge is trivially easy. I don’t think that’s inherently terrible, although it makes the CTF less enjoyable. I think having a CTF where the goal is maxing quickly is defendable. But that means you can’t release problems midway through the competition, especially if they are just as easy. Doing that completely nullifying every previous challenge. You also need to check that your challenges work. Both three-step-program and bca-store, the challenges released today, were initially broken. By the time you fix your mistake, many people have solved the challenge. So you now reduce the entire competition to seeing how fast people can refresh and submit their solution to a fixed challenge. I think the best course of action is to get rid of the newly released challenges and to release many more future challenges.</em></p>
+<a target="_blank" rel="noopener" href="https://media.giphy.com/media/BMA3uhBODE7teL9ISa/giphy-downsized.gif" title="drawing" class="gallery-item"><img src="https://media.giphy.com/media/BMA3uhBODE7teL9ISa/giphy-downsized.gif" alt="drawing" width="300"/></a>
+
+
+<p>So Obviously we didn’t spent quite a lot of time in this CTF, and our team(<a target="_blank" rel="noopener" href="https://twitter.com/dc1ph3r">Dc1ph3R</a>) finished 28th.</p>
+<hr>
+<h2 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h2><p>Only 2-3 challenges were worth a writeup, One of them was large-data and this was my favourite among them.  </p>
+<p><a href="/img/bcactf/challthumb.png" class="gallery-item"><img src="/img/bcactf/challthumb.png"></a></p>
+<blockquote>
+<p>Download <a href="/files/bcactf/bigdata.zip"  target="_blank">bigdata.zip</a></p>
+</blockquote>
+<p>So the Zip file contained 27 folders consisting of 100 files each.<br>As the flag was splitted in many files, so we had to iterate through each and every file in all of the folders.  </p>
+<p>The text in each of the files was something similar to this..<br><a href="/img/bcactf/data.png" class="gallery-item"><img src="/img/bcactf/data.png"></a></p>
+<p>Eww, so much gibberish, We need the flag!! XD</p>
+<p>A starting point was to check for the initials bcactf{ in the files.<br>And obviously look for some pattern that how is the flag encoded or hidden in those files.<br>The Only hint we get is that the flag is composed of 27 characters, So we can conclude that every folder has a single character of the flag in it.  </p>
+<p>To begin with, some of my unsuccessful attempts were as follows :</p>
+<h4 id="First-Idea"><a href="#First-Idea" class="headerlink" title="First Idea"></a>First Idea</h4><p>Count all the no. of symbols in each file and compare that to the ascii value of “bcactf{“ but after trying this on the 3rd file I failed…</p>
+<h4 id="Second-Idea"><a href="#Second-Idea" class="headerlink" title="Second Idea"></a>Second Idea</h4><p>Concatenating all the “.” and “-“ and try to look for some valid morse code in each file.  </p>
+<h3 id="The-Successful-Attempt"><a href="#The-Successful-Attempt" class="headerlink" title="The Successful Attempt"></a>The Successful Attempt</h3><p>The Idea was to sum all of the corresponding Ascii Codes of all characters in each file and take the average. I found that all the files in the first folder always outputted the average as 98 which is the ascii code for ‘b’. Stepping through the second folder I got 99(‘c’). So to get verified I checked the third folder and to my surprise it was outputting 97(‘a’). So It ensures that the flag is dependent on the average of the ascii values of the characters in each file.  </p>
+<p>So I fired up Sublime and wrote some python code to automate it!!<br>Make sure to place it with the folders.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> folder <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">    <span class="keyword">for</span> file <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">27</span>):</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(<span class="built_in">str</span>(file)+<span class="string">&#x27;/&#x27;</span>+<span class="built_in">str</span>(folder),<span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            count = <span class="number">0</span></span><br><span class="line">            ascii_code=<span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">                <span class="keyword">for</span> char <span class="keyword">in</span> line:</span><br><span class="line">                    ascii_code += <span class="built_in">ord</span>(char)</span><br><span class="line">                    count += <span class="number">1</span></span><br><span class="line">            avg=ascii_code/count        </span><br><span class="line">            print(<span class="built_in">chr</span>(avg),end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">    print()</span><br></pre></td></tr></table></figure>
+<p>Catch the output <a href="/files/bcactf/flags.txt"  target="_blank">here</a></p>
+<p>So the text outputs which starts with <strong>bcactf{</strong> were as follows:  </p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">bcactf&#123;crunkh1ng_nnd5_t00t&#125;</span><br><span class="line">bcactf&#123;wsunch1ny_rusi_c00l&#125;</span><br><span class="line">bcactf&#123;orunch1ng_tun5lc00l&#125;</span><br><span class="line">bcactf&#123;crunch1ng_fuk5_c00l&#125;</span><br><span class="line">bcactf&#123;ruuncu1nd_num5_y0fl&#125;</span><br><span class="line">bcactf&#123;itunch1bg_num5_c00l&#125;</span><br><span class="line">bcactf&#123;crunch1ng_num5fc00i&#125;</span><br><span class="line">bcactf&#123;crunch1np_nuz5_p00y&#125;</span><br><span class="line">bcactf&#123;vrunch1ngkcum5hc0sl&#125;</span><br><span class="line">bcactf&#123;cronch1ngnnum5hq00l&#125;</span><br></pre></td></tr></table></figure>
+<p>NOTE : This script can be modified further to only get the text beginning with “bcactf{“.  </p>
+<p>The only meaningful text which could eventually be our flag was <strong>bcactf{crunch1ng_fuk5_c00l}</strong>.   </p>
+<p>But unfortunately it was not the case, the flag came out to be </p>
+<blockquote>
+<p>bcactf{crunch1ng_num5_c00l}</p>
+</blockquote>
+<p>Which could easily be guessed as <strong>‘num5’</strong> occured the most of the times.  </p>
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>This challenge required an initial foothold in finding how the data is encoded and analysing it with some creative ideas!!<br>At the end large-data had approx 40 solves.<br>The scoreboard freezed with top 8 teams with the same score ie. 6344<br>Below them there were another 13 teams with the same score ie. 6104 </p>
+<p><a href="/img/bcactf/tux_hype.png" class="gallery-item"><img src="/img/bcactf/tux_hype.png"></a></p>
+<p>So you can guess what a CTF it was!! XD  </p>
+<p>Coming up are some writeups from GoogleCTF!!<br>So Make sure to subscribe to the newsletter to learn together with me.<br>Also Comment your feedbacks and share this writeup with your friends.   </p>
+<p>And Keep Escalating the Priveleges Gang!!  </p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Challenge"><span class="toc-number">2.</span> <span class="toc-text">Challenge</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#First-Idea"><span class="toc-number">2.0.1.</span> <span class="toc-text">First Idea</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Second-Idea"><span class="toc-number">2.0.2.</span> <span class="toc-text">Second Idea</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-Successful-Attempt"><span class="toc-number">2.1.</span> <span class="toc-text">The Successful Attempt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conclusion"><span class="toc-number">2.2.</span> <span class="toc-text">Conclusion</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&text=BCACTF [ LargeData ]"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&title=BCACTF [ LargeData ]"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&is_video=false&description=BCACTF [ LargeData ]"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=BCACTF [ LargeData ]&body=Check out this article: https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&title=BCACTF [ LargeData ]"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&title=BCACTF [ LargeData ]"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&title=BCACTF [ LargeData ]"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&title=BCACTF [ LargeData ]"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&name=BCACTF [ LargeData ]&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/BCACTF-LargeData-Writeup/&t=BCACTF [ LargeData ]"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021
+    Suraj Malhotra
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"CTRL+C\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight .code").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+      setTimeout(function() {
+        e.trigger.setAttribute('aria-label', "CTRL+C");
+      }, 2000);
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

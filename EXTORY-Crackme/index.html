@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="article">
+<meta property="og:title" content="EXTORY&#39;s Crackme">
+<meta property="og:url" content="https://mrt4ntr4.github.io/EXTORY-Crackme/index.html">
+<meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/thumb.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/die.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/die2.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/unicode.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/cmp.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/1.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/2.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/3.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/idaexit.gif">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/cff.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p1.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p2.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p3.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p4.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p5.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p6.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p7.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p8.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p9.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p10.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p11.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p12.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p13.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p14.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p15.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p16.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p17.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p18.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p19.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p20.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p21.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p22.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p23.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p24.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p25.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p26.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p27.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p28.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p29.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/p30.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/extory/solved.png">
+<meta property="og:image" content="https://media.giphy.com/media/g7X5T9PuUBAzu/giphy.gif">
+<meta property="article:published_time" content="2020-02-18T07:00:00.000Z">
+<meta property="article:modified_time" content="2020-12-27T08:55:53.594Z">
+<meta property="article:author" content="Suraj Malhotra">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="anti-debug">
+<meta property="article:tag" content="crackme">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrt4ntr4.github.io/img/extory/thumb.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+        
+      
+    
+    <!-- title -->
+    <title>EXTORY&#39;s Crackme</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/feed.xml" title="mrT4ntr4&#39;s Blog" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<div class="background">
+    <div class="banner">
+<div id="blogtitle" class="blogtitle">mrT4ntr4&#39;s Blog</div>
+<ul id="wrapper" class="wrapper">
+  <div class="sun">
+    <div class="star"></div>
+  </div>
+  <div class="mercury">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="venus">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="earth">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="mars">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="jupiter">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+</ul>
+</div>
+
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/How-Analysing-an-AgentTesla-Could-Lead-To-Attackers-Inbox-1/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/Nullcon-HackIM-Year3000/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/EXTORY-Crackme/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&text=EXTORY&#39;s Crackme"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&title=EXTORY&#39;s Crackme"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&is_video=false&description=EXTORY&#39;s Crackme"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=EXTORY&#39;s Crackme&body=Check out this article: https://mrt4ntr4.github.io/EXTORY-Crackme/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&title=EXTORY&#39;s Crackme"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&title=EXTORY&#39;s Crackme"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&title=EXTORY&#39;s Crackme"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&title=EXTORY&#39;s Crackme"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&name=EXTORY&#39;s Crackme&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/EXTORY-Crackme/&t=EXTORY&#39;s Crackme"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#TLDR"><span class="toc-number">1.</span> <span class="toc-text">TLDR;</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Challenge"><span class="toc-number">1.1.</span> <span class="toc-text">Challenge</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Initial-Analysis"><span class="toc-number">2.</span> <span class="toc-text">Initial Analysis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Dynamic-Analysis"><span class="toc-number">3.</span> <span class="toc-text">Dynamic Analysis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Patching-amp-Fun"><span class="toc-number">4.</span> <span class="toc-text">Patching &amp; Fun</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#KeyGen"><span class="toc-number">5.</span> <span class="toc-text">KeyGen</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        EXTORY&#39;s Crackme
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Suraj Malhotra</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-02-18T07:00:00.000Z" itemprop="datePublished">2020-02-18</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/crackmes-one/">crackmes.one</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/anti-debug/" rel="tag">anti-debug</a>, <a class="tag-link-link" href="/tags/crackme/" rel="tag">crackme</a>, <a class="tag-link-link" href="/tags/writeup/" rel="tag">writeup</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/extory/thumb.png" title="banner" class="gallery-item"><img src="/img/extory/thumb.png" alt="banner"></a></p>
+<p>This will be a detailed writeup of EXTORY crackme from crackmes.one. As always I’ll try to make it easy to understand as much as possible so It’ll be longer than usual (with more than 30 screenshots XD). Also Make sure to leave some feedback as it took much more time as compared to my previous writeups.   </p>
+<h1 id="TLDR"><a href="#TLDR" class="headerlink" title="TLDR;"></a>TLDR;</h1><p>Basically this crackme has 4 anti-debug checks(acc. to me). And I think its hard to solve it statically. There are many techniques that is often found in malwares. So it is worth to check it out. If you have not tried it, I’d advice you to please do and then continue with this writeup. I’ve also used a no. of tools for different purposes.  </p>
+<h2 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h2><blockquote>
+<p>Download <a href="https://crackmes.one/crackme/5e0618c633c5d419aa013483"  target="_blank">EXTORY’s Crackme</a>    </p>
+</blockquote>
+<hr>
+<h1 id="Initial-Analysis"><a href="#Initial-Analysis" class="headerlink" title="Initial Analysis"></a>Initial Analysis</h1><p>As usual, We have to guess the right password and it will show the ‘Correct’ text in the app.  </p>
+<p>For this I used DIE tool. Its a 64bit exe and uses MSVCP.<br>So I began by searching for some strings and found that there is no <strong>‘Correct’</strong> and <strong>‘Wrong’</strong> string.<br>But searching in Unicode strings I found some interesting stuff.  </p>
+<p><a href="/img/extory/die.png" class="gallery-item"><img src="/img/extory/die.png"></a>  </p>
+<p>Also In crypto tab we find an anti-debug technique.  </p>
+<p><a href="/img/extory/die2.png" class="gallery-item"><img src="/img/extory/die2.png"></a>  </p>
+<p>Cool, Now its time to hop over to IDA.<br>Make sure to enable UNICODE strings.  </p>
+<p><a href="/img/extory/unicode.png" class="gallery-item"><img src="/img/extory/unicode.png"></a>  </p>
+<p>So we find their references and I observed that there is some thread stuff.  </p>
+<p>After that I find that the ExitCode of that Thread is being compared to 1 and if its true we continue to use some <strong>‘hgblelelbkjjgldd’</strong> else <strong>‘hielblaldkdd’</strong>.<br>Ahh it seems like these could be our ‘Correct’ and ‘Wrong’ strings but encrypted.  </p>
+<p><a href="/img/extory/cmp.png" class="gallery-item"><img src="/img/extory/cmp.png"></a>  </p>
+<p>Now We can switch over to our nice Decompiler View to get more insight into this encryption function and maybe our password is encrypted in the same way.  </p>
+<p><a href="/img/extory/1.png" class="gallery-item"><img src="/img/extory/1.png"></a>  </p>
+<p>We can observe that <em>WaitForSingleObject</em> is called which checks whether the function has exited then the handle to the thread and the pointer to variable which stores the exitcode is passed to the <em>GetExitCodeThread</em> function. And Finally it compares the exitcode to 1.  </p>
+<p><a href="/img/extory/2.png" class="gallery-item"><img src="/img/extory/2.png"></a>  </p>
+<p>The decryption algo is pretty simple and the same for both the strings.<br>It is as follows:<br><code>(enc[i] + 10 * enc[i+1] - 1067)</code></p>
+<p><a href="/img/extory/3.png" class="gallery-item"><img src="/img/extory/3.png"></a>  </p>
+<p>So I wrote a short python script to break it down what it does.<br>It is self explanatory.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">enc = <span class="string">&quot;hgblelelbkjjgldd&quot;</span> <span class="comment">#Correct!</span></span><br><span class="line"><span class="comment">#enc = &quot;hielblaldkdd&quot;     Wrong!</span></span><br><span class="line">dec = <span class="string">&quot;&quot;</span></span><br><span class="line">v23 = <span class="built_in">len</span>(enc)</span><br><span class="line">v25 = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span>(v25 &lt; v23):</span><br><span class="line">  c = <span class="built_in">ord</span>(enc[v25])</span><br><span class="line">  d = <span class="built_in">ord</span>(enc[v25+<span class="number">1</span>])</span><br><span class="line">  v27 = c + <span class="number">10</span> * d;</span><br><span class="line">  v25 += <span class="number">2</span>;</span><br><span class="line">  dec += <span class="built_in">chr</span>(v27-<span class="number">1067</span>)</span><br><span class="line"><span class="built_in">print</span> dec</span><br></pre></td></tr></table></figure>
+
+<p>So now whats next?<br>Well I started to study the decompiled code of the Thread which does all the work in this crackme.<br>But It was troublesome to analyse it further statically so I used IDA to debug it.  </p>
+<p>So I placed a breakpoint just before the execution of the thread and it exited :(</p>
+<a href="/img/extory/idaexit.gif" title="idaexit" class="gallery-item"><img src="/img/extory/idaexit.gif" alt="idaexit"/></a>  
+
+<hr>
+<h1 id="Dynamic-Analysis"><a href="#Dynamic-Analysis" class="headerlink" title="Dynamic Analysis"></a>Dynamic Analysis</h1><p>So In this tutorial/writeup I’ll toggle between IDA and x64dbg as it becomes more easy to understand and patch it at the same time.    </p>
+<p>Also first things first.. You should disable ASLR with the help of CFF Explorer.</p>
+<p><a href="/img/extory/cff.png" class="gallery-item"><img src="/img/extory/cff.png"></a>  </p>
+<p>Just uncheck the <strong>DLL can move</strong> option and save the executable.<br>Now load the exe in x64dbg and just keep on stepping.<br>By Trial and Error we get to know that the <strong>fcn.1000</strong> is responsible for closing our debugger.   </p>
+<p><a href="/img/extory/p1.png" class="gallery-item"><img src="/img/extory/p1.png"></a>  </p>
+<p>We step into it and again find another function ie. <strong>fcn.1D10</strong> and please keep in mind keep on saving our database so that our breakpoints are remembered by x64dbg.  </p>
+<p><a href="/img/extory/p2.png" class="gallery-item"><img src="/img/extory/p2.png"></a>  </p>
+<p>We now step within the fcn.1D10 function and start analysing it as it looks interesting.<br>At the very beginning it calls a function 4 times ie. <strong>fcn.2050</strong>  </p>
+<p><a href="/img/extory/p3.png" class="gallery-item"><img src="/img/extory/p3.png"></a>  </p>
+<p>It’d be easy to just look into IDA’s decompiled version of the function as it has some weird assembly.  </p>
+<p><a href="/img/extory/p4.png" class="gallery-item"><img src="/img/extory/p4.png"></a>  </p>
+<p>Cool The decompiled version matches and some data is passed to the function  </p>
+<p><a href="/img/extory/p5.png" class="gallery-item"><img src="/img/extory/p5.png"></a>  </p>
+<p>If you’ll check it, the function is a little bit scary at first.<br>But basically it justs <em>xors the bytes with 0xD9</em> from the data passed to it and returns it.  </p>
+<p><a href="/img/extory/p6.png" class="gallery-item"><img src="/img/extory/p6.png"></a><br>Like the bytes above decrypts to <strong>x64dbg.exe</strong>.  </p>
+<p><a href="/img/extory/p7.png" class="gallery-item"><img src="/img/extory/p7.png"></a>  </p>
+<p>And after it executes 4 times, the registers look like this and the 4 strings decrypted are :</p>
+<ul>
+<li>x64dbg.exe  </li>
+<li>Taskmgr.exe  </li>
+<li>javaw.exe  </li>
+<li>ida64.exe  </li>
+</ul>
+<p><a href="/img/extory/p8.png" class="gallery-item"><img src="/img/extory/p8.png"></a>  </p>
+<p>Now we continue with the decompiled code and at the last its looking suspicious hmm..  </p>
+<p><a href="/img/extory/p9.png" class="gallery-item"><img src="/img/extory/p9.png"></a>  </p>
+<p>It checks the return code of the <strong>fcn.2370</strong> which later decides whether to terminate the process. And the fcn.2370 uses some functions to get the list of running processes.<br>I keep on stepping and find that it finds <code>smss.exe, csrss.exe, wininit.exe, services.exe, winlogon.exe, etc</code>.</p>
+<p><em>Reference</em> :<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/toolhelp/taking-a-snapshot-and-viewing-processes">https://docs.microsoft.com/en-us/windows/win32/toolhelp/taking-a-snapshot-and-viewing-processes</a>  </p>
+<p>I guess here it simply checks whether the list contains any string which we decrypted previously and decides the return code accordingly. </p>
+<blockquote>
+<p>It’ll close every process from those 4 .. Not your current debugger.   </p>
+</blockquote>
+<hr>
+<h1 id="Patching-amp-Fun"><a href="#Patching-amp-Fun" class="headerlink" title="Patching &amp; Fun"></a>Patching &amp; Fun</h1><p>Now we can patch the if statement in such a way that it has a minimum effect over the program and also keeping in mind that it should work  with and without a debugger.<br>PS We can also just rename our debugger to bypass this check though.  </p>
+<p><a href="/img/extory/p10.png" class="gallery-item"><img src="/img/extory/p10.png"></a>  </p>
+<p>In the screenshot above, the <em><code>TEST EAX,EAX</code></em>  checks whether the return code of <strong>fcn.2370</strong> is 0. We want to always skip the terminate instructions so I patched it to <em>a XOR and JMP</em> and saved it.   </p>
+<p><a href="/img/extory/p11.png" class="gallery-item"><img src="/img/extory/p11.png"></a>  </p>
+<p>But I guess there is more to it.<br>After executing the patched version the EIP gets to an invalid instruction ie. 0x12345678.    </p>
+<p><a href="/img/extory/p12.png" class="gallery-item"><img src="/img/extory/p12.png"></a></p>
+<p>Upon analysing it again I found  that we still can’t pass the fcn.1000.<br><a href="/img/extory/p13.png" class="gallery-item"><img src="/img/extory/p13.png"></a>  </p>
+<p>Just somewhat below the fcn.1D10 in fcn.1000 we get <strong>fcn.2540</strong> which does this.  </p>
+<p><a href="/img/extory/p14.png" class="gallery-item"><img src="/img/extory/p14.png"></a><br>Its a very short one and just loads the address of Process Environment Block(ie. value of GS:[60] from the Thread Information Block), loads the byte at 0x2 index ie. BeingDebugged flag. If its true then it will load <code>0x12345678</code> into EAX and calls it which halts the program execution.  </p>
+<p><em>Reference</em> :<br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Win32_Thread_Information_Block">https://en.wikipedia.org/wiki/Win32_Thread_Information_Block</a><br><a target="_blank" rel="noopener" href="https://www.aldeid.com/wiki/PEB-Process-Environment-Block/BeingDebugged">https://www.aldeid.com/wiki/PEB-Process-Environment-Block/BeingDebugged</a>  </p>
+<p><a href="/img/extory/p15.png" class="gallery-item"><img src="/img/extory/p15.png"></a>  </p>
+<p><a href="/img/extory/p16.png" class="gallery-item"><img src="/img/extory/p16.png"></a>    </p>
+<p>We can simply NOP those <em>MOV and CALL instructions</em> and save it.  </p>
+<p><a href="/img/extory/p17.png" class="gallery-item"><img src="/img/extory/p17.png"></a>    </p>
+<p>Ahh There is another too… but this looks same but instead of 0x12345678, it sets EIP to <code>0xDEADC0DE</code>.  </p>
+<p><a href="/img/extory/p18.png" class="gallery-item"><img src="/img/extory/p18.png"></a>    </p>
+<p>This is also just below the previous antidebug check. But it compares some other parts from PEB. So I checked out at 0x20 .. there is <em>FastPebLockRoutine</em>  which has the address of fast-locking routine for PEB. I didn’t get anything about why is it comparing bytes at that address to 0x2001.    </p>
+<p><a href="/img/extory/p19.png" class="gallery-item"><img src="/img/extory/p19.png"></a>   </p>
+<p>I just nopped the faulty instructions and again saved it.<br>Just to keep a track, this was our 3rd patched exe.   </p>
+<p><a href="/img/extory/p20.png" class="gallery-item"><img src="/img/extory/p20.png"></a>      </p>
+<p>Again after executing the patched executable we get another <code>DEADC0DE</code>.<br>This is not cool anymore lol.<br>We can now just check how much <code>DEADC0DE</code> exists. Just Right Click and ..<br> <code>Search for -&gt; Current Module -&gt; Constant</code><br>And enter <code>DEADC0DE</code></p>
+<p><a href="/img/extory/p21.png" class="gallery-item"><img src="/img/extory/p21.png"></a>      </p>
+<p>Cool There is only one found. We jump to the location and find that it is pretty much similar to the one we just patched.  </p>
+<p><a href="/img/extory/p22.png" class="gallery-item"><img src="/img/extory/p22.png"></a>      </p>
+<p>So we patch it in the same way we did the previous one.<br>And to my surprise it doesn’t halt or exits anymore.. That means we have bypassed all anti-debug checks.  </p>
+<hr>
+<h1 id="KeyGen"><a href="#KeyGen" class="headerlink" title="KeyGen"></a>KeyGen</h1><p>For getting our correct key, I’ll use IDA WinDebugger as its graph view is helpful for now.    </p>
+<p><a href="/img/extory/p23.png" class="gallery-item"><img src="/img/extory/p23.png"></a>      </p>
+<p>Ok, The StartAddress is loaded and passed into CreateThread.  </p>
+<p><a href="/img/extory/p24.png" class="gallery-item"><img src="/img/extory/p24.png"></a>      </p>
+<p>So our main function to put a breakpoint is <strong>sub.1A30</strong>.  </p>
+<p><a href="/img/extory/p25.png" class="gallery-item"><img src="/img/extory/p25.png"></a>      </p>
+<p>The first cmp instruction is the same we just patched as you can refer from the multiple nop instructions just after it.   </p>
+<p><a href="/img/extory/p26.png" class="gallery-item"><img src="/img/extory/p26.png"></a>      </p>
+<p>After that we have a loop that stores our input_key’s length into rax basically by looping it and checking it against a null byte. And If it is below 0x10 ie. 16 characters it displays wrong_key so the next time I entered something random like <strong>hell65abhell78cd</strong>.  </p>
+<p><a href="/img/extory/p27.png" class="gallery-item"><img src="/img/extory/p27.png"></a>      </p>
+<p>Later it xors our input_key bytes with 0xCD in a loop.  </p>
+<p><a href="/img/extory/p28.png" class="gallery-item"><img src="/img/extory/p28.png"></a>      </p>
+<p>And In next loop it xors 16 bytes (step = 2) at <strong>var_68</strong> and <strong>var_40</strong>.<br><a href="/img/extory/p29.png" class="gallery-item"><img src="/img/extory/p29.png"></a>      </p>
+<p>And now something obvious happens.. It compares our xored input_key with the bytes we got from xoring var_68 and Var_40.  </p>
+<p><a href="/img/extory/p30.png" class="gallery-item"><img src="/img/extory/p30.png"></a>      </p>
+<p>Now we know that it is a simple XOR encryption which we can easily reverse.  </p>
+<p>So I wrote an IDApython script which gets our key.<br>PS The addresses here can vary on your system.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">v68, v40 = [], []</span><br><span class="line">v68_beg = <span class="number">0x0020FFEF0</span></span><br><span class="line">v68_end = v68_beg + <span class="number">32</span></span><br><span class="line">v40_beg = <span class="number">0x0020FFF18</span></span><br><span class="line">v40_end = v40_beg + <span class="number">32</span></span><br><span class="line"><span class="keyword">for</span> ea <span class="keyword">in</span> <span class="built_in">range</span>(v68_beg,v68_end,<span class="number">2</span>):</span><br><span class="line">    v68.append( Byte(ea) )</span><br><span class="line"><span class="keyword">for</span> ea <span class="keyword">in</span> <span class="built_in">range</span>(v40_beg,v40_end,<span class="number">2</span>):</span><br><span class="line">    v40.append( Byte(ea) )</span><br><span class="line">key = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> x,y <span class="keyword">in</span> <span class="built_in">zip</span>(v68,v40):</span><br><span class="line">    key += <span class="built_in">chr</span>((x^y) ^ <span class="number">0xCD</span>)</span><br><span class="line"><span class="built_in">print</span> key</span><br></pre></td></tr></table></figure>
+<p>This outputs</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">5AquUR%</span><span class="bash">mH4tE=Yn9</span></span><br></pre></td></tr></table></figure>
+<p><a href="/img/extory/solved.png" class="gallery-item"><img src="/img/extory/solved.png"></a>      </p>
+<p>And Hey Finally We get the <code>Correct!</code> Text in green.<br>That was very satisfying, I hope the feeling is mutual.  </p>
+<a target="_blank" rel="noopener" href="https://media.giphy.com/media/g7X5T9PuUBAzu/giphy.gif" title="drawing" class="gallery-item"><img src="https://media.giphy.com/media/g7X5T9PuUBAzu/giphy.gif" alt="drawing" width="300"/></a>  
+
+<p>See yall in next writeup about another crackme.<br>Next time I’m thinking maybe .NET will be fun.  </p>
+<p>Don’t forget to hit me up on <a href="https://twitter.com/MrT4ntr4"  target="_blank">Twitter</a>. </p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#TLDR"><span class="toc-number">1.</span> <span class="toc-text">TLDR;</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Challenge"><span class="toc-number">1.1.</span> <span class="toc-text">Challenge</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Initial-Analysis"><span class="toc-number">2.</span> <span class="toc-text">Initial Analysis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Dynamic-Analysis"><span class="toc-number">3.</span> <span class="toc-text">Dynamic Analysis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Patching-amp-Fun"><span class="toc-number">4.</span> <span class="toc-text">Patching &amp; Fun</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#KeyGen"><span class="toc-number">5.</span> <span class="toc-text">KeyGen</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/EXTORY-Crackme/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&text=EXTORY&#39;s Crackme"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&title=EXTORY&#39;s Crackme"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&is_video=false&description=EXTORY&#39;s Crackme"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=EXTORY&#39;s Crackme&body=Check out this article: https://mrt4ntr4.github.io/EXTORY-Crackme/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&title=EXTORY&#39;s Crackme"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&title=EXTORY&#39;s Crackme"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&title=EXTORY&#39;s Crackme"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&title=EXTORY&#39;s Crackme"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/EXTORY-Crackme/&name=EXTORY&#39;s Crackme&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/EXTORY-Crackme/&t=EXTORY&#39;s Crackme"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021
+    Suraj Malhotra
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"CTRL+C\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight .code").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+      setTimeout(function() {
+        e.trigger.setAttribute('aria-label', "CTRL+C");
+      }, 2000);
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
