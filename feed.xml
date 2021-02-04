@@ -274,9 +274,9 @@
     
     <category term="writeup" scheme="https://mrt4ntr4.github.io/tags/writeup/"/>
     
-    <category term="ctf" scheme="https://mrt4ntr4.github.io/tags/ctf/"/>
-    
     <category term="cryptix" scheme="https://mrt4ntr4.github.io/tags/cryptix/"/>
+    
+    <category term="ctf" scheme="https://mrt4ntr4.github.io/tags/ctf/"/>
     
     <category term="crackit" scheme="https://mrt4ntr4.github.io/tags/crackit/"/>
     
@@ -612,6 +612,8 @@
     
     <category term="writeup" scheme="https://mrt4ntr4.github.io/tags/writeup/"/>
     
+    <category term="ctf" scheme="https://mrt4ntr4.github.io/tags/ctf/"/>
+    
     <category term="bitsctf" scheme="https://mrt4ntr4.github.io/tags/bitsctf/"/>
     
     <category term="EasyPoints" scheme="https://mrt4ntr4.github.io/tags/EasyPoints/"/>
@@ -619,8 +621,6 @@
     <category term="WhatAgain" scheme="https://mrt4ntr4.github.io/tags/WhatAgain/"/>
     
     <category term="SPIFFED" scheme="https://mrt4ntr4.github.io/tags/SPIFFED/"/>
-    
-    <category term="ctf" scheme="https://mrt4ntr4.github.io/tags/ctf/"/>
     
   </entry>
   
