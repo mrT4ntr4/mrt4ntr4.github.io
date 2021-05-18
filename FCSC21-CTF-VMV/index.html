@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="article">
+<meta property="og:title" content="Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV">
+<meta property="og:url" content="https://mrt4ntr4.github.io/FCSC21-CTF-VMV/index.html">
+<meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/fcsc/logo_edit2.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/fcsc/main_fcn.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/fcsc/layer_meme.jpg">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/fcsc/diff_dc0.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/fcsc/rom_format.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/fcsc/pattern1_dg.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/fcsc/pattern2_dg.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/fcsc/ircfg_simplified_ssa_final1.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/fcsc/ircfg_simplified_ssa_final2.PNG">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/fcsc/fail_success_msg.PNG">
+<meta property="article:published_time" content="2021-05-15T22:00:00.000Z">
+<meta property="article:modified_time" content="2021-05-18T23:53:12.039Z">
+<meta property="article:author" content="Suraj Malhotra">
+<meta property="article:tag" content="reversing">
+<meta property="article:tag" content="vm">
+<meta property="article:tag" content="miasm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrt4ntr4.github.io/img/fcsc/logo_edit2.PNG">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/feed.xml" title="mrT4ntr4&#39;s Blog" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<div class="background">
+    <div class="banner">
+<div id="blogtitle" class="blogtitle">mrT4ntr4&#39;s Blog</div>
+<ul id="wrapper" class="wrapper">
+  <div class="sun">
+    <div class="star"></div>
+  </div>
+  <div class="mercury">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="venus">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="earth">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="mars">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="jupiter">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+</ul>
+</div>
+
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/JustCTF-debugme/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&text=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&title=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&is_video=false&description=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV&body=Check out this article: https://mrt4ntr4.github.io/FCSC21-CTF-VMV/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&title=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&title=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&title=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&title=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&name=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&t=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#TL-DR"><span class="toc-number">1.</span> <span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Challenge"><span class="toc-number">2.</span> <span class="toc-text">Challenge</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#The-Main-Function"><span class="toc-number">2.1.</span> <span class="toc-text">The Main Function</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VM-Analysis"><span class="toc-number">3.</span> <span class="toc-text">VM Analysis</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#VM-Context-Structure"><span class="toc-number">3.1.</span> <span class="toc-text">VM Context Structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Opcodes"><span class="toc-number">3.2.</span> <span class="toc-text">Opcodes</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#LAY-LAYERS-ERS"><span class="toc-number">4.</span> <span class="toc-text">LAY(LAYERS)ERS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Writing-a-Custom-Architecture-Miasm-101"><span class="toc-number">5.</span> <span class="toc-text">Writing a Custom Architecture - Miasm 101</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#regs-py"><span class="toc-number">5.1.</span> <span class="toc-text">regs.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#arch-py"><span class="toc-number">5.2.</span> <span class="toc-text">arch.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sem-py"><span class="toc-number">5.3.</span> <span class="toc-text">sem.py</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Analysing-Nested-VMs"><span class="toc-number">6.</span> <span class="toc-text">Analysing Nested VMs</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Intuition"><span class="toc-number">7.</span> <span class="toc-text">Intuition</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pattern-1"><span class="toc-number">7.1.</span> <span class="toc-text">Pattern 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pattern-2"><span class="toc-number">7.2.</span> <span class="toc-text">Pattern 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Drawbacks-Of-Current-Logic"><span class="toc-number">7.3.</span> <span class="toc-text">Drawbacks Of Current Logic</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IR-Simplification-SSA"><span class="toc-number">8.</span> <span class="toc-text">IR Simplification - SSA</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Solution-Script"><span class="toc-number">9.</span> <span class="toc-text">Solution Script</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Solution-Files"><span class="toc-number">10.</span> <span class="toc-text">Solution Files</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Suraj Malhotra</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-05-15T22:00:00.000Z" itemprop="datePublished">2021-05-16</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/CTF-Writeups/">CTF Writeups</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/miasm/" rel="tag">miasm</a>, <a class="tag-link-link" href="/tags/reversing/" rel="tag">reversing</a>, <a class="tag-link-link" href="/tags/vm/" rel="tag">vm</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/fcsc/logo_edit2.PNG" class="gallery-item"><img src="/img/fcsc/logo_edit2.PNG"></a>  </p>
+<p>FCSC was a week long CTF and I usually like these long duration ctfs as I’m not that good of a speedrunner tbh :(  Also I’m a bit late for this writeup but anyways it better late than never!</p>
+<h1 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h1><blockquote>
+<p>This challenge features a nested virtual machine with 5 levels of nesting and is great for learning the tooling aspect of reverse engineering. I solved it by writing a disassembler for it in miasm and then applying some pattern detection logic on it. The virtual machines are nearly similar but they differ in opcodes and some values used to decode an instruction, so we’ve to deal with that too. At the last level we find the key check algo implementation which is not that difficult and we write a solution script to get the key.</p>
+</blockquote>
+<hr>
+<h1 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h1><p>Though FCSC had many interesting reversing challenges, I dedicated most of my time to VMV.<br>The challenge requires a 16 byte string as an argument.  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">└──╼ <span class="variable">$time</span> ./vmv helloworld123456</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">[fr] Ne quittez pas, un correspondant va prendre votre appel... [\fr]</span><br><span class="line">Noooooo, damn you lost!</span><br><span class="line"></span><br><span class="line">real    3m54.816s</span><br><span class="line">user    3m54.554s</span><br><span class="line">sys     0m0.224s</span><br></pre></td></tr></table></figure>
+<p>It prints the message :<br><strong><em>“[fr] Ne quittez pas, un correspondant va prendre votre appel… [\fr]”</em></strong><br>which translates to -<br><strong><em>“Do not leave, a correspondent will take your call…”</em></strong><br>and seems like this is a waiting message as it checks our key. Yeah its obvious that it’ll take time as it’s a VM(V) but this much… Oh boy!</p>
+<h2 id="The-Main-Function"><a href="#The-Main-Function" class="headerlink" title="The Main Function"></a>The Main Function</h2><p>There is a single function which takes various functions as arguments and random values?</p>
+<p><a href="/img/fcsc/main_fcn.PNG" title="Main Function" class="gallery-item"><img src="/img/fcsc/main_fcn.PNG" alt="Main Function"></a>  </p>
+<p>Turns out it is initializing a hashmap with key and functions as its keys and values respectively. There are two base64 encrypted strings which when decoded are used as the bytecode.<br><em>But where has our input disappeared?</em><br>Our input is concatenated to the second base64 decoded buffer for now. Finally, the Dispatcher consists of a bytecode iterator and the same hashmap.</p>
+<hr>
+<h1 id="VM-Analysis"><a href="#VM-Analysis" class="headerlink" title="VM Analysis"></a>VM Analysis</h1><p>After getting a basic idea of the VM Implementation, I figured out the registers and other variables used by the VM.  </p>
+<h2 id="VM-Context-Structure"><a href="#VM-Context-Structure" class="headerlink" title="VM Context Structure"></a>VM Context Structure</h2><p>I defined the structure as follows:  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0000000</span> vm_context      struc</span><br><span class="line"><span class="number">0x0000000</span> stack_base      dq ?      <span class="comment">//Stack used by the VM  </span></span><br><span class="line"><span class="number">0x0000008</span> [r0-r6]         dd ?      </span><br><span class="line"><span class="number">0x0000024</span> pc              dd ?      <span class="comment">//Program Counter</span></span><br><span class="line"><span class="number">0x0000028</span> vm_mem_ptr      dd ?      <span class="comment">//Ptr/Idx to the VM Memory </span></span><br><span class="line"><span class="number">0x000002C</span> lr              dd ?      <span class="comment">//Link Register</span></span><br><span class="line"><span class="number">0x0000030</span> [r10-r11]       dd ?</span><br><span class="line"><span class="number">0x0000038</span> sp              dd ?      <span class="comment">//Stack Pointer</span></span><br><span class="line"><span class="number">0x000003C</span> [r13-r19]       dd ?</span><br><span class="line"><span class="number">0x0000058</span> bytecode_base   dq ?      <span class="comment">//Base address of the Bytecode Buffer</span></span><br><span class="line"><span class="number">0x0000060</span> vm_mem          dq ?      <span class="comment">//VM Memory</span></span><br><span class="line"><span class="number">0x0000068</span> vm_mem_next_ptr dd ?      <span class="comment">//Next Ptr/Idx to the VM Memory </span></span><br><span class="line"><span class="number">0x000006C</span> field_6C        dd ?      <span class="comment">//null</span></span><br><span class="line"><span class="number">0x0000070</span> rom             dq ?      <span class="comment">//remaining bytecode buffer for next VM</span></span><br><span class="line"><span class="number">0x0000078</span> rom_ptr         dq ?      <span class="comment">//Ptr/Idx to the remaining buffer</span></span><br><span class="line"><span class="number">0x0000080</span> loop_status     dd ?      <span class="comment">//flag to end the loop if not set</span></span><br><span class="line"><span class="number">0x0000084</span> exit_code       dd ?      <span class="comment">//exit code</span></span><br><span class="line"><span class="number">0x0000088</span> put_flag        db ?      <span class="comment">//Bool flag set after putchar has been called</span></span><br><span class="line"><span class="number">0x0000089</span> vm_context      ends</span><br></pre></td></tr></table></figure>
+
+<h2 id="Opcodes"><a href="#Opcodes" class="headerlink" title="Opcodes"></a>Opcodes</h2><p><strong><em>This VM consists of 24 opcodes in total.</em></strong></p>
+<p>I defined them as follows :</p>
+<ul>
+<li><p><strong>PUSH_REG</strong>, <strong>PUSH_IMM</strong>, <strong>POP</strong><br>  There are two variants of the push instruction : PUSH_REG(pushes a register) and PUSH_IMM(pushes an 32 bit immediate). As it is an ascending stack so the SP is incremented after a PUSH. </p>
+</li>
+<li><p><strong>ADD</strong>, <strong>XOR</strong>, <strong>MUL</strong>, <strong>AND</strong><br>  The above arithmetic operations work by popping two values off the stack and then pushing their result back. The result also suffers a modulo operation with 0x7fffffff, except for XOR.  </p>
+</li>
+<li><p><strong>INC</strong>, <strong>DEC</strong><br>  Increments/Decrements the specified register. </p>
+</li>
+<li><p><strong>JE</strong>, <strong>JNE</strong><br>  These are used for comparision and jumping at the same time here. They pop two values off the stack and compare them, later jump to the specified destination depending on the result.  </p>
+</li>
+<li><p><strong>JMP</strong><br>  Relative Jump where destination = PC + Immediate</p>
+</li>
+<li><p><strong>CALL</strong>, <strong>RET</strong><br>Before CALL, it assigns the value of current PC to LR(Link Register) and then calls a function. For example, in ARM, the BL instruction places the return address in the LR(Link Register). The opposite is done when returning from the function.</p>
+</li>
+<li><p><strong>MEMSTORE</strong>, <strong>MEMFETCH</strong>, <strong>MEMSHIFT_REG</strong>, <strong>MEMSHIFT_IMM</strong><br>  The VM has its own memory which is initialized in the VM_CONTEXT_INIT function as an array of 0x2000000 32-bit values. VM_MEM_PTR register is used as an index to the memory and is used by MEMFETCH and MEMSTORE. MEMSTORE puts the value of a register in memory and MEMFETCH does the opposite. The MEMSHIFT_REG and MEMSHIFT_IMM are both used to save the current value of VM_MEM_NEXT_PTR in VM_MEM_PTR and shifts VM_MEM_NEXT_PTR by a specified value (REG/IMM).</p>
+</li>
+<li><p><strong>ROMFETCH</strong><br>Fetches 32 bits from the remaining bytecode treated as ROM here. Afterwards it increments the ROM_PTR which acts as an index.</p>
+</li>
+<li><p><strong>PUTCHAR_REG</strong>, <strong>PUTCHAR_IMM</strong><br>These are used to display a character and afterwards set the PUT_FLAG which is used to display the waiting message.  </p>
+</li>
+<li><p><strong>MOD</strong><br>Pops and does a modulo operation on the value with the specified immediate. Later it pushes the result onto the stack.  </p>
+</li>
+<li><p><strong>EXIT_REG</strong>, <strong>EXIT_IMM</strong><br>They set the EXIT_CODE register to a register or an immediate and exits the VM.  </p>
+</li>
+</ul>
+<hr>
+<h1 id="LAY-LAYERS-ERS"><a href="#LAY-LAYERS-ERS" class="headerlink" title="LAY(LAYERS)ERS"></a>LAY(LAYERS)ERS</h1><a href="/img/fcsc/layer_meme.jpg" title="Layer Meme" class="gallery-item"><img src="/img/fcsc/layer_meme.jpg" alt="Layer Meme" width=50% height=50%></a>
+
+<p>At this point I wrote a simple disassembler script but whatttt there is a vm inside a vm. Now after analysing it this much there is no going back ryt? I began looking for options and chose miasm for this task as it is a tool I’ve kept my eye on recently.<br>Also I’ve heard good things about it’s Intermediate Representation, so why not try it ourselves.   </p>
+<hr>
+<h1 id="Writing-a-Custom-Architecture-Miasm-101"><a href="#Writing-a-Custom-Architecture-Miasm-101" class="headerlink" title="Writing a Custom Architecture - Miasm 101"></a>Writing a Custom Architecture - Miasm 101</h1><p>So I needed to start from scratch now. Though this part took most of my time but it was worth it.  </p>
+<p>I want to thank my friend <a target="_blank" rel="noopener" href="https://github.com/archercreat">ArcherCreat</a> for helping me out with miasm. After a little chat with him I got a basic intro to miasm features and how can I use them to solve challenges. Infact he is the one who inspired me at first, you can checkout some of his writeups <a target="_blank" rel="noopener" href="https://archercreat.github.io/">here</a>. </p>
+<p>If you are new to miasm, you can checkout their <a target="_blank" rel="noopener" href="http://miasm.re/">blog </a> and <a target="_blank" rel="noopener" href="https://github.com/cea-sec/miasm/tree/master/example">github</a> for more examples.  </p>
+<p>Basically we need to create 6 files in order to write a custom architecture in miasm.  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;home&#x2F;user&#x2F;.local&#x2F;lib&#x2F;python3.9&#x2F;site-packages&#x2F;miasm&#x2F;</span><br><span class="line">│  </span><br><span class="line">├── arch</span><br><span class="line">│   ├── vmv</span><br><span class="line">│   │   ├── arch.py</span><br><span class="line">│   │   ├── disasm.py</span><br><span class="line">│   │   ├── ira.py</span><br><span class="line">│   │   ├── jit.py</span><br><span class="line">│   │   ├── regs.py</span><br><span class="line">│   │   └── sem.py</span><br></pre></td></tr></table></figure>
+<p>It seems like a lot, but in the end we’ll mainly work with <strong>regs.py</strong>, <strong>arch.py</strong>, <strong>sem.py</strong> as the others are mostly inherited from the base class.  </p>
+<h2 id="regs-py"><a href="#regs-py" class="headerlink" title="regs.py"></a>regs.py</h2><p>We can describe the registers used by our architecture here. By default the registers are 32 bits.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">reg_names32 = [<span class="string">&quot;R0&quot;</span>,<span class="string">&quot;R1&quot;</span>,<span class="string">&quot;R2&quot;</span>,<span class="string">&quot;R3&quot;</span>,<span class="string">&quot;R4&quot;</span>,<span class="string">&quot;R5&quot;</span>,<span class="string">&quot;R6&quot;</span>,<span class="string">&quot;PC&quot;</span>,<span class="string">&quot;VM_MEM_PTR&quot;</span>,<span class="string">&quot;LR&quot;</span>,<span class="string">&quot;R10&quot;</span>,<span class="string">&quot;R11&quot;</span>,<span class="string">&quot;SP&quot;</span>,<span class="string">&quot;R13&quot;</span>,<span class="string">&quot;R14&quot;</span>,<span class="string">&quot;R15&quot;</span>,<span class="string">&quot;R16&quot;</span>,<span class="string">&quot;R17&quot;</span>,<span class="string">&quot;R18&quot;</span>,<span class="string">&quot;R19&quot;</span>]</span><br><span class="line">reg_exprs, reg_inits, reg_infos = gen_regs(reg_names32, <span class="built_in">globals</span>())  <span class="comment"># sz=32 bits (default)</span></span><br><span class="line"></span><br><span class="line">extra_names64 = [<span class="string">&quot;BYTECODE_BASE&quot;</span>,<span class="string">&quot;VM_MEM&quot;</span>,<span class="string">&quot;ROM&quot;</span>,<span class="string">&quot;ROM_PTR&quot;</span>]</span><br><span class="line">extra_exprs, extra_inits, extra_infos = gen_regs(extra_names64, <span class="built_in">globals</span>(), <span class="number">64</span>)</span><br><span class="line"></span><br><span class="line">vmnp_expr, vmnp_inits, vmnp_infos  = gen_regs([<span class="string">&quot;VM_MEM_NEXT_PTR&quot;</span>], <span class="built_in">globals</span>())</span><br></pre></td></tr></table></figure>
+<p>I added the General Purpose Registers, Control Status Registers, and other miscellaneous 32 and 64 bit registers used by our VM. As the registers are referenced by their index in the struct we need to define them as shown above.  </p>
+<h2 id="arch-py"><a href="#arch-py" class="headerlink" title="arch.py"></a>arch.py</h2><p>We start off by describing the instructions for the first level, adding their opcodes and argument type. This is done by the addop() function.<br>Miasm automatically extracts the amount of bits from the bytecode according to the operands specified while defining the instructions and updates the offset.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">addop(<span class="string">&quot;MEMSHIFT_IMM&quot;</span>, [bs32(<span class="number">0xba1116a9</span>), imm32,])</span><br><span class="line">addop(<span class="string">&quot;PUSH_REG&quot;</span>,     [bs32(<span class="number">0x5991ba22</span>), reg_idx,])</span><br><span class="line">addop(<span class="string">&quot;POP&quot;</span>,          [bs32(<span class="number">0x8960888a</span>), reg_idx,])</span><br><span class="line">addop(<span class="string">&quot;PUSH_IMM&quot;</span>,     [bs32(<span class="number">0x5e64bb6c</span>), imm32,])</span><br><span class="line">addop(<span class="string">&quot;MEMSHIFT_REG&quot;</span>, [bs32(<span class="number">0x1f0a8e6f</span>), reg_idx,])</span><br><span class="line">addop(<span class="string">&quot;ROMFETCH&quot;</span>,     [bs32(<span class="number">0x8d67bae1</span>), reg_idx,])</span><br><span class="line">addop(<span class="string">&quot;ADD&quot;</span>,          [bs32(<span class="number">0xadc52d</span>), ])</span><br><span class="line">addop(<span class="string">&quot;MEMSTORE&quot;</span>,     [bs32(<span class="number">0xfb521a9c</span>), reg_idx])</span><br><span class="line">addop(<span class="string">&quot;JE&quot;</span>,           [bs32(<span class="number">0x180bc12d</span>), imm32])</span><br><span class="line">addop(<span class="string">&quot;INC&quot;</span>,          [bs32(<span class="number">0xf00bb6c1</span>), reg_idx])</span><br><span class="line">addop(<span class="string">&quot;CALL&quot;</span>,         [bs32(<span class="number">0xfa83fa5e</span>), imm32])</span><br><span class="line">addop(<span class="string">&quot;JMP&quot;</span>,          [bs32(<span class="number">0xed4e2cfb</span>), imm32])</span><br><span class="line">addop(<span class="string">&quot;EXIT_IMM&quot;</span>,     [bs32(<span class="number">0x27497906</span>), imm32])</span><br><span class="line">addop(<span class="string">&quot;PUTCHAR_REG&quot;</span>,  [bs32(<span class="number">0xd1450d67</span>), reg_idx])</span><br><span class="line">addop(<span class="string">&quot;DEC&quot;</span>,          [bs32(<span class="number">0x8ea45b38</span>), reg_idx])</span><br><span class="line">addop(<span class="string">&quot;XOR&quot;</span>,          [bs32(<span class="number">0x48c5ccc6</span>), ])</span><br><span class="line">addop(<span class="string">&quot;AND&quot;</span>,          [bs32(<span class="number">0x542010a0</span>), ])</span><br><span class="line">addop(<span class="string">&quot;MUL&quot;</span>,          [bs32(<span class="number">0x560729d</span>),  ])</span><br><span class="line">addop(<span class="string">&quot;MEMFETCH&quot;</span>,     [bs32(<span class="number">0xc650f15d</span>), reg_idx])</span><br><span class="line">addop(<span class="string">&quot;JNE&quot;</span>,          [bs32(<span class="number">0x5a0f38fc</span>), imm32])</span><br><span class="line">addop(<span class="string">&quot;EXIT_REG&quot;</span>,     [bs32(<span class="number">0x818cd6b5</span>), reg_idx])</span><br><span class="line">addop(<span class="string">&quot;MOD&quot;</span>,          [bs32(<span class="number">0x43ae1f53</span>), reg_idx])</span><br><span class="line">addop(<span class="string">&quot;RET&quot;</span>,          [bs32(<span class="number">0xbdecfe55</span>), ])</span><br></pre></td></tr></table></figure>
+<p>Miasm works on binary stream, and offers us bs8() which converts a single byte opcode to binary. Similarly we can just create a bs32() helper in our case.   </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">bs32</span>(<span class="params">bs</span>):</span></span><br><span class="line">    prio = default_prio</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, v, cls=<span class="literal">None</span>, fname=<span class="literal">None</span>, **kargs</span>):</span></span><br><span class="line">        <span class="built_in">super</span>(bs32, self).__init__(int2bin(swap32(v), <span class="number">32</span>), <span class="number">32</span>,</span><br><span class="line">                                  cls=cls, fname=fname, **kargs)</span><br></pre></td></tr></table></figure>
+<p>This was easy as miasm already provides us with other basic helper functions such as int2bin(), swap32().  </p>
+<p>We define a global variable <code>nest level</code> to store the current nesting level while trying to disassemble the VM. We also need to initialize the <em>register index</em> and <em>putchar immediate</em>  xor lists as these values differ across levels.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nest_level = <span class="number">0</span></span><br><span class="line">reg_xorlist = [<span class="number">0x7b</span>]</span><br><span class="line">putchar_xorlist = [<span class="number">0x0</span>]</span><br></pre></td></tr></table></figure>
+<p>Now we need to describe the operands and map them to their classes.<br>We’ll mostly use these :  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">reg_idx = bs(l=<span class="number">32</span>,   cls=(vmv_reg_idx,  vmv_arg))</span><br><span class="line">imm32 = bs(l=<span class="number">32</span>,  cls=(vmv_imm32, vmv_arg))</span><br><span class="line">putchar_imm32 = bs(l=<span class="number">32</span>,   cls=(vmv_putchar_imm32,  vmv_arg))</span><br></pre></td></tr></table></figure>
+<p>As the register isn’t specified normally and its index is decoded on the fly using the succeeding 32 bits from bytecode we need to do a workaround for it as follows:  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">vmv_reg_idx</span>(<span class="params">vmv_arg</span>):</span></span><br><span class="line"></span><br><span class="line">  reg_info = reg_infos  <span class="comment"># the list of vmv registers defined in regs.py</span></span><br><span class="line">  intsize = <span class="number">32</span></span><br><span class="line">  intmask = (<span class="number">1</span> &lt;&lt; intsize) - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">decode</span>(<span class="params">self, v</span>):</span></span><br><span class="line">    v = swap_sint(self.l, v) &amp; self.intmask </span><br><span class="line">    v = (v^reg_xorlist[nest_level])&amp;<span class="number">0x3f</span></span><br><span class="line">    <span class="keyword">if</span> v &gt;= <span class="built_in">len</span>(self.reg_info.expr):</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    self.expr = self.reg_info.expr[v]</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>In our class we define a custom decode function where we use the nest_level to get the xor value for a particular VM nesting level.<br>We do the same for PUTCHAR_IMM operation:  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">vmv_putchar_imm32</span>(<span class="params">imm_noarg, vmv_arg</span>):</span></span><br><span class="line">  intmask = <span class="number">0xff</span></span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">decodeval</span>(<span class="params">self, v</span>):</span></span><br><span class="line">    <span class="keyword">return</span> (putchar_xorlist[nest_level] ^ swap_sint(self.l, v)) &amp; self.intmask</span><br></pre></td></tr></table></figure>
+<p>While building the CFG, miasm needs to know a few things such as :</p>
+<ul>
+<li>When does it need to stop disassembling</li>
+<li>When does it need to break the control flow</li>
+</ul>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">conditional_branch = [<span class="string">&quot;JE&quot;</span>,<span class="string">&quot;JNE&quot;</span>]</span><br><span class="line">unconditional_branch = [<span class="string">&quot;JMP&quot;</span>]</span><br><span class="line"></span><br><span class="line">call_instr = [<span class="string">&quot;CALL&quot;</span>]</span><br><span class="line">breakflow = [<span class="string">&quot;EXIT_IMM&quot;</span>] + conditional_branch + unconditional_branch + call_instr + [<span class="string">&quot;RET&quot;</span>]</span><br></pre></td></tr></table></figure>
+<p>As the branch instructions use relative addressing and depends on PC(offset here) we can do the following to create a label in the expression.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dstflow2label</span>(<span class="params">self, loc_db</span>):</span></span><br><span class="line">  loc_arg = self.get_dst_num()</span><br><span class="line">  expr = self.args[loc_arg]</span><br><span class="line">  <span class="keyword">if</span> <span class="keyword">not</span> expr.is_int():</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  addr = ((<span class="built_in">int</span>(expr)*<span class="number">4</span>)+self.offset + <span class="number">8</span>) &amp; <span class="number">0xffffffff</span></span><br><span class="line">  loc_key = loc_db.get_or_create_offset_location(addr)</span><br><span class="line">  self.args[<span class="number">0</span>] = ExprLoc(loc_key, expr.size)</span><br></pre></td></tr></table></figure>
+<h2 id="sem-py"><a href="#sem-py" class="headerlink" title="sem.py"></a>sem.py</h2><p>This is the main mastermind responsible for the Miasm IR.<br>We just need to describe each instruction and map them to the specific mnemonic defined in the arch.py.  </p>
+<p>For example, a <code>PUSH_IMM</code> instruction looks like the following :</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">push_imm</span>(<span class="params">ir, instr, imm</span>):</span></span><br><span class="line">  e = []</span><br><span class="line">  int4 = ExprInt(<span class="number">4</span>, <span class="number">32</span>)</span><br><span class="line">  e += [ExprAssign(ExprMem(SP + int4, <span class="number">32</span>), imm)]</span><br><span class="line">  e += [ExprAssign(SP, SP + int4)]</span><br><span class="line">  <span class="keyword">return</span> e, []</span><br></pre></td></tr></table></figure>
+<p>We put the specific immediate to [SP+4] and increase SP by 4 afterwards.<br>Jumps could be tricky, in our case we need to pop two values off the stack so we assign temporary variables to store them and then use the ExprOp <code>FLAG_EQ_CMP</code> to compare them. Later we can use <code>ExprCond</code> to use it as a condition for changing the <code>IRDst</code>. We also decrease the SP by 8 in the end.</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">je</span>(<span class="params">ir, instr, dst</span>):</span></span><br><span class="line">  e = []</span><br><span class="line">  <span class="keyword">if</span> dst.is_int():</span><br><span class="line">    dst = ExprInt(dst, PC.size)</span><br><span class="line">  <span class="keyword">elif</span> dst.is_loc():</span><br><span class="line">    dst = ExprLoc(dst.loc_key, PC.size)</span><br><span class="line">  loc_next = ir.get_next_loc_key(instr)</span><br><span class="line">  loc_next_expr = ExprLoc(loc_next, ir.IRDst.size)</span><br><span class="line"></span><br><span class="line">  var_A = ExprMem(SP,<span class="number">32</span>)</span><br><span class="line">  var_B = ExprMem(SP - ExprInt(<span class="number">4</span>, <span class="number">32</span>), <span class="number">32</span>)</span><br><span class="line">  cmp_ = ExprOp(<span class="string">&quot;FLAG_EQ_CMP&quot;</span>, var_A, var_B)</span><br><span class="line"></span><br><span class="line">  e += [ExprAssign(PC, ExprCond(cmp_, dst, loc_next_expr))]</span><br><span class="line">  e += [ExprAssign(ir.IRDst, ExprCond(cmp_, dst, loc_next_expr))]</span><br><span class="line">  e += [ExprAssign(SP, SP - ExprInt(<span class="number">8</span>,<span class="number">32</span>))]</span><br><span class="line">  <span class="keyword">return</span> e, []</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Analysing-Nested-VMs"><a href="#Analysing-Nested-VMs" class="headerlink" title="Analysing Nested VMs"></a>Analysing Nested VMs</h1><p>I began scrolling through the CFG, and found some notable differences.<br>Now we don’t have the hashmap implementation and there is a simple jump table in every nested vm.  </p>
+<p><em>An interesting thing to note here is that a specific instruction has the same offset in every VM.</em>  </p>
+<p>As the register position differs here we will actually see that disassembly is inconsistent in some places such as at function @ <code>0xdc0</code> which acts as a bytecode iterator.  </p>
+<p><a href="/img/fcsc/diff_dc0.PNG" title="diff dc0" class="gallery-item"><img src="/img/fcsc/diff_dc0.PNG" alt="diff dc0"></a>  </p>
+<p>For the first nested VM the VM_CONTEXT structure is stored at R3 and checking out <code>0xdc0</code> the first register looks like a program counter. R6 looks like the VM_MEM_PTR comparing the differences between the blocks.<br>So in a nutshell, it can be described as follows : </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x00</span> vm_context      struc</span><br><span class="line"><span class="number">0x00</span> PC               dd ?</span><br><span class="line"><span class="number">0x08</span> [R1-R4]          dd ?</span><br><span class="line"><span class="number">0x28</span> VM_MEM_PTR       dd ?</span><br><span class="line"><span class="number">0x30</span> [R6-R15]         dd ?</span><br><span class="line"><span class="number">0x80</span> vm_context      ends</span><br></pre></td></tr></table></figure>
+<p>But these register positions change in other levels as well but this is not much of a issue here.  </p>
+<p>The ROM has the following format : </p>
+<p><a href="/img/fcsc/rom_format.PNG" title="Rom Format" class="gallery-item"><img src="/img/fcsc/rom_format.PNG" alt="Rom Format"></a><br>The size of the next bytecode buffer is read from the first 4 bytes and then those no. of 32 bit values are fetched from the ROM and stored in VM memory. We observe that the sizes of the bytecode are also similar here and our input key is at the end.  </p>
+<hr>
+<h1 id="Intuition"><a href="#Intuition" class="headerlink" title="Intuition"></a>Intuition</h1><p>So overall, the nested VMs are almost similar and we can make use of the same instruction offsets as follows :</p>
+<ul>
+<li>Create a pattern detection helper to check for subsequent PUSH and JE operation and get their values and offsets respectively.</li>
+<li>Map handlers to offsets in a dictionary as <code>&#123;handler : offset&#125;</code></li>
+<li>Keep on adding new opcodes at each level</li>
+</ul>
+<p>Miasm allows us to define a callback function when it diassembles the blocks.<br>We can implement it as follows : </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_opcodes</span>(<span class="params">mdis, cur_bloc, offsets_to_dis</span>):</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">mdis = machine.dis_engine(bytecode, loc_db=loc_db)</span><br><span class="line">mdis.dis_block_callback = get_opcodes</span><br></pre></td></tr></table></figure>
+<h2 id="Pattern-1"><a href="#Pattern-1" class="headerlink" title="Pattern 1"></a>Pattern 1</h2><p>As obvious we need to extract the opcode and the offset.  </p>
+<p><a href="/img/fcsc/pattern1_dg.PNG" title="Pattern 1" class="gallery-item"><img src="/img/fcsc/pattern1_dg.PNG" alt="Pattern 1"></a>  </p>
+<p>Just adding an if statement does the job, where we look out for a block having 3 instructions <code>PUSH_REG</code>, <code>PUSH_IMM</code>, <code>JE</code> respectively and keep on adding the results to a dictionary. </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="built_in">len</span>(cur_bloc.lines) == <span class="number">3</span> <span class="keyword">and</span></span><br><span class="line">        cur_bloc.lines[<span class="number">0</span>].name == <span class="string">&quot;PUSH_REG&quot;</span> <span class="keyword">and</span></span><br><span class="line">        cur_bloc.lines[<span class="number">1</span>].name == <span class="string">&quot;PUSH_IMM&quot;</span> <span class="keyword">and</span></span><br><span class="line">        cur_bloc.lines[<span class="number">2</span>].name == <span class="string">&quot;JE&quot;</span>):</span><br><span class="line">    </span><br><span class="line">    op = cur_bloc.lines[<span class="number">1</span>].args[<span class="number">0</span>]</span><br><span class="line">    jmp_loc = cur_bloc.lines[<span class="number">2</span>].args[<span class="number">0</span>]</span><br><span class="line">    loc = jmp_loc.loc_key</span><br><span class="line">    offset = mdis.loc_db.get_location_offset(loc)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(op, ExprInt):</span><br><span class="line">        op = <span class="built_in">int</span>(op.arg)</span><br><span class="line">    opcodes[op] = offset</span><br></pre></td></tr></table></figure>
+<p>Later we can just add the opcodes using the same old addop(), neat!</p>
+<h2 id="Pattern-2"><a href="#Pattern-2" class="headerlink" title="Pattern 2"></a>Pattern 2</h2><p>We need another pattern for extracting the xor values for register indices, and putchar immediate xor values as well.  </p>
+<p><a href="/img/fcsc/pattern2_dg.PNG" title="Pattern 2" class="gallery-item"><img src="/img/fcsc/pattern2_dg.PNG" alt="Pattern 2"></a>  </p>
+<p>Here we check the block offset as the values are always initialized in that single block ie. <code>0xe8</code> and append those values to a global list.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(mdis.loc_db.get_location_offset(cur_bloc.loc_key) == <span class="number">0xe8</span>):</span><br><span class="line">    vmv_arch.putchar_xorlist.append(<span class="built_in">int</span>(cur_bloc.lines[<span class="number">0</span>].args[<span class="number">0</span>]) &amp; <span class="number">0xff</span>)</span><br><span class="line">    vmv_arch.reg_xorlist.append(<span class="built_in">int</span>(cur_bloc.lines[<span class="number">2</span>].args[<span class="number">0</span>]) &amp; <span class="number">0xff</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Drawbacks-Of-Current-Logic"><a href="#Drawbacks-Of-Current-Logic" class="headerlink" title="Drawbacks Of Current Logic"></a>Drawbacks Of Current Logic</h2><p>My logic would fail when :  </p>
+<ul>
+<li>Some of the opcodes are similar across levels but they map to a different instruction which would cause interference.  </li>
+<li>Pattern isn’t found successfully due to obfuscation or different dispatchers.  </li>
+<li>Offsets differ in a level</li>
+</ul>
+<p>Although I could’ve done some workaround to deal with some of the issues but I didn’t bother doing it at the moment.  </p>
+<hr>
+<h1 id="IR-Simplification-SSA"><a href="#IR-Simplification-SSA" class="headerlink" title="IR Simplification - SSA"></a>IR Simplification - SSA</h1><p>Finally we get the Key checking algo unfolded, and we can make use of miasm to simplify the IR to SSA Expressions and extract the constraints easily.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ira = machine.ira(loc_db)</span><br><span class="line">ircfg = ira.new_ircfg_from_asmcfg(asmcfg)</span><br><span class="line">simp = IRCFGSimplifierSSA(ira)</span><br><span class="line">simp.simplify(ircfg, loc)</span><br></pre></td></tr></table></figure>
+<p><em>Just keep in mind at this point we only have our input in the ROM left.</em><br>The key checking algo isn’t that difficult to solve.  </p>
+<p>The first constraint checks the first 4 bytes of our input key as:</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(@[ROM + ROM_PTR] * <span class="number">0x117052C0</span>) % <span class="number">0x7fffffff</span> == <span class="number">0x1</span></span><br></pre></td></tr></table></figure>
+<p><a href="/img/fcsc/ircfg_simplified_ssa_final1.PNG" title="SSA1" class="gallery-item"><img src="/img/fcsc/ircfg_simplified_ssa_final1.PNG" alt="SSA1"></a>  </p>
+<p>So, we just need to calculate the inverse modulo to get the first four bytes of our input here. The second one is easy as well, it checks the next 4 bytes as follows :</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(@[ROM + ROM_PTR + <span class="number">0x4</span>] % <span class="number">0x77f3</span>) == <span class="number">0x4926</span></span><br><span class="line">(@[ROM + ROM_PTR + <span class="number">0x4</span>] % <span class="number">0x7c49</span>) == <span class="number">0x3159</span></span><br></pre></td></tr></table></figure>
+<p>We can use the <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Chinese_remainder_theorem">Chinese Remainder Theorem</a> to solve it easily.  </p>
+<p><a href="/img/fcsc/ircfg_simplified_ssa_final2.PNG" title="SSA2" class="gallery-item"><img src="/img/fcsc/ircfg_simplified_ssa_final2.PNG" alt="SSA2"></a>  </p>
+<p>These operations are also carried out for the other two parts. A variable is set if all of these checks return true, ie. R16 here, and we get the failure or success message printed in the end.  </p>
+<p><a href="/img/fcsc/fail_success_msg.PNG" title="fail_success_msg" class="gallery-item"><img src="/img/fcsc/fail_success_msg.PNG" alt="fail_success_msg"></a>  </p>
+<h1 id="Solution-Script"><a href="#Solution-Script" class="headerlink" title="Solution Script"></a>Solution Script</h1><p>Miasm also comes with features like symbolic execution and provides translators for SMT solvers like z3 but I don’t think it’ll help us here. A solution script using some basic math is enough.</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> string</span><br><span class="line">int_to_bytes = <span class="keyword">lambda</span> val : <span class="string">&quot;&quot;</span>.join([<span class="built_in">chr</span>((val &amp; (<span class="number">0xff</span> &lt;&lt; i*<span class="number">8</span>)) &gt;&gt; i*<span class="number">8</span>) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>)])</span><br><span class="line">printcheck = <span class="keyword">lambda</span> lol : <span class="built_in">all</span>(c <span class="keyword">in</span> string.printable <span class="keyword">for</span> c <span class="keyword">in</span> lol)</span><br><span class="line"></span><br><span class="line"><span class="comment">#inverse modulo (python 3.8+)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">invmod</span>(<span class="params">val, mod</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">pow</span>(val, -<span class="number">1</span>, mod)</span><br><span class="line"></span><br><span class="line"><span class="comment">#implementation of chinese remainder theorem</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crt</span>(<span class="params">r1, r2</span>):</span></span><br><span class="line">    n1 = <span class="number">0x77f3</span></span><br><span class="line">    n2 = <span class="number">0x7c49</span></span><br><span class="line">    x, y = invmod(n1, n2), invmod(n2, n1)</span><br><span class="line">    m = n1 * n2</span><br><span class="line">    n = r2 * x * n1 + r1 * y * n2</span><br><span class="line">    q, r = (m, n % m)</span><br><span class="line">    <span class="comment"># return a printable result from first 5 solutions</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">        res = q*k + r</span><br><span class="line">        out = int_to_bytes(res)</span><br><span class="line">        <span class="keyword">if</span> printcheck(out):</span><br><span class="line">            <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    key = <span class="string">&quot;&quot;</span></span><br><span class="line">    key += int_to_bytes(invmod(<span class="number">0x117052c0</span>, <span class="number">0x7fffffff</span>))</span><br><span class="line">    key += crt(<span class="number">0x4926</span>,<span class="number">0x3159</span>)</span><br><span class="line">    key += int_to_bytes(invmod(<span class="number">0x278bce9d</span>, <span class="number">0x7fffffff</span>))</span><br><span class="line">    key += crt(<span class="number">0x28b2</span>,<span class="number">0x44a9</span>)</span><br><span class="line"></span><br><span class="line">    print(key)    </span><br></pre></td></tr></table></figure>
+<p>Finally, we get the flag as :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FCSC&#123;w3NeEdT0gODe3p3r&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Solution-Files"><a href="#Solution-Files" class="headerlink" title="Solution Files"></a>Solution Files</h1><blockquote>
+<p>I’ve uploaded the architecture and other solution files along with the dot output files on my github here :<br><a target="_blank" rel="noopener" href="https://github.com/mrT4ntr4/Challenge-Solution-Files/tree/master/FCSC21_CTF_VMV">mrT4ntr4/Challenge-Solution-Files/FCSC21_CTF_VMV</a></p>
+</blockquote>
+<p>Ahh, I still have more to learn about miasm, bye!</p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#TL-DR"><span class="toc-number">1.</span> <span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Challenge"><span class="toc-number">2.</span> <span class="toc-text">Challenge</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#The-Main-Function"><span class="toc-number">2.1.</span> <span class="toc-text">The Main Function</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VM-Analysis"><span class="toc-number">3.</span> <span class="toc-text">VM Analysis</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#VM-Context-Structure"><span class="toc-number">3.1.</span> <span class="toc-text">VM Context Structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Opcodes"><span class="toc-number">3.2.</span> <span class="toc-text">Opcodes</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#LAY-LAYERS-ERS"><span class="toc-number">4.</span> <span class="toc-text">LAY(LAYERS)ERS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Writing-a-Custom-Architecture-Miasm-101"><span class="toc-number">5.</span> <span class="toc-text">Writing a Custom Architecture - Miasm 101</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#regs-py"><span class="toc-number">5.1.</span> <span class="toc-text">regs.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#arch-py"><span class="toc-number">5.2.</span> <span class="toc-text">arch.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sem-py"><span class="toc-number">5.3.</span> <span class="toc-text">sem.py</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Analysing-Nested-VMs"><span class="toc-number">6.</span> <span class="toc-text">Analysing Nested VMs</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Intuition"><span class="toc-number">7.</span> <span class="toc-text">Intuition</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pattern-1"><span class="toc-number">7.1.</span> <span class="toc-text">Pattern 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pattern-2"><span class="toc-number">7.2.</span> <span class="toc-text">Pattern 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Drawbacks-Of-Current-Logic"><span class="toc-number">7.3.</span> <span class="toc-text">Drawbacks Of Current Logic</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IR-Simplification-SSA"><span class="toc-number">8.</span> <span class="toc-text">IR Simplification - SSA</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Solution-Script"><span class="toc-number">9.</span> <span class="toc-text">Solution Script</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Solution-Files"><span class="toc-number">10.</span> <span class="toc-text">Solution Files</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&text=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&title=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&is_video=false&description=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV&body=Check out this article: https://mrt4ntr4.github.io/FCSC21-CTF-VMV/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&title=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&title=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&title=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&title=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&name=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/FCSC21-CTF-VMV/&t=Defeating Nested Virtualization with Miasm - FCSC21 CTF VMV"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021
+    Suraj Malhotra
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"CTRL+C\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight .code").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+      setTimeout(function() {
+        e.trigger.setAttribute('aria-label', "CTRL+C");
+      }, 2000);
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-132815766-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-132815766-1');
+    </script>
+
+
+
+
+
+
+
+
+</body>
+</html>
