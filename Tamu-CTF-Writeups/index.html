@@ -288,7 +288,7 @@
 <p>After going through the source, I also found a <strong>Register-Form</strong> which was hidden.</p>
 <p><a href="/img/tamu/login/2.png" class="gallery-item"><img src="/img/tamu/login/2.png"></a>  </p>
 <p>We can modify the display statement to the following using Dev Tools in our browser :</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">display</span>: <span class="selector-tag">block</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">display</span>: block;</span><br></pre></td></tr></table></figure>
 <p>We see a beatiful Create and Login form side by side.  </p>
 <p><a href="/img/tamu/login/3.png" class="gallery-item"><img src="/img/tamu/login/3.png"></a>  </p>
 <p>Then I used Burpsuite to intercept the CREATE request and saw that it was pointing to nothing. And also there was no source code available for the Register form submit button to POST some JSON data as in the case of Login Button. And then I closed this challenge for like 2 days.<br>Fortunately, when I began to solve it with a fresh mind I was able to succeed though. </p>
