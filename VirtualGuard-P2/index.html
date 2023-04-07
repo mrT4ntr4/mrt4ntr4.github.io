@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="article">
+<meta property="og:title" content="A Tale of .Net Deobfuscation - VirtualGuard Devirtualization">
+<meta property="og:url" content="https://mrt4ntr4.github.io/VirtualGuard-P2/index.html">
+<meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/virtualguard2/stages.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/virtualguard2/croc_vminit1.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/virtualguard2/croc_entry.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/virtualguard2/croc_cctor.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/virtualguard2/croc_vminit3.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/virtualguard2/croc_vmdispatcher.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/virtualguard2/croc_handlers.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/virtualguard2/push_variants.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/virtualguard2/push_handler.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/virtualguard2/devirt_entry.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/virtualguard2/result_validate.png">
+<meta property="og:image" content="https://mrt4ntr4.github.io/img/virtualguard2/bug_fixed.png">
+<meta property="article:published_time" content="2023-03-27T22:00:00.000Z">
+<meta property="article:modified_time" content="2023-04-07T09:18:25.903Z">
+<meta property="article:author" content="Suraj Malhotra">
+<meta property="article:tag" content=".Net">
+<meta property="article:tag" content="Obfuscation">
+<meta property="article:tag" content="vm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mrt4ntr4.github.io/img/virtualguard2/stages.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.png">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+        
+      
+    
+    <!-- title -->
+    <title>A Tale of .Net Deobfuscation - VirtualGuard Devirtualization</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/feed.xml" title="mrT4ntr4&#39;s Blog" type="application/atom+xml" />
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<div class="background">
+    <div class="banner">
+<div id="blogtitle" class="blogtitle">mrT4ntr4&#39;s Blog</div>
+<ul id="wrapper" class="wrapper">
+  <div class="sun">
+    <div class="star"></div>
+  </div>
+  <div class="mercury">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="venus">
+    <div class="planet">
+      <div class="shadow"></div>
+    </div>
+  </div>
+  <div class="earth">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="mars">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+  <div class="jupiter">
+    <div class="planet"><div class="shadow"></div></div>
+  </div>
+</ul>
+</div>
+
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/VirtualGuard-P1/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/VirtualGuard-P2/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&text=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&title=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&is_video=false&description=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization&body=Check out this article: https://mrt4ntr4.github.io/VirtualGuard-P2/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&title=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&title=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&title=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&title=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&name=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/VirtualGuard-P2/&t=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Initial-Analysis"><span class="toc-number">2.</span> <span class="toc-text">Initial Analysis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Devirtualization"><span class="toc-number">3.</span> <span class="toc-text">Devirtualization</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AnalyzeResources"><span class="toc-number">4.</span> <span class="toc-text">AnalyzeResources</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AnalyzeMethod"><span class="toc-number">5.</span> <span class="toc-text">AnalyzeMethod</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#InitializeMethod"><span class="toc-number">6.</span> <span class="toc-text">InitializeMethod</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#InitializeReplace"><span class="toc-number">7.</span> <span class="toc-text">InitializeReplace</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#The-Crack"><span class="toc-number">8.</span> <span class="toc-text">The Crack</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Conclusion"><span class="toc-number">9.</span> <span class="toc-text">Conclusion</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#References"><span class="toc-number">10.</span> <span class="toc-text">References</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        A Tale of .Net Deobfuscation - VirtualGuard Devirtualization
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Suraj Malhotra</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-03-27T22:00:00.000Z" itemprop="datePublished">2023-03-28</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Tools/">Tools</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Net/" rel="tag">.Net</a>, <a class="tag-link-link" href="/tags/Obfuscation/" rel="tag">Obfuscation</a>, <a class="tag-link-link" href="/tags/vm/" rel="tag">vm</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<hr>
+<blockquote>
+<p>This is the second part on the VirtualGuard Protector series which focuses on the virtualization techniques. I write a devirt for the VMs implemented in VirtualGuard using AsmResolver. If you missed the first part about basic deobfuscation techniques in .Net samples, you can read it <a href="/VirtualGuard-P1/">here</a>.  </p>
+</blockquote>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>There are two different VMs released for VirtualGuard till now ie. Spider and Crocodile. Spider was released first and is trivial to solve as it has almost 1:1 mapping with the CIL Instruction set. We’ll talk about the Crocodile VM in this post, as Spider being very trivial is left as an exercise for the reader.<br>From the first part we now have the deobfuscated binaries of the crackmes which will make our task much easier. You could also download them from the links below : </p>
+<p><a href="/files/virtualguard/test-guarded_spider-cleaned.exe">Cleaned Spider 🕸</a>   |   <a href="/files/virtualguard/test-guarded_croc-cleaned.exe">Cleaned Crocodile 🐊</a></p>
+<hr>
+<h1 id="Initial-Analysis"><a href="#Initial-Analysis" class="headerlink" title="Initial Analysis"></a>Initial Analysis</h1><p>I did some debugging and wrote a toy disassembler for the Crocodile VM. You can checkout the disassembled output <a target="_blank" rel="noopener" href="https://gist.github.com/mrT4ntr4/75405c505984640d505fc8c0ccc2c3b1">here</a>. Although the challenge had been solved with it but Mito motivated me to develop a devirt for it.  </p>
+<h1 id="Devirtualization"><a href="#Devirtualization" class="headerlink" title="Devirtualization"></a>Devirtualization</h1><p>I chose <a target="_blank" rel="noopener" href="https://github.com/Washi1337/AsmResolver">AsmResolver</a> over <a target="_blank" rel="noopener" href="https://github.com/0xd4d/dnlib">dnlib</a> to code the Devirt this time because :</p>
+<ol>
+<li>I liked its syntax and it also has prety good documentation <a target="_blank" rel="noopener" href="https://asmresolver.readthedocs.io/">here</a>.</li>
+<li>It is deveoped by <a target="_blank" rel="noopener" href="https://github.com/Washi1337">Washi</a>, who is also the author of OldRod and therefore I’m a fan.</li>
+<li>Heck yeah! Why Not?  </li>
+</ol>
+<p>I followed the coding standards of other Devirts like <a target="_blank" rel="noopener" href="https://github.com/congviet/MemeVMDevirt">MemeDevirt</a> as it divides a VM Devirt into various stages thus making it easier to follow along.  </p>
+<p><a href="/img/virtualguard2/stages.png" class="gallery-item"><img src="/img/virtualguard2/stages.png"></a></p>
+<p>We’ll now discuss about all these stages in detail.  </p>
+<h1 id="AnalyzeResources"><a href="#AnalyzeResources" class="headerlink" title="AnalyzeResources"></a>AnalyzeResources</h1><p>The VMInit method gets the resouce “crocodile” from the executable.  </p>
+<p><a href="/img/virtualguard2/croc_vminit1.png" class="gallery-item"><img src="/img/virtualguard2/croc_vminit1.png"></a></p>
+<p>This is the VM Bytecode. We can get the resource data using AsmResolver in the following way.  </p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ManifestResource resource = (<span class="keyword">from</span> x <span class="keyword">in</span> module.Resources </span><br><span class="line">                                    <span class="keyword">where</span> x.Name == <span class="string">&quot;crocodile&quot;</span> </span><br><span class="line">                                       	<span class="keyword">select</span> x).First();</span><br><span class="line">VM.CrocodileBytecode = resource.GetData();</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="AnalyzeMethod"><a href="#AnalyzeMethod" class="headerlink" title="AnalyzeMethod"></a>AnalyzeMethod</h1><p>We now need to identify all the virtualized methods and gather information about them.  </p>
+<p><a href="/img/virtualguard2/croc_entry.png" class="gallery-item"><img src="/img/virtualguard2/croc_entry.png"></a></p>
+<p>I just wrote a simple signature for their detection that checks whether a call to the method <strong>A4FD01::2CDA08</strong> exists, ie. the VM Dispatcher. This isn’t a good signature as the method name could be renamed in another executable but for now let’s not worry about it. We need other information such as token used for the method disassembly (disasConst) and the type signatures of the arguments to the dispatcher.  </p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (methodInstr[instrCount - <span class="number">3</span>].OpCode == CilOpCodes.Call</span><br><span class="line">    &amp;&amp; methodInstr[instrCount - <span class="number">3</span>].Operand.ToString().Contains(<span class="string">&quot;A4FD01::2CDA08&quot;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span> disasConst = methodInstr[instrCount - <span class="number">4</span>].GetLdcI4Constant();</span><br><span class="line">    List&lt;TypeSignature&gt; paramTypes = <span class="keyword">new</span> List&lt;TypeSignature&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> methodInstr)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (item.OpCode == CilOpCodes.Ldarg)</span><br><span class="line">        &#123;</span><br><span class="line">            Parameter pp = item.Operand <span class="keyword">as</span> Parameter;</span><br><span class="line">            paramTypes.Add(pp.ParameterType);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    VM.MethodVirt.Add(<span class="keyword">new</span> VMMethod(method.FullName, disasConst, paramTypes, method));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="InitializeMethod"><a href="#InitializeMethod" class="headerlink" title="InitializeMethod"></a>InitializeMethod</h1><p>The constructor calls the <strong>VMInit</strong> method with an integer argument. </p>
+<p><a href="/img/virtualguard2/croc_cctor.png" class="gallery-item"><img src="/img/virtualguard2/croc_cctor.png"></a></p>
+<p>Every byte from the VM Bytecode is first xored with this constructor argument. It is also used as a xor operand for calculating the number of VM blocks afterwards. </p>
+<p><a href="/img/virtualguard2/croc_vminit3.png" class="gallery-item"><img src="/img/virtualguard2/croc_vminit3.png"></a></p>
+<p>The VMInit function parses the VM Bytecode for block instructions. There are two operands for every instruction. Our code for parsing looks pretty similar.  </p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> numBlocks = _reader.ReadInt32() ^ cctorArg;</span><br><span class="line">List&lt;<span class="built_in">int</span>&gt; blockTokens = <span class="keyword">new</span> List&lt;<span class="built_in">int</span>&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; numBlocks; i++)</span><br><span class="line">&#123;</span><br><span class="line">    List&lt;VMInstruction&gt; blockInstructions = <span class="keyword">new</span> List&lt;VMInstruction&gt;();</span><br><span class="line">    <span class="built_in">int</span> token = _reader.ReadInt32() ^ numBlocks;</span><br><span class="line">    <span class="built_in">int</span> numInstr = _reader.ReadInt32() ^ numBlocks;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; numInstr; j++)</span><br><span class="line">    &#123;</span><br><span class="line">        VMInstruction vmInstr = <span class="keyword">new</span> VMInstruction</span><br><span class="line">        &#123;</span><br><span class="line">            Opcode = _reader.ReadByte(),</span><br><span class="line">            Operand1 = VMInstruction.ReadOperand(_reader),</span><br><span class="line">            Operand2 = VMInstruction.ReadOperand(_reader),</span><br><span class="line">        &#125;;</span><br><span class="line">        blockInstructions.Add(vmInstr);</span><br><span class="line">    &#125;</span><br><span class="line">    VM.Blocks.Add(token, blockInstructions);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h1 id="InitializeReplace"><a href="#InitializeReplace" class="headerlink" title="InitializeReplace"></a>InitializeReplace</h1><p>Lets talk about disassembling the VM now. We find a typical VM Dispatcher with a while loop executing VM instructions which depends on a State variable to continue execution.  </p>
+<p><a href="/img/virtualguard2/croc_vmdispatcher.png" class="gallery-item"><img src="/img/virtualguard2/croc_vmdispatcher.png"></a></p>
+<p>The Execution State is set to CONTINUE. The stack is initialized with a size of 10 elements and local variables list with a size of 60 variables.  </p>
+<p><a href="/img/virtualguard2/croc_handlers.png" class="gallery-item"><img src="/img/virtualguard2/croc_handlers.png"></a></p>
+<p>The Crocodile VM consists of 25 Handlers.<br>Lets take an example of the PUSH instruction implemented in the VM.<br>There are three variants of PUSH instruction.</p>
+<ul>
+<li>PUSH Member</li>
+<li>PUSH Constant</li>
+<li>PUSH LocalVariable</li>
+</ul>
+<p><a href="/img/virtualguard2/push_variants.png" class="gallery-item"><img src="/img/virtualguard2/push_variants.png"></a></p>
+<p>A value is pushed to stack with the following method :</p>
+<p><a href="/img/virtualguard2/push_handler.png" class="gallery-item"><img src="/img/virtualguard2/push_handler.png"></a></p>
+<p>Mito also told me that the opcode for handlers is randomized for every other protected executable. One way to deal with it is to write signatures for those handlers or manually point them out by maybe developing an extension using dnspyEx. I didn’t bother doing that as I didn’t want to put that much effort at this time.  </p>
+<p>Main part of the Replace Phase is replacing the Branch Instructions as the target instruction is represented by another block token instead of an offset from the beginning of the instruction following the current instruction.  </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">V_19 = <span class="number">0x000947b4</span> </span><br><span class="line">brfalse V_19</span><br><span class="line">V_20 = <span class="number">0x000dcd6c</span> </span><br><span class="line">br V_20</span><br></pre></td></tr></table></figure>
+<p>So my idea was to devirt following the Br instructions till we encounter a Ret instruction and in the end we could proceed with the conditional branches.  We can either opt for recursion or stack based approach. I chose the latter. </p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (simpleBrStack.Count &gt; <span class="number">0</span> || condBrStack.Count &gt; <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (simpleBrStack.Count &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// we need to disassemble a simple branch</span></span><br><span class="line">        <span class="keyword">var</span> simpleBrData = simpleBrStack.Pop();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (condBrStack.Count &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// we need to disassemble a conditional branch</span></span><br><span class="line">        <span class="keyword">var</span> condBrData = condBrStack.Pop();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Some instructions are devirtualized with pattern matching. If you’ll look at the devirt source you’ll find that the handler for 0x15 is ldarg but instead its a PUSH instruction according to the original VM handler.<br>The following pattern translates to <strong>ldarg.1</strong></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x15</span> <span class="number">0x00000001</span></span><br><span class="line"><span class="number">0x6</span> <span class="number">0x00000000</span> <span class="number">0x0000003c</span></span><br></pre></td></tr></table></figure>
+<p>We also need to link the Br Instructions to their target instruction. This could be done later on with the help of AsmResolver’s <strong>CILInstrucionLabel</strong>.<br>My devirt handler for the Br instructions is the following: </p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">simpleBrLabel = <span class="keyword">new</span> CilInstructionLabel();</span><br><span class="line">BlockIns.Add(<span class="keyword">new</span> CilInstruction(CilOpCodes.Br, simpleBrLabel));</span><br><span class="line">destAddr = localsStore[operand1];</span><br><span class="line">simpleBrStack.Push((destAddr, simpleBrLabel));</span><br></pre></td></tr></table></figure>
+<p>After disassembling, we can link the label instruction to the first instruction of the block. </p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_currentBlockLabel.Instruction = BlockIns[<span class="number">0</span>];</span><br></pre></td></tr></table></figure>
+<p>We also need to keep a track of the type information for local variables. For this I use a stack as well. For eg. if there is a call to a method, we need to note the return type and assign it to the local variable where the return value is being popped into.  </p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (returnType.ElementType != ElementType.Void)</span><br><span class="line">    typeInfoStack.Push(returnType);</span><br></pre></td></tr></table></figure>
+<p>Also we now no longer need the module constructor to initialize the VM so we can remove the VMInit call.  </p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> instrs = moduleCtr.CilMethodBody.Instructions;</span><br><span class="line">instrs.RemoveRange(<span class="number">0</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+
+<h1 id="The-Crack"><a href="#The-Crack" class="headerlink" title="The Crack"></a>The Crack</h1><p>After devirtualization, the Main method looks like the following :</p>
+<p><a href="/img/virtualguard2/devirt_entry.png" class="gallery-item"><img src="/img/virtualguard2/devirt_entry.png"></a></p>
+<p>The devirtualized code for the Validate method could be simplified further with the help of de4dot.blocks. I made a simple <a target="_blank" rel="noopener" href="https://github.com/mrT4ntr4/BlockSimplifier">utility</a> for it.  </p>
+<p><a href="/img/virtualguard2/result_validate.png" class="gallery-item"><img src="/img/virtualguard2/result_validate.png"></a></p>
+<p>The crack is rather simple and it just checks whether character ‘d’ occurs twice in our password. FYI, There was a bug in the original crackme which compares the password characters to “100” instead of “d” (ie. chr(100)) and to my surprise, my devirt fixed it 😂. </p>
+<p><a href="/img/virtualguard2/bug_fixed.png" class="gallery-item"><img src="/img/virtualguard2/bug_fixed.png"></a></p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><blockquote>
+<p>You could download the devirtualized version of the crackmes from the links below :<br><a href="/files/virtualguard/test-guarded_spider-cleaned_Devirt.exe"> Devirtualized Spider 🕸</a>   |   <a href="/files/virtualguard/test-guarded_croc-cleaned_Devirt.exe">Devirtualized Crocodile 🐊</a><br>I’ve also open sourced the VirtualGuard Devirt. Here you go!<br><a target="_blank" rel="noopener" href="https://github.com/mrT4ntr4/VirtualGuard-Devirt">https://github.com/mrT4ntr4/VirtualGuard-Devirt</a></p>
+</blockquote>
+<p>It was my first time developing a devirt for any crackme so it was a fun adventure. Thanks for it, Mito. I’m looking forward to the next VirtualGuard VM. We may also get to read Mito’s blog on VirtualGuard from a developer’s perspective pretty soon 🤞.</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><p><a target="_blank" rel="noopener" href="https://github.com/congviet/MemeVMDevirt">https://github.com/congviet/MemeVMDevirt</a><br><a target="_blank" rel="noopener" href="https://github.com/Washi1337/OldRod">https://github.com/Washi1337/OldRod</a><br><a target="_blank" rel="noopener" href="https://github.com/saneki/eazdevirt">https://github.com/saneki/eazdevirt</a></p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Initial-Analysis"><span class="toc-number">2.</span> <span class="toc-text">Initial Analysis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Devirtualization"><span class="toc-number">3.</span> <span class="toc-text">Devirtualization</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AnalyzeResources"><span class="toc-number">4.</span> <span class="toc-text">AnalyzeResources</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AnalyzeMethod"><span class="toc-number">5.</span> <span class="toc-text">AnalyzeMethod</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#InitializeMethod"><span class="toc-number">6.</span> <span class="toc-text">InitializeMethod</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#InitializeReplace"><span class="toc-number">7.</span> <span class="toc-text">InitializeReplace</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#The-Crack"><span class="toc-number">8.</span> <span class="toc-text">The Crack</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Conclusion"><span class="toc-number">9.</span> <span class="toc-text">Conclusion</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#References"><span class="toc-number">10.</span> <span class="toc-text">References</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mrt4ntr4.github.io/VirtualGuard-P2/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&text=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&title=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&is_video=false&description=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization&body=Check out this article: https://mrt4ntr4.github.io/VirtualGuard-P2/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&title=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&title=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&title=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&title=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mrt4ntr4.github.io/VirtualGuard-P2/&name=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mrt4ntr4.github.io/VirtualGuard-P2/&t=A Tale of .Net Deobfuscation - VirtualGuard Devirtualization"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2023
+    Suraj Malhotra
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Posts</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"CTRL+C\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight .code").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+      setTimeout(function() {
+        e.trigger.setAttribute('aria-label', "CTRL+C");
+      }, 2000);
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-132815766-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-132815766-1');
+    </script>
+
+
+
+
+
+
+
+
+</body>
+</html>
