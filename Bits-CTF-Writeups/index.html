@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="article">
+    <meta name="description" content="BitsCTF 2019 had somewhat medium and easy challs too.At the end my team was finally able to secure a rank in the  Top 10 with 1745 pts.      EasyPoints (Web) As the challenge says to Look UP.I quickl">
+<meta property="og:type" content="article">
 <meta property="og:title" content="BITS CTF 2019">
 <meta property="og:url" content="https://mrt4ntr4.github.io/Bits-CTF-Writeups/index.html">
 <meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:description" content="BitsCTF 2019 had somewhat medium and easy challs too.At the end my team was finally able to secure a rank in the  Top 10 with 1745 pts.      EasyPoints (Web) As the challenge says to Look UP.I quickl">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/bits/bitsthumb.png">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/bits/scorebits.png">
@@ -120,6 +122,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </span>
@@ -207,44 +211,39 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/bits/bitsthumb.png" title="banner" class="gallery-item"><img src="/img/bits/bitsthumb.png" alt="banner"></a></p>
+    <div class=".post-images"><p><a href="/img/bits/bitsthumb.png" title="banner" class="post-image-item"><img src="/img/bits/bitsthumb.png" alt="banner"></a></p>
 <p>BitsCTF 2019 had somewhat medium and easy challs too.<br>At the end my team was finally able to secure a rank in the  Top 10 with 1745 pts.</p>
-<p><a href="/img/bits/scorebits.png" class="gallery-item"><img src="/img/bits/scorebits.png"></a>   </p>
+<p><a href="/img/bits/scorebits.png" class="post-image-item"><img src="/img/bits/scorebits.png"></a>   </p>
 <hr>
-<h1 id="EasyPoints-Web"><a href="#EasyPoints-Web" class="headerlink" title="EasyPoints (Web)"></a>EasyPoints (Web)</h1><p><a href="/img/bits/easythumb.png" class="gallery-item"><img src="/img/bits/easythumb.png"></a></p>
+<h1 id="EasyPoints-Web"><a href="#EasyPoints-Web" class="headerlink" title="EasyPoints (Web)"></a>EasyPoints (Web)</h1><p><a href="/img/bits/easythumb.png" class="post-image-item"><img src="/img/bits/easythumb.png"></a></p>
 <p>As the challenge says to <strong>Look UP</strong>.<br>I quickly use <a target="_blank" rel="noopener" href="https://mxtoolbox.com/">mxtool</a> to carry a txt record lookup.    </p>
-<p><a href="/img/bits/easy1.png" class="gallery-item"><img src="/img/bits/easy1.png"></a></p>
+<p><a href="/img/bits/easy1.png" class="post-image-item"><img src="/img/bits/easy1.png"></a></p>
 <p>I found a base64 encoded string, Yip33 !!  </p>
-<p><a href="/img/bits/easy2.png" class="gallery-item"><img src="/img/bits/easy2.png"></a>   </p>
+<p><a href="/img/bits/easy2.png" class="post-image-item"><img src="/img/bits/easy2.png"></a>   </p>
 <p>That was not enough :(</p>
-<p><a href="/img/bits/easy3.png" class="gallery-item"><img src="/img/bits/easy3.png"></a></p>
+<p><a href="/img/bits/easy3.png" class="post-image-item"><img src="/img/bits/easy3.png"></a></p>
 <p>I moved on !! and observed the Response Headers.<br>One of them <strong>X-Flag</strong> contained the flag…</p>
-<p><a href="/img/bits/easy4.png" class="gallery-item"><img src="/img/bits/easy4.png"></a></p>
-<h1 id="SPIFFED-Forensics"><a href="#SPIFFED-Forensics" class="headerlink" title="SPIFFED (Forensics)"></a>SPIFFED (Forensics)</h1><p><a href="/img/bits/spiffthumb.png" class="gallery-item"><img src="/img/bits/spiffthumb.png"></a></p>
+<p><a href="/img/bits/easy4.png" class="post-image-item"><img src="/img/bits/easy4.png"></a></p>
+<h1 id="SPIFFED-Forensics"><a href="#SPIFFED-Forensics" class="headerlink" title="SPIFFED (Forensics)"></a>SPIFFED (Forensics)</h1><p><a href="/img/bits/spiffthumb.png" class="post-image-item"><img src="/img/bits/spiffthumb.png"></a></p>
 <p>I checked what type of file it was.. but sadly that didn’t help …<br>And I moved on with hexeditor , but nothing seemed interesting so I checked for some embedded files using binwalk and got the following output.</p>
-<p><a href="/img/bits/spiff1.png" class="gallery-item"><img src="/img/bits/spiff1.png"></a>  </p>
-<p>But wait I didn’t get the <em>_extracted</em> folder. I can smell the hardness of level now !!<br>I checked the headers if they were correct for the <strong>ARJ archieve data file</strong>.<br><a href="/img/bits/spiff2.png" class="gallery-item"><img src="/img/bits/spiff2.png"></a></p>
+<p><a href="/img/bits/spiff1.png" class="post-image-item"><img src="/img/bits/spiff1.png"></a>  </p>
+<p>But wait I didn’t get the <em>_extracted</em> folder. I can smell the hardness of level now !!<br>I checked the headers if they were correct for the <strong>ARJ archieve data file</strong>.<br><a href="/img/bits/spiff2.png" class="post-image-item"><img src="/img/bits/spiff2.png"></a></p>
 <p> And to my surprise it was wrong…</p>
-<p><a href="/img/bits/spiff3.png" class="gallery-item"><img src="/img/bits/spiff3.png"></a></p>
+<p><a href="/img/bits/spiff3.png" class="post-image-item"><img src="/img/bits/spiff3.png"></a></p>
 <p> After correcting the header using hexeditor I navigated into the <strong>_extracted</strong> directory.  </p>
-<p><a href="/img/bits/spiff4.png" class="gallery-item"><img src="/img/bits/spiff4.png"></a></p>
+<p><a href="/img/bits/spiff4.png" class="post-image-item"><img src="/img/bits/spiff4.png"></a></p>
 <p>And I observed that all files were containing some gibberish text.<br>After some tinkering around and decreasing my font size I got to see the FLAG ..</p>
 <p>B00mYa!! Lets the drinks go on..</p>
-<p><a href="/img/bits/spiff5.png" class="gallery-item"><img src="/img/bits/spiff5.png"></a></p>
+<p><a href="/img/bits/spiff5.png" class="post-image-item"><img src="/img/bits/spiff5.png"></a></p>
 <p>And the flag was <strong>BITSCTF{I_L0v3_D0g5_D0_Y0u??}</strong></p>
-<h1 id="WhatAgain-Crypto"><a href="#WhatAgain-Crypto" class="headerlink" title="WhatAgain (Crypto)"></a>WhatAgain (Crypto)</h1><p><a href="/img/bits/cryptothumb.png" class="gallery-item"><img src="/img/bits/cryptothumb.png"></a>  </p>
+<h1 id="WhatAgain-Crypto"><a href="#WhatAgain-Crypto" class="headerlink" title="WhatAgain (Crypto)"></a>WhatAgain (Crypto)</h1><p><a href="/img/bits/cryptothumb.png" class="post-image-item"><img src="/img/bits/cryptothumb.png"></a>  </p>
 <p>This task was completed by my teammate..<br>So all the credit goes to him :P</p>
 <p>After struggling for a while to find what kind of encryption is it..<br>There were many discussions regarding this question XD</p>
 <p>At last it was a simple Base91 encoded String !!!</p>
-<p><a href="/img/bits/crypto1.png" class="gallery-item"><img src="/img/bits/crypto1.png"></a></p>
+<p><a href="/img/bits/crypto1.png" class="post-image-item"><img src="/img/bits/crypto1.png"></a></p>
 <p>We used Base91 Decoder from <a target="_blank" rel="noopener" href="https://www.dcode.fr/base-91-encoding">dcode</a><br>and got flag as the Result. </p>
-<p><a href="/img/bits/crypto2.png" class="gallery-item"><img src="/img/bits/crypto2.png"></a></p>
-</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
-        var options = {
-            selector: '.gallery-item'
-        };
-        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
-        }</script>
+<p><a href="/img/bits/crypto2.png" class="post-image-item"><img src="/img/bits/crypto2.png"></a></p>
+</div>
   </div>
 </article>
 
@@ -264,6 +263,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </div>
@@ -305,7 +306,7 @@
     Copyright &copy;
     
     
-    2021-2023
+    2021-2024
     Suraj Malhotra
   </div>
   <div class="footer-right">
@@ -319,6 +320,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </nav>
@@ -334,12 +337,47 @@
 <link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
 
 
+<link rel="stylesheet" href="/lib/lightgallery/css/lightgallery.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-zoom.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-thumbnail.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-autoplay.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-transitions.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-fullscreen.css">
+
     <!-- jquery -->
 
 <script src="/lib/jquery/jquery.min.js"></script>
 
 
 <script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- lightgallery -->
+
+<script src="/lib/lightgallery/lightgallery.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/autoplay/lg-autoplay.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
+
+
 
 <!-- clipboard -->
 

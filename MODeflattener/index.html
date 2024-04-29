@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="article">
+    <meta name="description" content="So recently a challenge(Layers) from 3kCTF featured control flow flattening using OLLVM. Although I did know about control flow flattening I hadn’t encountered it personally. And as I’ve been experime">
+<meta property="og:type" content="article">
 <meta property="og:title" content="MODeflattener - Miasm&#39;s OLLVM Deflattener">
 <meta property="og:url" content="https://mrt4ntr4.github.io/MODeflattener/index.html">
 <meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:description" content="So recently a challenge(Layers) from 3kCTF featured control flow flattening using OLLVM. Although I did know about control flow flattening I hadn’t encountered it personally. And as I’ve been experime">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/modeflattener/cff_pass.png">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/modeflattener/cff_illustration.png">
@@ -109,6 +111,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </span>
@@ -196,11 +200,11 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p>So recently a challenge(<a href="/files/modeflattener/layers-729d7c2b1e12d9598e9bf6bc247ce0ba.zip" target="_blank">Layers</a>) from <a target="_blank" rel="noopener" href="https://ctftime.org/event/1317">3kCTF</a> featured control flow flattening using OLLVM. Although I did know about control flow flattening I hadn’t encountered it personally. And as I’ve been experimenting with miasm for the past few days I thought of developing a tool to deal with it.  </p>
-<h1 id="Control-Flow-Flattenning"><a href="#Control-Flow-Flattenning" class="headerlink" title="Control Flow Flattenning"></a>Control Flow Flattenning</h1><p><a href="/img/modeflattener/cff_pass.png" title="cff transformation" class="gallery-item"><img src="/img/modeflattener/cff_pass.png" alt="cff transformation"></a></p>
+    <div class=".post-images"><p>So recently a challenge(<a href="/files/modeflattener/layers-729d7c2b1e12d9598e9bf6bc247ce0ba.zip" target="_blank">Layers</a>) from <a target="_blank" rel="noopener" href="https://ctftime.org/event/1317">3kCTF</a> featured control flow flattening using OLLVM. Although I did know about control flow flattening I hadn’t encountered it personally. And as I’ve been experimenting with miasm for the past few days I thought of developing a tool to deal with it.  </p>
+<h1 id="Control-Flow-Flattenning"><a href="#Control-Flow-Flattenning" class="headerlink" title="Control Flow Flattenning"></a>Control Flow Flattenning</h1><p><a href="/img/modeflattener/cff_pass.png" title="cff transformation" class="post-image-item"><img src="/img/modeflattener/cff_pass.png" alt="cff transformation"></a></p>
 <p>Control flow flattening is an interesting and clever technique to make a reverse engineer’s day difficult. It basically puts all the basic blocks in a function at the same level and destroys the control flow. It then uses a dispatcher to reconstruct the control flow along with a control/state variable which is updated at the end of each block.  </p>
 <p>The following illustration depicts various parts of a flattened function.  </p>
-<p><a href="/img/modeflattener/cff_illustration.png" title="cff_illustration" class="gallery-item"><img src="/img/modeflattener/cff_illustration.png" alt="cff_illustration"></a></p>
+<p><a href="/img/modeflattener/cff_illustration.png" title="cff_illustration" class="post-image-item"><img src="/img/modeflattener/cff_illustration.png" alt="cff_illustration"></a></p>
 <p>Various obfuscators employ their own version of control flow flattening transformations :</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/obfuscator-llvm/obfuscator/wiki/Control-Flow-Flattening">OLLVM</a></li>
@@ -216,12 +220,12 @@
 <p>Also we now already have the relevant blocks as they are just the predecessors to the pre-dispatcher we just found!</p>
 <hr>
 <h1 id="State-Variable"><a href="#State-Variable" class="headerlink" title="State Variable"></a>State Variable</h1><p>The state variable is responsible for maintaining the control flow in the flattened function.  </p>
-<p><a href="/img/modeflattener/state_var.png" title="state_var" class="gallery-item"><img src="/img/modeflattener/state_var.png" alt="state_var"></a></p>
+<p><a href="/img/modeflattener/state_var.png" title="state_var" class="post-image-item"><img src="/img/modeflattener/state_var.png" alt="state_var"></a></p>
 <p>The state variable is always initialized before the dispatcher and is used in the first line of the dispatcher. We can use this information to get the state variable automatically.  </p>
 <hr>
 <h1 id="Relevant-Blocks"><a href="#Relevant-Blocks" class="headerlink" title="Relevant Blocks"></a>Relevant Blocks</h1><p>The blocks that are aligned at the same level in the disassembly graph and include the useful code are known as relevant blocks. These blocks update the value of the state variable at the very end.<br><strong>Note:</strong> Currently we also add the <em>tail of the backbone</em> to our relevant blocks as we are just depending on the predecessors of the pre-dispatcher. Basically the tail is used if the state variable value doesn’t satisfy any condition in the backbone. It doesn’t update the state variable and only has a jump to pre-dispatcher.  So if we don’t find any code related to modification of the state variable in a relevant block we mark this as tail.  </p>
 <p>Having most of the information we can now proceed with deflattening the flow.<br>Basically we have two types of relevant blocks:  </p>
-<p><a href="/img/modeflattener/relevant_blocks.png" title="relevant_blocks" class="gallery-item"><img src="/img/modeflattener/relevant_blocks.png" alt="relevant_blocks"></a>  </p>
+<p><a href="/img/modeflattener/relevant_blocks.png" title="relevant_blocks" class="post-image-item"><img src="/img/modeflattener/relevant_blocks.png" alt="relevant_blocks"></a>  </p>
 <ul>
 <li><p><strong>Simple</strong><br>  Block without any conditions, so the state variable is always updated with the same value. Only one instruction is used to modify the state variable.</p>
 </li>
@@ -231,9 +235,9 @@
 <hr>
 <h1 id="Use-of-SSA-Expressions"><a href="#Use-of-SSA-Expressions" class="headerlink" title="Use of SSA Expressions"></a>Use of SSA Expressions</h1><p>We further simplify the IR to SSA to deal with the conditional relevant blocks.<br>We only make use of <code>do_propagate_expressions</code> ssa simplification pass. </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">head = loc_db.get_offset_location(addr)</span><br><span class="line">ssa_simplifier = IRCFGSimplifierSSA(lifter)</span><br><span class="line">ssa = ssa_simplifier.ircfg_to_ssa(ircfg, head)</span><br><span class="line">ssa_simplifier.do_propagate_expressions(ssa, head)</span><br></pre></td></tr></table></figure>
-<p><a href="/img/modeflattener/ssacfg_401a9d.png" title="ssacfg" class="gallery-item"><img src="/img/modeflattener/ssacfg_401a9d.png" alt="ssacfg"></a></p>
+<p><a href="/img/modeflattener/ssacfg_401a9d.png" title="ssacfg" class="post-image-item"><img src="/img/modeflattener/ssacfg_401a9d.png" alt="ssacfg"></a></p>
 <p>In the SSA form we observe a Phi operation which basically means that one of the variables arriving from different predeccesors is chosen depending on which path the control flow took.  </p>
-<p><a href="/img/modeflattener/cmov_example.png" title="cmov_example" class="gallery-item"><img src="/img/modeflattener/cmov_example.png" alt="cmov_example"></a></p>
+<p><a href="/img/modeflattener/cmov_example.png" title="cmov_example" class="post-image-item"><img src="/img/modeflattener/cmov_example.png" alt="cmov_example"></a></p>
 <p>In the above example we observe that if the condition is <em>true</em> the state variable is assigned the value = 0x7A3F9928 (RCX.4) and if <em>false</em> value = 0x30110039 (RCX.2).</p>
 <p>We get the block where the phi variables are assigned using the following code and then get their values from those blocks.  </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> irblock_has_phi(irblock):</span><br><span class="line">    <span class="keyword">for</span> dst, sources <span class="keyword">in</span> viewitems(irblock[<span class="number">0</span>]):</span><br><span class="line">        phi_vars = sources.args</span><br><span class="line">        parent_blks = get_phi_sources_parent_block(</span><br><span class="line">            ircfg,</span><br><span class="line">            irblock.loc_key,</span><br><span class="line">            phi_vars</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
@@ -245,7 +249,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x401a9d</span>: &#123;<span class="string">&#x27;cond&#x27;</span>: <span class="string">&#x27;CMOVB&#x27;</span>,</span><br><span class="line">           <span class="string">&#x27;false_next&#x27;</span>: <span class="number">0x401bb0</span>,</span><br><span class="line">           <span class="string">&#x27;true_next&#x27;</span>: <span class="number">0x401af5</span>&#125;</span><br></pre></td></tr></table></figure>
 <hr>
 <h1 id="Removing-Useless-Instructions"><a href="#Removing-Useless-Instructions" class="headerlink" title="Removing Useless Instructions"></a>Removing Useless Instructions</h1><p>Modeflattener finds the addresses to nop out using the def-use graph for the state variable. This is one of the data flow analysis feature provided by miasm. This algorithm returns all the instructions affecting the state variable and therefore we call these as useless instructions. Read more about it <a target="_blank" rel="noopener" href="https://miasm.re/blog/2017/02/03/data_flow_analysis_depgraph.html">here</a>  </p>
-<p><a href="/img/modeflattener/defuse_state_var_401a9d.png" title="defuse_state_var" class="gallery-item"><img src="/img/modeflattener/defuse_state_var_401a9d.png" alt="defuse_state_var"></a></p>
+<p><a href="/img/modeflattener/defuse_state_var_401a9d.png" title="defuse_state_var" class="post-image-item"><img src="/img/modeflattener/defuse_state_var_401a9d.png" alt="defuse_state_var"></a></p>
 <p>The state variable is always located in one of the leaves in the graph, we can easily get all of its parents using the following code.  </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_state_var_usedefs</span>(<span class="params">ircfg, search_var</span>):</span></span><br><span class="line">    var_addrs = <span class="built_in">set</span>()</span><br><span class="line">    reachings = ReachingDefinitions(ircfg)</span><br><span class="line">    digraph = DiGraphDefUse(reachings)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> leaf <span class="keyword">in</span> digraph.leaves():</span><br><span class="line">        <span class="keyword">if</span> leaf.var == search_var:</span><br><span class="line">            <span class="keyword">for</span> x <span class="keyword">in</span> (digraph.reachable_parents(leaf)):</span><br><span class="line">                var_addrs.add(ircfg.get_block(x.label)[x.index].instr.offset)</span><br><span class="line">    <span class="keyword">return</span> var_addrs</span><br></pre></td></tr></table></figure>
 <h1 id="Patching-and-Reconstructing-the-Control-Flow"><a href="#Patching-and-Reconstructing-the-Control-Flow" class="headerlink" title="Patching and Reconstructing the Control Flow"></a>Patching and Reconstructing the Control Flow</h1><p>While cleaning these useless instructions we have to keep in mind that the call instructions will get affected by this as they are based on relative offsets.<br>We can fix it using the following code :</p>
@@ -257,8 +261,8 @@
 <p>We can nop out the backbone as it is useless now.  </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">backbone_start, backbone_end = dispatcher, tail.offset + tail.l</span><br><span class="line">nop_len = backbone_end - backbone_start</span><br><span class="line">patches[backbone_start] = <span class="string">b&quot;\x90&quot;</span> * nop_len</span><br></pre></td></tr></table></figure>
 <hr>
-<h1 id="Final-Results"><a href="#Final-Results" class="headerlink" title="Final Results"></a>Final Results</h1><h2 id="Graph-View"><a href="#Graph-View" class="headerlink" title="Graph View"></a>Graph View</h2><p><a href="/img/modeflattener/results_dg.png" title="results" class="gallery-item"><img src="/img/modeflattener/results_dg.png" alt="results"></a></p>
-<h2 id="F5-View"><a href="#F5-View" class="headerlink" title="F5 View"></a>F5 View</h2><p><a href="/img/modeflattener/dec_comparision.png" title="dec_comparision" class="gallery-item"><img src="/img/modeflattener/dec_comparision.png" alt="dec_comparision"></a></p>
+<h1 id="Final-Results"><a href="#Final-Results" class="headerlink" title="Final Results"></a>Final Results</h1><h2 id="Graph-View"><a href="#Graph-View" class="headerlink" title="Graph View"></a>Graph View</h2><p><a href="/img/modeflattener/results_dg.png" title="results" class="post-image-item"><img src="/img/modeflattener/results_dg.png" alt="results"></a></p>
+<h2 id="F5-View"><a href="#F5-View" class="headerlink" title="F5 View"></a>F5 View</h2><p><a href="/img/modeflattener/dec_comparision.png" title="dec_comparision" class="post-image-item"><img src="/img/modeflattener/dec_comparision.png" alt="dec_comparision"></a></p>
 <hr>
 <h1 id="Get-MODeflattener"><a href="#Get-MODeflattener" class="headerlink" title="Get MODeflattener"></a>Get MODeflattener</h1><blockquote>
 <p>I’ve open sourced the tool on my github. I’ve added some samples to test it as well. Try it out!<br>  <a target="_blank" rel="noopener" href="https://github.com/mrT4ntr4/MODeflattener">https://github.com/mrT4ntr4/MODeflattener</a></p>
@@ -271,12 +275,7 @@
 </ul>
 <hr>
 <h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><p><a target="_blank" rel="noopener" href="https://rpis.ec/blog/dissection-llvm-obfuscator-p1/">Dissecting LLVM Obfuscator - RPISEC</a><br><a target="_blank" rel="noopener" href="https://synthesis.to/2021/03/03/flattening_detection.html">Automated Detection of Control-flow Flattening - Tim Blazytko</a>  </p>
-</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
-        var options = {
-            selector: '.gallery-item'
-        };
-        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
-        }</script>
+</div>
   </div>
 </article>
 
@@ -296,6 +295,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </div>
@@ -337,7 +338,7 @@
     Copyright &copy;
     
     
-    2021-2023
+    2021-2024
     Suraj Malhotra
   </div>
   <div class="footer-right">
@@ -351,6 +352,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </nav>
@@ -366,12 +369,47 @@
 <link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
 
 
+<link rel="stylesheet" href="/lib/lightgallery/css/lightgallery.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-zoom.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-thumbnail.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-autoplay.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-transitions.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-fullscreen.css">
+
     <!-- jquery -->
 
 <script src="/lib/jquery/jquery.min.js"></script>
 
 
 <script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- lightgallery -->
+
+<script src="/lib/lightgallery/lightgallery.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/autoplay/lg-autoplay.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
+
+
 
 <!-- clipboard -->
 

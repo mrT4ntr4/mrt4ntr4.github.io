@@ -1,14 +1,38 @@
 /**
  * Sets up Justified Gallery.
  */
-if (!!$.prototype.justifiedGallery) {
+/*if (!!$.prototype.justifiedGallery) {
   var options = {
     rowHeight: 140,
     margins: 4,
     lastRow: "justify"
   };
   $(".article-gallery").justifiedGallery(options);
-}
+}*/
+
+$("#animated-thumbnails-gallery")
+  .justifiedGallery({
+    captions: false,
+    lastRow: "justify",
+    rowHeight: 180,
+    margins: 5,
+    waitThumbnailsLoad: false,
+  })
+  .on("jg.complete", function () {
+    lightGallery(document.getElementById("animated-thumbnails-gallery"), {
+      mode: 'lg-fade',
+      plugins: [lgZoom, lgThumbnail, lgAutoplay, lgFullscreen],
+    });
+  });
+
+/**
+ * Sets up localgallery.
+ */
+
+var options = {
+    selector: '.post-image-item'
+};
+lightGallery(document.getElementsByClassName('.post-images')[0], options);
 
 $(window).on('load', function() {
     

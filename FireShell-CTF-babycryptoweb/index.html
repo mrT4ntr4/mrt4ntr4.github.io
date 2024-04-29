@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="article">
+    <meta name="description" content="To get started I want to tell my experience regarding this CTF. Fireshell CTF was both Fun and Weird.. It had challenges on some uncommon categories like PPC and RECON which were fun.But Let me get y">
+<meta property="og:type" content="article">
 <meta property="og:title" content="FireShell CTF [babycryptoweb]">
 <meta property="og:url" content="https://mrt4ntr4.github.io/FireShell-CTF-babycryptoweb/index.html">
 <meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:description" content="To get started I want to tell my experience regarding this CTF. Fireshell CTF was both Fun and Weird.. It had challenges on some uncommon categories like PPC and RECON which were fun.But Let me get y">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/fireshell/fThumb.png">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/fireshell/f6.png">
@@ -108,6 +110,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </span>
@@ -195,20 +199,20 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/fireshell/fThumb.png" title="banner" class="gallery-item"><img src="/img/fireshell/fThumb.png" alt="banner"></a></p>
+    <div class=".post-images"><p><a href="/img/fireshell/fThumb.png" title="banner" class="post-image-item"><img src="/img/fireshell/fThumb.png" alt="banner"></a></p>
 <p>To get started I want to tell my experience regarding this CTF.</p>
 <p>Fireshell CTF was both Fun and Weird..</p>
 <p>It had challenges on some uncommon categories like PPC and RECON which were fun.<br>But Let me get you straight to the point. It was bit confusing as very less hints were given.</p>
 <p>So To begin with, <strong>BabyCryptoWeb</strong> was too easy but it was difficult for those who overlook things. XD</p>
-<p><a href="/img/fireshell/f6.png" class="gallery-item"><img src="/img/fireshell/f6.png"></a></p>
+<p><a href="/img/fireshell/f6.png" class="post-image-item"><img src="/img/fireshell/f6.png"></a></p>
 <p>It was named so as there were two methods of solving this challenge (Web and Crypto).<br>Seems Interesting</p>
 <p>I started by gathering some info through the code which was given to us on the webpage.</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$code</span> = <span class="string">&#x27;$kkk=5;$s=&quot;e1iwZaNolJeuqWiUp6pmo2iZlKKulJqjmKeupalmnmWjVrI=&quot;;$s=base64_decode($s);$res=&quot;&quot;;for($i=0,$j=strlen($s);$i&lt;$j;$i++)&#123;$ch=substr($s,$i,1);$kch=substr($kkk,($i%strlen($kkk))-1,1);$ch=chr(ord($ch)+ord($kch));$res.=$ch;&#125;;echo $res;&#x27;</span>;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;p&#x27;</span>]) &amp;&amp; <span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;b&#x27;</span>]) &amp;&amp; strlen(<span class="variable">$_GET</span>[<span class="string">&#x27;b&#x27;</span>]) === <span class="number">1</span> &amp;&amp; is_numeric(<span class="variable">$_GET</span>[<span class="string">&#x27;p&#x27;</span>]) &amp;&amp; (<span class="keyword">int</span>) <span class="variable">$_GET</span>[<span class="string">&#x27;p&#x27;</span>] &lt; strlen(<span class="variable">$code</span>)) &#123;</span><br><span class="line">    <span class="variable">$p</span> = (<span class="keyword">int</span>) <span class="variable">$_GET</span>[<span class="string">&#x27;p&#x27;</span>];</span><br><span class="line">    <span class="variable">$code</span>[<span class="variable">$p</span>] = <span class="variable">$_GET</span>[<span class="string">&#x27;b&#x27;</span>];</span><br><span class="line">    <span class="keyword">eval</span>(<span class="variable">$code</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    show_source(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span>      </span><br></pre></td></tr></table></figure>
-<p><a href="/img/fireshell/f1.png" class="gallery-item"><img src="/img/fireshell/f1.png"></a></p>
+<p><a href="/img/fireshell/f1.png" class="post-image-item"><img src="/img/fireshell/f1.png"></a></p>
 <p>Then I copied all the code in the $code variable on my local machine and made a file as babyweb.php.<br>As all the challenge requires is to understand the code ..<br>It’s a bit obvious .LOLs</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$kkk</span>=<span class="number">5</span>;</span><br><span class="line"><span class="variable">$s</span>=<span class="string">&quot;e1iwZaNolJeuqWiUp6pmo2iZlKKulJqjmKeupalmnmWjVrI=&quot;</span>;</span><br><span class="line"><span class="variable">$s</span>=base64_decode(<span class="variable">$s</span>);</span><br><span class="line"><span class="variable">$res</span>=<span class="string">&quot;&quot;</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>,<span class="variable">$j</span>=strlen(<span class="variable">$s</span>);<span class="variable">$i</span>&lt;<span class="variable">$j</span>;<span class="variable">$i</span>++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$ch</span>=substr(<span class="variable">$s</span>,<span class="variable">$i</span>,<span class="number">1</span>);</span><br><span class="line">    <span class="variable">$kch</span>=substr(<span class="variable">$kkk</span>,(<span class="variable">$i</span>%strlen(<span class="variable">$kkk</span>))-<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">    <span class="variable">$ch</span>=chr(ord(<span class="variable">$ch</span>)+ord(<span class="variable">$kch</span>));</span><br><span class="line">    <span class="variable">$res</span>.=<span class="variable">$ch</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$res</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span>  </span><br></pre></td></tr></table></figure>
 <p>I ran the php code on my terminal and got some weird looking text :(</p>
-<p><a href="/img/fireshell/f3.png" class="gallery-item"><img src="/img/fireshell/f3.png"></a></p>
+<p><a href="/img/fireshell/f3.png" class="post-image-item"><img src="/img/fireshell/f3.png"></a></p>
 <p>Then I tried changing $kkk but nothing helped..  </p>
 <p>The code decrypts the base64 encoded string which is indeed our flag.<br>Then there is a for loop that decides the value for <strong>$ch</strong> and <strong>$kch</strong> using substr.<br>And at last <strong>$ch</strong> is concatenated to <strong>$res</strong></p>
 <p>And at last after understanding the code I changed    </p>
@@ -216,20 +220,15 @@
 <p>TO</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ch</span>=chr(ord(<span class="variable">$ch</span>)-ord(<span class="variable">$kch</span>)); </span><br></pre></td></tr></table></figure>
 <p>and if you noticed I changed the (+) to (-) operator and It worked like a charm.</p>
-<p><a href="/img/fireshell/f4.png" class="gallery-item"><img src="/img/fireshell/f4.png"></a></p>
+<p><a href="/img/fireshell/f4.png" class="post-image-item"><img src="/img/fireshell/f4.png"></a></p>
 <h2 id="2nd-Method"><a href="#2nd-Method" class="headerlink" title="2nd Method"></a>2nd Method</h2><p>I also studied the code with some GET_ functions and found that it is requiring us to set both parameters <strong>p</strong> and <strong>b</strong> ..<br>I observed that p specifies that which place of code we can change and b specifies what we can change with..   </p>
 <p>I think you are smart enough to solve it now..</p>
 <p>I just checked the Length of the <strong>$code</strong> string till ‘+’ as we have to change that.</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">code = <span class="string">&#x27;$kkk=5;$s=&quot;e1iwZaNolJeuqWiUp6pmo2iZlKKulJqjmKeupalmnmWjVrI=&quot;;$s=base64_decode($s);$res=&quot;&quot;;for($i=0,$j=strlen($s);$i&lt;$j;$i++)&#123;$ch=substr($s,$i,1);$kch=substr($kkk,($i%strlen($kkk))-1,1);$ch=chr(ord($ch)+&#x27;</span><span class="string">&#x27;  </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">print(len(code)) </span></span><br></pre></td></tr></table></figure>
 <p>OUTPUT:<br>202</p>
 <p>I simply tried this and BOOMYa :) !!</p>
-<p><a href="/img/fireshell/f2.png" class="gallery-item"><img src="/img/fireshell/f2.png"></a></p>
-</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
-        var options = {
-            selector: '.gallery-item'
-        };
-        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
-        }</script>
+<p><a href="/img/fireshell/f2.png" class="post-image-item"><img src="/img/fireshell/f2.png"></a></p>
+</div>
   </div>
 </article>
 
@@ -249,6 +248,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </div>
@@ -290,7 +291,7 @@
     Copyright &copy;
     
     
-    2021-2023
+    2021-2024
     Suraj Malhotra
   </div>
   <div class="footer-right">
@@ -304,6 +305,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </nav>
@@ -319,12 +322,47 @@
 <link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
 
 
+<link rel="stylesheet" href="/lib/lightgallery/css/lightgallery.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-zoom.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-thumbnail.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-autoplay.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-transitions.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-fullscreen.css">
+
     <!-- jquery -->
 
 <script src="/lib/jquery/jquery.min.js"></script>
 
 
 <script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- lightgallery -->
+
+<script src="/lib/lightgallery/lightgallery.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/autoplay/lg-autoplay.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
+
+
 
 <!-- clipboard -->
 

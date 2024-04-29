@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="article">
+    <meta name="description" content="So to begin with, this was one of my well spent weekend as CTFs were lined up one after the another, and fortunately some of my team members were active. There were a variety of CTFs to choose from s">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Cryptix CTF&#39;19 CrackIT">
 <meta property="og:url" content="https://mrt4ntr4.github.io/Cryptix-CTF-Crackit/index.html">
 <meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:description" content="So to begin with, this was one of my well spent weekend as CTFs were lined up one after the another, and fortunately some of my team members were active. There were a variety of CTFs to choose from s">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/cryptix/banner.png">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/cryptix/0.png">
@@ -114,6 +116,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </span>
@@ -201,7 +205,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/cryptix/banner.png" title="banner" class="gallery-item"><img src="/img/cryptix/banner.png" alt="banner"></a></p>
+    <div class=".post-images"><p><a href="/img/cryptix/banner.png" title="banner" class="post-image-item"><img src="/img/cryptix/banner.png" alt="banner"></a></p>
 <p>So to begin with, this was one of my well spent weekend as CTFs were lined up one after the another, and fortunately some of my team members were active. There were a variety of CTFs to choose from such as, HITCON Quals, Rooters, Cryptrix, etc I just had a taste of each of them.<br>Also I’m not that much of a pro so didn’t focus too much on HITCON.<br>Difficulty level of CTFs according to me could be arranged in the following manner : </p>
 <blockquote>
 <p>HITCON Quals &gt; Rooters &gt; Hack-A-Bit &gt; Cryptrix &gt; Syskron  </p>
@@ -219,22 +223,22 @@
 <p>So I look over the code and found that there are 2 functions which do the actual work ie. <strong>validate_key()</strong> and <strong>Do_Something()</strong>.<br>The main function doesn’t do anything actaully, it is solely dependent on the return value of <strong>validate_key()</strong></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">undefined8 <span class="title">validate_key</span><span class="params">(<span class="keyword">char</span> *pcParm1)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">size_t</span> sVar1;</span><br><span class="line">  undefined8 uVar2;</span><br><span class="line">  <span class="keyword">long</span> lVar3;</span><br><span class="line">  <span class="keyword">double</span> dVar4;</span><br><span class="line">  <span class="keyword">int</span> local_20;</span><br><span class="line">  </span><br><span class="line">  sVar1 = <span class="built_in">strlen</span>(pcParm1);</span><br><span class="line">  <span class="keyword">if</span> ((<span class="keyword">int</span>)sVar1 == <span class="number">0x11</span>) &#123;</span><br><span class="line">    lVar3 = Does_Something(pcParm1,<span class="number">0x11</span>);</span><br><span class="line">    local_20 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (local_20 &lt; <span class="number">0x18</span>) &#123;</span><br><span class="line">      dVar4 = <span class="built_in">pow</span>(<span class="number">2.00000000</span>,(<span class="keyword">double</span>)(<span class="keyword">int</span>)*(<span class="keyword">char</span> *)(lVar3 + (<span class="keyword">long</span>)local_20));</span><br><span class="line">      <span class="keyword">if</span>(*(<span class="keyword">double</span> *)(_Zproc_libc_fini + (<span class="keyword">long</span>)local_20 * <span class="number">8</span>) != dVar4) &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;Sorry no flag for you&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      local_20 = local_20 + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    uVar2 = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Sorry no flag for you&quot;</span>);</span><br><span class="line">    uVar2 = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> uVar2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Get <a href="/files/cryptix/ghidra_source.c"  target="_blank">ghidra_source.c</a><br>So <strong>validate_key()</strong> checks if our input is 0x11(17<sub>10</sub>) chars long or not. and later passes our input and its length to the <strong>DoSomething()</strong> function. We see that the return value of <strong>DoSomething()</strong> will always be a 0x18(24<sub>10</sub>) char string and then their is a power operation with base as 2 on it’s each value whose result is being compared with a variable in memory, <strong>_Zproc_libc_fini</strong>. So I checked its content.  </p>
-<p><a href="/img/cryptix/0.png" class="gallery-item"><img src="/img/cryptix/0.png"></a>  </p>
+<p><a href="/img/cryptix/0.png" class="post-image-item"><img src="/img/cryptix/0.png"></a>  </p>
 <p>But It didn’t make any sense to me and also I was missing the most crucial part ie. what does <strong>DoSomething()</strong> do?<br>So I headed over to GDB and started debugging it.   </p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">disas validate_key</span><br></pre></td></tr></table></figure>
-<p><a href="/img/cryptix/1.png" class="gallery-item"><img src="/img/cryptix/1.png"></a>  </p>
+<p><a href="/img/cryptix/1.png" class="post-image-item"><img src="/img/cryptix/1.png"></a>  </p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">b *validate_key+72 </span><br><span class="line">r aaaaaaaaaaaaaaaaa</span><br></pre></td></tr></table></figure>
 <p>We’ve set up a breakpoint just after the call to <strong>DoSomething()</strong> so that we can check the value it returns.<br>Now if we run it using a random 17 char string and we can see that the string returned from <strong>DoSomething()</strong> is stored in <strong>$eax</strong> and is simply base64 of our input. Oh great its just a base64 implementation function in C.  </p>
-<p><a href="/img/cryptix/3.png" class="gallery-item"><img src="/img/cryptix/3.png"></a>   </p>
+<p><a href="/img/cryptix/3.png" class="post-image-item"><img src="/img/cryptix/3.png"></a>   </p>
 <p>Now I set up another breakpoint on the <em>ucomisd</em> instruction which is a just like compare but is specifically used for doubles. You can read more about it from <a href="https://www.felixcloutier.com/x86/ucomisd"  target="_blank">here</a>. And we simply continue the execution.  </p>
-<p><a href="/img/cryptix/2.png" class="gallery-item"><img src="/img/cryptix/2.png"></a>    </p>
+<p><a href="/img/cryptix/2.png" class="post-image-item"><img src="/img/cryptix/2.png"></a>    </p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">b *validate_key+167 </span><br><span class="line">c</span><br></pre></td></tr></table></figure>
 
 <p>Now lets see what is being compared… Ohh here we see that registers with double-precision are used. This was something new to me.<br><a href="https://en.wikibooks.org/wiki/X86_Assembly/SSE"  target="_blank">Reference</a>  </p>
 <p>So register xmm0 now stores the value to which our b64 encrypted input char is being compared to.  </p>
-<p><a href="/img/cryptix/4.png" class="gallery-item"><img src="/img/cryptix/4.png"></a>   </p>
+<p><a href="/img/cryptix/4.png" class="post-image-item"><img src="/img/cryptix/4.png"></a>   </p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> <span class="variable">$xmm0</span></span><br></pre></td></tr></table></figure>
-<p><a href="/img/cryptix/5.png" class="gallery-item"><img src="/img/cryptix/5.png"></a>   </p>
+<p><a href="/img/cryptix/5.png" class="post-image-item"><img src="/img/cryptix/5.png"></a>   </p>
 <p>Ok so the double value looks like what we want. So I tried this short script to check if I am in the right direction.  </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">33</span>,<span class="number">127</span>):</span><br><span class="line">    <span class="built_in">print</span> <span class="built_in">chr</span>(x),<span class="built_in">pow</span>(<span class="number">2</span>,x)</span><br></pre></td></tr></table></figure>
 <p>And to my surprise there was a <strong>result = 1.2676506002282294e+30</strong> for character <strong>‘d’</strong>.</p>
@@ -247,21 +251,21 @@
 <p>For examining it in memory you can use:   </p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x/25gf &amp;_Zproc_libc_fini</span><br></pre></td></tr></table></figure>
 <p>where g = Giant words (8 bytes)<br>and   f = floating value<br><a href="https://sourceware.org/gdb/onlinedocs/gdb/Memory.html"  target="_blank">Reference</a>  </p>
-<p><a href="/img/cryptix/6.png" class="gallery-item"><img src="/img/cryptix/6.png"></a>   </p>
+<p><a href="/img/cryptix/6.png" class="post-image-item"><img src="/img/cryptix/6.png"></a>   </p>
 <p>But the most appropriate way here would be this.  </p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> *(double*)(&amp;_Zproc_libc_fini)@24</span><br></pre></td></tr></table></figure>
 <p>We can get the address of <strong>_Zproc_libc_fini</strong> in memory using &amp; operator and specify the length of values we need ie. 24 using @ symbol after the address.<br><a href="https://sourceware.org/gdb/onlinedocs/gdb/Arrays.html#Arrays"  target="_blank">Reference</a>  </p>
-<p><a href="/img/cryptix/7.png" class="gallery-item"><img src="/img/cryptix/7.png"></a>   </p>
+<p><a href="/img/cryptix/7.png" class="post-image-item"><img src="/img/cryptix/7.png"></a>   </p>
 <p>So its time to write a script to reverse the process of pow() using log() to get the base64 encoded key</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> base64 <span class="keyword">import</span> b64decode</span><br><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> log</span><br><span class="line"></span><br><span class="line">Zproc_libc_fini =[<span class="number">1.2676506002282294e+30</span>, <span class="number">5.3169119831396635e+36</span>, <span class="number">1.5111572745182865e+23</span>, <span class="number">281474976710656</span>, </span><br><span class="line">  <span class="number">1.5845632502852868e+29</span>, <span class="number">562949953421312</span>, <span class="number">1.4411518807585587e+17</span>, <span class="number">5.3169119831396635e+36</span>, </span><br><span class="line">  <span class="number">1.5111572745182865e+23</span>, <span class="number">1125899906842624</span>, <span class="number">3.0223145490365729e+23</span>, <span class="number">562949953421312</span>, </span><br><span class="line">  <span class="number">6.338253001141147e+29</span>, <span class="number">8.1129638414606682e+31</span>, <span class="number">1.1805916207174113e+21</span>, <span class="number">281474976710656</span>, </span><br><span class="line">  <span class="number">2.5353012004564588e+30</span>, <span class="number">7.7371252455336267e+25</span>, <span class="number">1.4411518807585587e+17</span>, <span class="number">4.1538374868278621e+34</span>, </span><br><span class="line">  <span class="number">1.5111572745182865e+23</span>, <span class="number">2.3611832414348226e+21</span>, <span class="number">6.6461399789245794e+35</span>, <span class="number">2.305843009213694e+18</span>]</span><br><span class="line"></span><br><span class="line">b64encoded_str = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> Zproc_libc_fini:</span><br><span class="line">  b64encoded_str += <span class="built_in">chr</span>(<span class="built_in">int</span>((log(item)/log(<span class="number">2</span>))))</span><br><span class="line"></span><br><span class="line">flag = b64decode(b64encoded_str)</span><br><span class="line"><span class="built_in">print</span> flag</span><br></pre></td></tr></table></figure>
 <p>By the way, we can also brute force the base64 encoded key and get it easily using the code below : </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> Zproc_libc_fini:</span><br><span class="line">  <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">33</span>,<span class="number">127</span>):</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">pow</span>(<span class="number">2</span>,x)==item):</span><br><span class="line">      b64encoded_str += <span class="built_in">chr</span>(x)</span><br></pre></td></tr></table></figure>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└──╼ $./keygen w34k_s3cur1ty_l0l</span><br><span class="line">Congratulations!! here is you flag: flag&#123;w34k_s3cur1ty_l0l&#125;</span><br></pre></td></tr></table></figure>
-<a target="_blank" rel="noopener" href="https://media.giphy.com/media/lN8sg2KcDNrNqzs2cZ/giphy.gif" title="drawing" class="gallery-item"><img src="https://media.giphy.com/media/lN8sg2KcDNrNqzs2cZ/giphy.gif" alt="drawing" width="300"/></a>
+<a target="_blank" rel="noopener" href="https://media.giphy.com/media/lN8sg2KcDNrNqzs2cZ/giphy.gif" title="drawing" class="post-image-item"><img src="https://media.giphy.com/media/lN8sg2KcDNrNqzs2cZ/giphy.gif" alt="drawing" width="300"/></a>
 
 <p>Also I got to know that we can change the values of <strong>Zproc_libc_fini</strong> to represent it in doubles.  </p>
 <p>Thanks to @arpox for sharing it.<br>You can just select all of the data in Zproc_libc_fini and  right click-&gt; data -&gt; double.<br>Well I learnt many things through this challenge.  </p>
-<p><a href="/img/cryptix/8.png" class="gallery-item"><img src="/img/cryptix/8.png"></a>   </p>
+<p><a href="/img/cryptix/8.png" class="post-image-item"><img src="/img/cryptix/8.png"></a>   </p>
 <p>Also the challenge source was disclosed by the admin.  </p>
 <blockquote>
 <p>Download <a href="/files/cryptix/Crack_It.c"  target="_blank">challenge_source.c</a></p>
@@ -269,12 +273,7 @@
 <p>I’ll be posting about some of my favourite crackmes soon.  </p>
 <p>So Make sure to subscribe to the newsletter to learn together with me.<br>Also Comment your feedbacks and share this writeup with your friends.  </p>
 <p>And Keep Escalating the Priveleges Gang!!  </p>
-</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
-        var options = {
-            selector: '.gallery-item'
-        };
-        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
-        }</script>
+</div>
   </div>
 </article>
 
@@ -294,6 +293,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </div>
@@ -335,7 +336,7 @@
     Copyright &copy;
     
     
-    2021-2023
+    2021-2024
     Suraj Malhotra
   </div>
   <div class="footer-right">
@@ -349,6 +350,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </nav>
@@ -364,12 +367,47 @@
 <link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
 
 
+<link rel="stylesheet" href="/lib/lightgallery/css/lightgallery.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-zoom.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-thumbnail.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-autoplay.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-transitions.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-fullscreen.css">
+
     <!-- jquery -->
 
 <script src="/lib/jquery/jquery.min.js"></script>
 
 
 <script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- lightgallery -->
+
+<script src="/lib/lightgallery/lightgallery.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/autoplay/lg-autoplay.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
+
+
 
 <!-- clipboard -->
 

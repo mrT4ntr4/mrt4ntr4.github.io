@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="article">
+    <meta name="description" content="In this post we are going to crack a windows based crackme built using cpp.It has been a while since I’ve done any reversing so I grabbed some crackmes from crackmes.one   There is no need of WinDbg(">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Windows Crackme 1">
 <meta property="og:url" content="https://mrt4ntr4.github.io/Win-Crackme1/index.html">
 <meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:description" content="In this post we are going to crack a windows based crackme built using cpp.It has been a while since I’ve done any reversing so I grabbed some crackmes from crackmes.one   There is no need of WinDbg(">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/winrev/try3.jpg">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/winrev/c1/1.PNG">
@@ -115,6 +117,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </span>
@@ -202,56 +206,51 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/winrev/try3.jpg" title="banner" class="gallery-item"><img src="/img/winrev/try3.jpg" alt="banner"></a></p>
+    <div class=".post-images"><p><a href="/img/winrev/try3.jpg" title="banner" class="post-image-item"><img src="/img/winrev/try3.jpg" alt="banner"></a></p>
 <p>In this post we are going to crack a windows based crackme built using cpp.<br>It has been a while since I’ve done any reversing so I grabbed some crackmes from <a target="_blank" rel="noopener" href="https://crackmes.one/">crackmes.one</a>  </p>
 <p>There is no need of WinDbg(or any other debugger) to crack it as it is somewhat easy.<br>Also no need of pseudocode as the code can easily be reversed from the assembly.<br>And obviously it is unpacked.  </p>
 <p>So Now Let’s get this baby!!</p>
 <hr>
 <h1 id="Keygenme-Easy-1"><a href="#Keygenme-Easy-1" class="headerlink" title="Keygenme_Easy_1 "></a>Keygenme_Easy_1 </h1><h4 id="by-subminking"><a href="#by-subminking" class="headerlink" title="by subminking"></a>by subminking</h4><p><a target="_blank" rel="noopener" href="https://crackmes.one/crackme/5ab77f6533c5d40ad448cb99">Download Link</a></p>
 <p>The crackme is levelled as easy and is a 1 point crackme but at the same time it acts as a good playground for learning assembly.  </p>
-<p><a href="/img/winrev/c1/1.PNG" class="gallery-item"><img src="/img/winrev/c1/1.PNG"></a>  </p>
+<p><a href="/img/winrev/c1/1.PNG" class="post-image-item"><img src="/img/winrev/c1/1.PNG"></a>  </p>
 <p>After firing up IDA, I straightaway opened the referenced strings view and found the <em>Congratulations</em> String</p>
-<p><a href="/img/winrev/c1/2.PNG" class="gallery-item"><img src="/img/winrev/c1/2.PNG"></a>  </p>
+<p><a href="/img/winrev/c1/2.PNG" class="post-image-item"><img src="/img/winrev/c1/2.PNG"></a>  </p>
 <p>Going through the WinMain() function there is a call to DialogFunc() which is responsible for creating a dailogbox and getting the user inputs..  </p>
-<p><a href="/img/winrev/c1/3.PNG" class="gallery-item"><img src="/img/winrev/c1/3.PNG"></a>  </p>
+<p><a href="/img/winrev/c1/3.PNG" class="post-image-item"><img src="/img/winrev/c1/3.PNG"></a>  </p>
 <p>So we observe that all inputs are entered with the help of <strong>GetDlgItemTextA</strong> Function.<br>And further there is a call to <strong>sub_401040()</strong>. </p>
-<p><a href="/img/winrev/c1/4.PNG" class="gallery-item"><img src="/img/winrev/c1/4.PNG"></a>  </p>
+<p><a href="/img/winrev/c1/4.PNG" class="post-image-item"><img src="/img/winrev/c1/4.PNG"></a>  </p>
 <p>So <strong>sub_401040()</strong> begins with loading some memory from the data segment into the EAX register and then XORs it with ESP and storing that on the stack at ESP+190. Ok, leaving that for a while now!!<br>We see that the offset of the name we entered is moved into EAX and then it is perfectly loaded onto the EDX register.  </p>
-<p><a href="/img/winrev/c1/5.PNG" class="gallery-item"><img src="/img/winrev/c1/5.PNG"></a>  </p>
+<p><a href="/img/winrev/c1/5.PNG" class="post-image-item"><img src="/img/winrev/c1/5.PNG"></a>  </p>
 <p>Now the Game of Length comes into Play !!<br>It now computes the length of our Name and verifies if it is less or equal to 0x0A(Dec = 10)…  </p>
 <p>So we can enter our string accordingly…</p>
 <p>I’ll be following the condition where it’s length is &lt; 10.<br>You can also try the other one yourself.  </p>
-<p><a href="/img/winrev/c1/6.PNG" class="gallery-item"><img src="/img/winrev/c1/6.PNG"></a> </p>
+<p><a href="/img/winrev/c1/6.PNG" class="post-image-item"><img src="/img/winrev/c1/6.PNG"></a> </p>
 <p>Now there is a Jump to <strong>loc_4010DA</strong>.<br>And the name is stored in the stack.  </p>
-<p><a href="/img/winrev/c1/7.PNG" class="gallery-item"><img src="/img/winrev/c1/7.PNG"></a>  </p>
+<p><a href="/img/winrev/c1/7.PNG" class="post-image-item"><img src="/img/winrev/c1/7.PNG"></a>  </p>
 <p>Also now the EAX which contains our NAME is loaded.  </p>
 <p>And Now Basically the length is computed again and put into EAX.  </p>
-<p><a href="/img/winrev/c1/8.PNG" class="gallery-item"><img src="/img/winrev/c1/8.PNG"></a>  </p>
+<p><a href="/img/winrev/c1/8.PNG" class="post-image-item"><img src="/img/winrev/c1/8.PNG"></a>  </p>
 <p>Now the main serial generation process starts  </p>
 <p>The Various Steps are as follows:  </p>
 <p>The ESI register is given a value of 3.<br>The Value of ESI is put into EDX.<br>Then the location of NAME in the stack is assigned to EDI.<br>The value of EDX(ie. 3) is subtracted from EDI.<br>Now EDX Register holds the address of the location 3 bytes after name on stack.  </p>
-<p><a href="/img/winrev/c1/9.PNG" class="gallery-item"><img src="/img/winrev/c1/9.PNG"></a>  </p>
+<p><a href="/img/winrev/c1/9.PNG" class="post-image-item"><img src="/img/winrev/c1/9.PNG"></a>  </p>
 <p>The Value of EAX is now assigned to EBX.  </p>
 <p>And now the Control passes to <strong>loc_401120</strong>.  </p>
 <p>Now as [EDI+EDX] = [+ 3 Bytes - 3 Bytes] taking the starting location of NAME as a reference.<br>Therefore Name[i] is assigned to the EAX Register.<br>FYI, The ASCII Value of Name[i] is loaded into EAX.<br>Now ECX is loaded with a value of EDX + EAX.<br>Now there are some simple arithmetic operations which are included in the keygen which you can refer to the Opcodes and learn what is happening behind the scene…  They are super easy!!!   </p>
-<p>There is also an operation of adding esi, ecx and 0x1341 and putting the result into esi.<br><a href="/img/winrev/c1/10.PNG" class="gallery-item"><img src="/img/winrev/c1/10.PNG"></a>  </p>
+<p>There is also an operation of adding esi, ecx and 0x1341 and putting the result into esi.<br><a href="/img/winrev/c1/10.PNG" class="post-image-item"><img src="/img/winrev/c1/10.PNG"></a>  </p>
 <p>At last after getting every Character’s ASCII Value from NAME and doing various operations with it, there is an AND Operation between ESI(result) and 0xDEADBEEF whose result is added to ESI itself.<br>And Later the Serial is checked with the value of ESI and <em>Congratulations</em> statement is printed on a Dialog.  </p>
-<p><a href="/img/winrev/c1/11.PNG" class="gallery-item"><img src="/img/winrev/c1/11.PNG"></a>  </p>
+<p><a href="/img/winrev/c1/11.PNG" class="post-image-item"><img src="/img/winrev/c1/11.PNG"></a>  </p>
 <p>Time for our Ultimate KeyGen !!!<br>I knew you were waiting for it.. weren’t you XD.  </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="built_in">list</span>(<span class="string">&quot;mrT4ntr4&quot;</span>)</span><br><span class="line">esi = <span class="number">3</span></span><br><span class="line">edx = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> name:</span><br><span class="line">  eax = <span class="built_in">ord</span>(i)</span><br><span class="line">  ecx = edx + eax</span><br><span class="line">  ecx *= esi</span><br><span class="line">  esi = eax*<span class="number">8</span></span><br><span class="line">  esi -= eax</span><br><span class="line">  edx = edx + <span class="number">1</span></span><br><span class="line">  esi += ecx + <span class="number">0x1341</span></span><br><span class="line">esi &amp;= <span class="number">0xDEADBEEF</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> esi</span><br></pre></td></tr></table></figure>
 <p>Run the above Python Keygen Script to get a working Serial for your NAME..   </p>
-<p><a href="/img/winrev/c1/done.PNG" class="gallery-item"><img src="/img/winrev/c1/done.PNG"></a>  </p>
+<p><a href="/img/winrev/c1/done.PNG" class="post-image-item"><img src="/img/winrev/c1/done.PNG"></a>  </p>
 <p>And AbraKaDabra!! Magic Trick Revealed By MrT4ntr4  </p>
-<a target="_blank" rel="noopener" href="https://media.giphy.com/media/3o7TKnvDNYADdLYZIQ/giphy.gif" title="drawing" class="gallery-item"><img src="https://media.giphy.com/media/3o7TKnvDNYADdLYZIQ/giphy.gif" alt="drawing" width="300"/></a>
+<a target="_blank" rel="noopener" href="https://media.giphy.com/media/3o7TKnvDNYADdLYZIQ/giphy.gif" title="drawing" class="post-image-item"><img src="https://media.giphy.com/media/3o7TKnvDNYADdLYZIQ/giphy.gif" alt="drawing" width="300"/></a>
 
 <p>There is a variety of crackmes on my checklist built with .NET, Java, Visual C++, etc..<br>I’ll be writing about some of my favorites among them in my upcoming writeups.  </p>
 <p>So Make sure to subscribe to the newsletter to learn together with me.<br>Also Comment your feedbacks and share this writeup with your friends.  </p>
-</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
-        var options = {
-            selector: '.gallery-item'
-        };
-        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
-        }</script>
+</div>
   </div>
 </article>
 
@@ -271,6 +270,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </div>
@@ -312,7 +313,7 @@
     Copyright &copy;
     
     
-    2021-2023
+    2021-2024
     Suraj Malhotra
   </div>
   <div class="footer-right">
@@ -326,6 +327,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </nav>
@@ -341,12 +344,47 @@
 <link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
 
 
+<link rel="stylesheet" href="/lib/lightgallery/css/lightgallery.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-zoom.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-thumbnail.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-autoplay.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-transitions.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-fullscreen.css">
+
     <!-- jquery -->
 
 <script src="/lib/jquery/jquery.min.js"></script>
 
 
 <script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- lightgallery -->
+
+<script src="/lib/lightgallery/lightgallery.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/autoplay/lg-autoplay.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
+
+
 
 <!-- clipboard -->
 

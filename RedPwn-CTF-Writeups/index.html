@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="article">
+    <meta name="description" content="Well to get started, I want to give you a glimpse of my experience with the CTF.The Redpwn Organizers really did an awesome job in creating the challenges.The quality of the challenges was awesome. D">
+<meta property="og:type" content="article">
 <meta property="og:title" content="RedPwn CTF 2019">
 <meta property="og:url" content="https://mrt4ntr4.github.io/RedPwn-CTF-Writeups/index.html">
 <meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:description" content="Well to get started, I want to give you a glimpse of my experience with the CTF.The Redpwn Organizers really did an awesome job in creating the challenges.The quality of the challenges was awesome. D">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/redpwn/banner.png">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/redpwn/teamscore.png">
@@ -122,6 +124,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </span>
@@ -209,26 +213,26 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/redpwn/banner.png" title="banner" class="gallery-item"><img src="/img/redpwn/banner.png" alt="banner"></a></p>
+    <div class=".post-images"><p><a href="/img/redpwn/banner.png" title="banner" class="post-image-item"><img src="/img/redpwn/banner.png" alt="banner"></a></p>
 <p>Well to get started, I want to give you a glimpse of my experience with the CTF.<br>The Redpwn Organizers really did an awesome job in creating the challenges.<br>The quality of the challenges was awesome. Difficulty level was also mediumish.<br>It was a 3 day CTF and new challenges were updated timely.<br>The site got really slow once but that’s pretty common nowadays with the CTFd platform. XD</p>
 <p>So after the 3 days long journey my team got the 8th position.</p>
-<p><a href="/img/redpwn/teamscore.png" class="gallery-item"><img src="/img/redpwn/teamscore.png"></a></p>
+<p><a href="/img/redpwn/teamscore.png" class="post-image-item"><img src="/img/redpwn/teamscore.png"></a></p>
 <p>And in today’s post we’ll be discussing some forensic challenges only. I found these challenges worth a writeup and also I enjoyed them solving.</p>
 <h5 id="Some-Quick-Links"><a href="#Some-Quick-Links" class="headerlink" title="Some Quick Links"></a>Some Quick Links</h5><p><a href="#redpwngetsbamboozled">RedpwnGetsBamboozled</a><br><a href="#dedication">Dedication</a><br><a href="#skywriting">Skywriting</a>   </p>
 <hr>
-<h2 id="RedpwnGetsBamboozled"><a href="#RedpwnGetsBamboozled" class="headerlink" title="RedpwnGetsBamboozled"></a>RedpwnGetsBamboozled</h2><h5 id="Task-Description"><a href="#Task-Description" class="headerlink" title="Task Description :"></a>Task Description :</h5><p><a href="/img/redpwn/rgb.png" class="gallery-item"><img src="/img/redpwn/rgb.png"></a></p>
+<h2 id="RedpwnGetsBamboozled"><a href="#RedpwnGetsBamboozled" class="headerlink" title="RedpwnGetsBamboozled"></a>RedpwnGetsBamboozled</h2><h5 id="Task-Description"><a href="#Task-Description" class="headerlink" title="Task Description :"></a>Task Description :</h5><p><a href="/img/redpwn/rgb.png" class="post-image-item"><img src="/img/redpwn/rgb.png"></a></p>
 <p><a href="/files/redpwn/data.txt"  target="_blank">Download File</a></p>
 <p>We were given just a txt file.  </p>
-<p><a href="/img/redpwn/rgb1.png" class="gallery-item"><img src="/img/redpwn/rgb1.png"></a></p>
+<p><a href="/img/redpwn/rgb1.png" class="post-image-item"><img src="/img/redpwn/rgb1.png"></a></p>
 <p>Ahhh! We can quickly observe that these are some (R, G, B) Values.<br>Also the initials of the Challenge Title is R, G, B XD<br>And at the beginning we get width and height as 600,800 respectively.  </p>
 <p>So its a basic python PIL task.<br>I just deleted the width and height values from the data.txt file and iterated all the RGB values and wrote them to a new Image.  </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">im = Image.new(<span class="string">&quot;RGB&quot;</span>, (<span class="number">600</span>,<span class="number">800</span>))</span><br><span class="line"></span><br><span class="line">infile = <span class="built_in">open</span>(<span class="string">&#x27;data.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">data = infile.read().strip(<span class="string">&#x27;\n&#x27;</span>).split(<span class="string">&#x27;, &#x27;</span>)</span><br><span class="line"></span><br><span class="line">rgblist = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> data:</span><br><span class="line">  v = x.strip(<span class="string">&#x27;)&#x27;</span>).strip(<span class="string">&#x27;(&#x27;</span>).split()</span><br><span class="line">  rgb = (<span class="built_in">int</span>(v[<span class="number">0</span>]),<span class="built_in">int</span>(v[<span class="number">1</span>]),<span class="built_in">int</span>(v[<span class="number">2</span>]))</span><br><span class="line">  rgblist.append(rgb)</span><br><span class="line"></span><br><span class="line">im.putdata(rgblist)</span><br><span class="line">im.save(<span class="string">&quot;output.png&quot;</span>) </span><br></pre></td></tr></table></figure>
 <p>Hmmm, I thought it would give us the flag but instead it gave us the following image.  </p>
-<a href="/img/redpwn/rgb2.png" title="drawing" class="gallery-item"><img src="/img/redpwn/rgb2.png" alt="drawing" width="300"/></a>
+<a href="/img/redpwn/rgb2.png" title="drawing" class="post-image-item"><img src="/img/redpwn/rgb2.png" alt="drawing" width="300"/></a>
 
 <p>So I tried various ways to decode it…</p>
 <h6 id="Approach-with-the-image"><a href="#Approach-with-the-image" class="headerlink" title="Approach with the image:"></a>Approach with the image:</h6><p>Once I tried stegsolve too LOL</p>
-<a href="/img/redpwn/rgb3.bmp" title="drawing" class="gallery-item"><img src="/img/redpwn/rgb3.bmp" alt="drawing" width="300"/></a>
+<a href="/img/redpwn/rgb3.bmp" title="drawing" class="post-image-item"><img src="/img/redpwn/rgb3.bmp" alt="drawing" width="300"/></a>
 
 <p>After observing Red planes, I got some various patterns of dots that looked like braille but there were 8 dots in a column but we needed a multiple of 3 for decrypting if it would have been braille.  </p>
 <p>Also as one could easily observe that the dots are of different colours so I decided to change my strategy and moved towards the colour codes of the dots</p>
@@ -236,7 +240,7 @@
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">222222 cccccc dddddd 999999 444444 ffffff 555555 666666 333333 666666</span><br></pre></td></tr></table></figure>
 <p>I also tried sorting them by observing how frequently they appeared.<br>I tried taking their initials as all have single character.<br>And It came to me that what if the order is provided within the image itself as it can’t be so random dots.  </p>
 <p>So made a list of the Colour Code Initials ordering them as per the image..  </p>
-<a href="/img/redpwn/rgb4.png" title="drawing" class="gallery-item"><img src="/img/redpwn/rgb4.png" alt="drawing" width="300"/></a>
+<a href="/img/redpwn/rgb4.png" title="drawing" class="post-image-item"><img src="/img/redpwn/rgb4.png" alt="drawing" width="300"/></a>
 
 
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">6d 79 5f 62 33 35 74 5f 66 6c 34 67 5f 79 33 74</span><br></pre></td></tr></table></figure>
@@ -244,16 +248,16 @@
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;my_b35t_fl4g_y3t&#125;</span><br></pre></td></tr></table></figure>
 
 <hr>
-<h2 id="Dedication"><a href="#Dedication" class="headerlink" title="Dedication"></a>Dedication</h2><h5 id="Task-Description-1"><a href="#Task-Description-1" class="headerlink" title="Task Description :"></a>Task Description :</h5><p><a href="/img/redpwn/dedication.png" class="gallery-item"><img src="/img/redpwn/dedication.png"></a></p>
+<h2 id="Dedication"><a href="#Dedication" class="headerlink" title="Dedication"></a>Dedication</h2><h5 id="Task-Description-1"><a href="#Task-Description-1" class="headerlink" title="Task Description :"></a>Task Description :</h5><p><a href="/img/redpwn/dedication.png" class="post-image-item"><img src="/img/redpwn/dedication.png"></a></p>
 <p><a href="/files/redpwn/chall.zip"  target="_blank">Download File</a></p>
-<p><a href="/img/redpwn/d1.png" class="gallery-item"><img src="/img/redpwn/d1.png"></a><br>Ok so we got an encrypted zip file and another is a png.    </p>
-<p><a href="/img/redpwn/d2.png" class="gallery-item"><img src="/img/redpwn/d2.png"></a><br>But Wait, it’s not a png file but instead its a text file.    </p>
-<p><a href="/img/redpwn/d3.png" class="gallery-item"><img src="/img/redpwn/d3.png"></a>  </p>
+<p><a href="/img/redpwn/d1.png" class="post-image-item"><img src="/img/redpwn/d1.png"></a><br>Ok so we got an encrypted zip file and another is a png.    </p>
+<p><a href="/img/redpwn/d2.png" class="post-image-item"><img src="/img/redpwn/d2.png"></a><br>But Wait, it’s not a png file but instead its a text file.    </p>
+<p><a href="/img/redpwn/d3.png" class="post-image-item"><img src="/img/redpwn/d3.png"></a>  </p>
 <p>It also contains some RGB values but instead this time we are not provided with the width and height of the image but here we have different lines which can help us identify the height of the image and the no. of RGB values in a line help us identify the width of image.  </p>
 <p>So we start using our PIL ninja techniques.  </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line">im = Image.new(<span class="string">&quot;RGB&quot;</span>, (<span class="number">400</span>,<span class="number">600</span>))</span><br><span class="line">infile = <span class="built_in">open</span>(<span class="string">&#x27;jjofpbwvgk.png&#x27;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">data = infile.read().strip(<span class="string">&#x27;\n&#x27;</span>).split()</span><br><span class="line">rgblist = []</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> data:</span><br><span class="line">  v = x.strip(<span class="string">&#x27;)&#x27;</span>).strip(<span class="string">&#x27;(&#x27;</span>).split(<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line">  rgb = (<span class="built_in">int</span>(v[<span class="number">0</span>]),<span class="built_in">int</span>(v[<span class="number">1</span>]),<span class="built_in">int</span>(v[<span class="number">2</span>]))</span><br><span class="line">  rgblist.append(rgb)</span><br><span class="line">im.putdata(rgblist)</span><br><span class="line">rotated = Image.new(<span class="string">&quot;RGB&quot;</span>, (<span class="number">600</span>,<span class="number">400</span>))</span><br><span class="line">rotated = im.transpose(Image.FLIP_TOP_BOTTOM).rotate(-<span class="number">90</span>,expand=<span class="number">1</span>)</span><br><span class="line">rotated.save(<span class="string">&#x27;output.jpg&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <p>This basic script just writes our pixel RGB values into an image of width and height of 400, 600 respectively. But you could notice that I’ve mirrored the image and then rotated it anticlockwise 90 degrees which was important to understand the text.<br>And I got the following image.  </p>
-<p><a href="/img/redpwn/d4.jpg" class="gallery-item"><img src="/img/redpwn/d4.jpg"></a></p>
+<p><a href="/img/redpwn/d4.jpg" class="post-image-item"><img src="/img/redpwn/d4.jpg"></a></p>
 <p>I quickly tried this as the password for the zip file and no wonder it worked. But to my surprise there was another zip with similar contents.<br>Ahhh, So this was also a scripting task. Obviously the basic approach which would help us automate the decryption of images was to use an OCR tool.<br>But this challenge screwed me for a while as I had a habit of using tesseract for every ocr task but this one was a nightmare with tesseract. It gave awful results.  So I tried to switch over to some good ocr tool and I researched for a while and found a command-line tool known as <a href="http://jocr.sourceforge.net/download.html"  target="_blank">GOCR</a><br> which gave somewhat accurate results.    </p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install gocr</span><br></pre></td></tr></table></figure>
 <p>I wrote a bit messy script but still it works. XD<br>At first I tried to use ZipFile python library to extract the contents but it was ridiculously slow so I used the simple unzip command.    </p>
@@ -261,13 +265,13 @@
 <p>So I implemented all this and gave a seed value as the first directory named as <strong>jjofpbwvgk</strong> and put the text (fake png) and the image we got in it.  </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">from</span> zipfile <span class="keyword">import</span> ZipFile</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="comment">#random_name = &#x27;jjofpbwvgk&#x27;  #seed_value</span></span><br><span class="line">random_name = <span class="string">&#x27;jjofpbwvgk&#x27;</span></span><br><span class="line">zip_num=<span class="number">1</span></span><br><span class="line">wrongpass=<span class="number">0</span></span><br><span class="line"><span class="comment">#adding some colors for fun</span></span><br><span class="line">green = <span class="string">&#x27;\033[1;32;40m&#x27;</span></span><br><span class="line">red = <span class="string">&#x27;\033[1;31;40m&#x27;</span></span><br><span class="line">cyan = <span class="string">&#x27;\033[1;36;40m&#x27;</span></span><br><span class="line">reset = <span class="string">&#x27;\033[0;37;40m&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">  <span class="keyword">try</span>:</span><br><span class="line">    im = Image.new(<span class="string">&quot;RGB&quot;</span>, (<span class="number">400</span>,<span class="number">600</span>))</span><br><span class="line">    path = os.getcwd()+<span class="string">&#x27;/&#x27;</span>+random_name</span><br><span class="line">    os.chdir(path)</span><br><span class="line">    infile = <span class="built_in">open</span>(random_name+<span class="string">&#x27;.png&#x27;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">    data = infile.read().strip(<span class="string">&#x27;\n&#x27;</span>).split()</span><br><span class="line">    rgblist = []</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> data:</span><br><span class="line">      v = x.strip(<span class="string">&#x27;)&#x27;</span>).strip(<span class="string">&#x27;(&#x27;</span>).split(<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line">      rgb = (<span class="built_in">int</span>(v[<span class="number">0</span>]),<span class="built_in">int</span>(v[<span class="number">1</span>]),<span class="built_in">int</span>(v[<span class="number">2</span>]))</span><br><span class="line">      rgblist.append(rgb)</span><br><span class="line">    im.putdata(rgblist)</span><br><span class="line">    rotated = Image.new(<span class="string">&quot;RGB&quot;</span>, (<span class="number">400</span>,<span class="number">600</span>))</span><br><span class="line">    rotated = im.transpose(Image.FLIP_TOP_BOTTOM).rotate(-<span class="number">90</span>,expand=<span class="number">1</span>)</span><br><span class="line">    rotated.save(<span class="string">&#x27;pass.jpg&#x27;</span>)</span><br><span class="line">    gocr_cmd = <span class="string">&quot;gocr pass.jpg&quot;</span></span><br><span class="line">    ps = subprocess.Popen(gocr_cmd,shell=<span class="literal">True</span>,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)</span><br><span class="line">    output = ps.communicate()[<span class="number">0</span>]</span><br><span class="line">    <span class="comment">#some tweaking to get more correct passwords with gocr</span></span><br><span class="line">    password = output.lower().replace(<span class="string">&#x27;\n&#x27;</span>,<span class="string">&#x27;&#x27;</span>).replace(<span class="string">&#x27; &#x27;</span>,<span class="string">&#x27;&#x27;</span>).replace(<span class="string">&#x27;_&#x27;</span>,<span class="string">&#x27;g&#x27;</span>).replace(<span class="string">&#x27;\xc3\xac&#x27;</span>,<span class="string">&#x27;i&#x27;</span>).replace(<span class="string">&#x27;\xc3\xad&#x27;</span>,<span class="string">&#x27;i&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> password[<span class="number">0</span>]==<span class="string">&#x27;y&#x27;</span>:</span><br><span class="line">      password=password.replace(password[<span class="number">0</span>],<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">      password+=<span class="string">&#x27;y&#x27;</span></span><br><span class="line">    <span class="built_in">print</span> cyan, <span class="string">&quot;Extracting Zip :&quot;</span>, zip_num,reset</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;password for&quot;</span>, random_name, <span class="string">&quot;:&quot;</span>, password</span><br><span class="line">    parentdir = os.path.dirname(path)</span><br><span class="line">    os.chdir(parentdir)</span><br><span class="line">    zip_path = path + <span class="string">&#x27;/&#x27;</span> +random_name + <span class="string">&#x27;.zip&#x27;</span></span><br><span class="line">    unzip_cmd1 = <span class="string">&#x27;unzip &#x27;</span> + <span class="string">&#x27;-P &#x27;</span> + password + <span class="string">&#x27; &#x27;</span> + zip_path</span><br><span class="line">    <span class="keyword">if</span>(os.system(unzip_cmd1)==<span class="number">0</span>):</span><br><span class="line">      <span class="built_in">print</span> random_name+<span class="string">&#x27;.zip&#x27;</span> + <span class="string">&quot; extracted successfully&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">      wrongpass+=<span class="number">1</span></span><br><span class="line">      unzip_cmd2=<span class="string">&#x27;unzip &#x27;</span> + zip_path</span><br><span class="line">      rotated.show()</span><br><span class="line">      os.system(unzip_cmd2)</span><br><span class="line">    <span class="keyword">with</span> ZipFile(zip_path) <span class="keyword">as</span> zf:</span><br><span class="line">      random_name = zf.namelist()[<span class="number">0</span>][:-<span class="number">1</span>]</span><br><span class="line">    zip_num+=<span class="number">1</span></span><br><span class="line">  <span class="keyword">except</span>:</span><br><span class="line">    <span class="built_in">print</span> red,<span class="string">&quot;Wrong password attempts :&quot;</span>,wrongpass,reset</span><br><span class="line">    parentdir = os.path.dirname(path)</span><br><span class="line">    os.chdir(parentdir+ <span class="string">&#x27;/&#x27;</span> + <span class="string">&#x27;flag&#x27;</span>)</span><br><span class="line">    gocr_cmd = <span class="string">&quot;gocr flag.png&quot;</span></span><br><span class="line">    ps = subprocess.Popen(gocr_cmd,shell=<span class="literal">True</span>,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)</span><br><span class="line">    <span class="comment">#modifying the output to get our perfect flag</span></span><br><span class="line">    flag = ps.communicate()[<span class="number">0</span>].replace(<span class="string">&#x27; &#x27;</span>,<span class="string">&#x27;&#x27;</span>).replace(<span class="string">&#x27;)&#x27;</span>,<span class="string">&#x27;&#125;&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span> green,<span class="string">&quot;FLAG :&quot;</span>, flag,reset</span><br><span class="line">    <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
 <p>Ok if the script ran successfully you should get 1000 directories and our flag image residing in the 1000th directory.</p>
-<p><a href="/img/redpwn/d5.png" class="gallery-item"><img src="/img/redpwn/d5.png"></a></p>
+<p><a href="/img/redpwn/d5.png" class="post-image-item"><img src="/img/redpwn/d5.png"></a></p>
 <p>At the end, I’d say that it seriously needed some dedication LOL<br>Also If anyone knows about a more precise OCR tool, please let me know in the comments!!  </p>
 <hr>
-<h2 id="Skywriting"><a href="#Skywriting" class="headerlink" title="Skywriting"></a>Skywriting</h2><h5 id="Task-Description-2"><a href="#Task-Description-2" class="headerlink" title="Task Description :"></a>Task Description :</h5><p><a href="/img/redpwn/skywriting.png" class="gallery-item"><img src="/img/redpwn/skywriting.png"></a></p>
+<h2 id="Skywriting"><a href="#Skywriting" class="headerlink" title="Skywriting"></a>Skywriting</h2><h5 id="Task-Description-2"><a href="#Task-Description-2" class="headerlink" title="Task Description :"></a>Task Description :</h5><p><a href="/img/redpwn/skywriting.png" class="post-image-item"><img src="/img/redpwn/skywriting.png"></a></p>
 <p><a href="https://drive.google.com/file/d/1wso-K4b_wOXzxfeppPy41Jhc_3WWRTwk/view" target="_blank">Download File</a></p>
 <p>By experience I knew that skywriting is a pretty common name for challenges so I first googled if there was any similar challenge from any previous ctf competition. And the first result I encountered was of PACTF 2018. The challenge was totally duplicated but we had to do it ourselves as flag was not the same as of PACTF. XD  </p>
-<p><a href="/img/redpwn/s1.png" class="gallery-item"><img src="/img/redpwn/s1.png"></a></p>
+<p><a href="/img/redpwn/s1.png" class="post-image-item"><img src="/img/redpwn/s1.png"></a></p>
 <p>You can read that writeup <a href="https://medium.com/@TCS_20XX/pactf-2018-writeup-skywriting-a5f857463c07" target="_blank">here</a>.  </p>
 <p>I was being lazy so I searched more for a while to grab a better writeup which tells how to break the substitution cipher too.<br>I’ll just give a short summary of how I solved it taking the PACTF writeup as a reference as it’s not complete.  </p>
 <p>The key differences that the RedPwn CTF did made was renaming the gusty-garden-galaxy.wav files and modifying the flag so that we understand what we were doing.<br>After reading the writeup I installed the <a href="ttps://github.com/ragibson/Steganography" target="_blank">stegolsb</a> tool.  </p>
@@ -279,7 +283,7 @@
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">OMG WOW NO WAY</span><br><span class="line">IT&#x27;S UTF8 GARBAGE AMONGST THE REGULAR GARBAGE!</span><br><span class="line">IT MUST BE A SUBSTITUTION CIPHER!!!!!</span><br><span class="line">خβ θي ظβ⅗يηخ, ⅓ 吉ιη ηλχ伊χ⅓ηيش ιخ خظي ش⅓μμ⅓γλ艾خ艾 خيιرη ي½伊يχ⅓ي⅗γيش ⅓⅗ ηβ艾ع⅓⅗⅘ خظ⅓η 伊χβθ艾ير.  </span><br><span class="line">ظβ吉يعيχ, ⅓ ظβ伊ي ι⅗艾 خيιرη خظιخ 吉يχي ηخ艾ر⅓يش θ艾 ⅓خ شβ⅗’خ خظ⅓⅗开 ⅓خ 吉ιη ⅗يγيηηιχ⅓艾艾   </span><br><span class="line">λ⅗μι⅓χ, πληخ ش⅓μμ⅓γλ艾خ. ⅓ خظ⅓⅗开 يιγظ ηخي伊 ⅓⅗ خظ⅓η ηβ艾λخ⅓β⅗ γβλ艾ش θي γιخι艾艾艾يش θ艾 艾β⅘⅓γι艾 γ艾λيη,  </span><br><span class="line">ι⅗ش ⅗βخظ⅓⅗⅘ χي⅔λ⅓χيش 伊λχي خχ⅓ι艾-ι⅗ش-يχχβχ. ⅓ خظ⅓⅗开 خظي ش⅓μμ⅓γλ艾خ艾 شي艾خι μχβر خظي χيηخ βμ 伊ιγخμ ر⅓⅘ظخ   </span><br><span class="line">ظιعي ي½ιγيχθιخيش خظي ش⅓μμ⅓γλ艾خ⅓يη خيιرη μιγيش: 伊يχظι伊η 伊يβ伊艾ي 吉يχي ي½伊يγخ⅓⅗⅘ ι 伊χβθ艾ير  </span><br><span class="line">γ艾βηيχ خβ خظي χβλ⅗ش 1 ظιχش 伊χβθ艾يرη. ιشش⅓خ⅓β⅗ι艾艾艾, ⅓خ’η ι μι⅓χ艾艾 ⅗β⅗-ηخι⅗شιχش γخμ 伊χβθ艾ير.  </span><br><span class="line">⅓’ش ιχ⅘λي خظιخ 吉βχ开η خβ خظي 伊χβθ艾ير’η ιشعι⅗خι⅘ي, ι⅗ش μχβر 吉ظιخ ⅓’عي ηيي⅗ 伊يβ伊艾ي 吉ظβ ظιعي⅗’خ شβ⅗ي خββ رι⅗艾 γخμη ηييريش  </span><br><span class="line">خβ 艾⅓开ي ⅓خ رβχي, θλخ خظιخ’η ι⅗يγشβخι艾. ⅓μ 艾βλ ش⅓ηι⅘χيي, βχ 吉ι⅗خ خβ ηظιχي ι⅗艾خظ⅓⅗⅘ ي艾ηي, μيي艾 μχيي خβ γβ⅗خιγخ ري! ظβ伊ي  </span><br><span class="line"> 艾βλ ي⅗πβ艾يش خظي γخμ ιη ι 吉ظβ艾ي! ι艾ηβ, ⅓μ 艾βλ 艾⅓开ي 伊χβθ艾يرη 艾⅓开ي خظ⅓η, رι开ي ηλχي خβ γظيγ开 βλخ 伊ιγخμ 2019 ⅓⅗ رι⅗艾 رβ⅗خظη’ خ⅓ري.</span><br><span class="line">    -- ⅗⅓γظβ艾ιηر</span><br><span class="line">开يي伊 ⅘β⅓⅗⅘.</span><br><span class="line">شβ⅗&#x27;خ θي يع⅓艾.</span><br><span class="line">خظ⅓η γظι艾艾ي⅗⅘ي ⅓η ⅓⅗خλ⅓خ⅓عي.</span><br><span class="line">ظيχي ⅓η ι خ⅓⅗艾 ηظβχخي⅗يش γ艾λي خβ خظي شβγλري⅗خ 艾βλ 吉⅓艾艾 ⅗ييش. 开يي伊 艾βλχ ظيιش ⅓⅗ خظي γ艾βλش.</span><br><span class="line">خ⅓⅗艾μ艾ι⅘艾⅓⅗开</span><br><span class="line">--------------------------------</span><br></pre></td></tr></table></figure>
 <p>This wasn’t gibberish, it was just some unicode characters.  </p>
 <p>As this was a substitution cipher, a little bit of <a href="https://en.wikipedia.org/wiki/Frequency_analysis" target="_blank">frequency ananlysis</a> is also required.  So I turned to wikipedia to get some frequency analysis graphs of english alphabets.  </p>
-<p><a href="/img/redpwn/englf.png" class="gallery-item"><img src="/img/redpwn/englf.png"></a></p>
+<p><a href="/img/redpwn/englf.png" class="post-image-item"><img src="/img/redpwn/englf.png"></a></p>
 <p>So I made a simple counter to get the no. of occurences of the unicode chars in the cipher.  </p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter </span><br><span class="line"></span><br><span class="line">infile = <span class="built_in">open</span>(<span class="string">&#x27;output.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">data = infile.read()</span><br><span class="line">cipher = data.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#using collections.Counter() to get  </span></span><br><span class="line"><span class="comment">#count of each element in string  </span></span><br><span class="line">count = Counter(cipher) </span><br><span class="line"><span class="built_in">print</span> <span class="built_in">str</span>(count)</span><br></pre></td></tr></table></figure>
 
@@ -291,18 +295,13 @@
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">OMG WOW NO WAY  </span><br><span class="line">IT&#x27;S UTF8 GARBAGE AMONGST THE REGULAR GARBAGE!   </span><br><span class="line">IT MUST BE A SUBSTITUTION CIPHER!!!!!  </span><br><span class="line">to be honest, i was surprised at the difficultl teams experienced in solving this problem.  </span><br><span class="line">however, i hope anl teams that were stlmied bl it don’t think it was necessarill unfair, πust difficult.  </span><br><span class="line">i think each step in this solution could be catallled bl logical clues, and nothing re⅔uired  </span><br><span class="line">pure trial-and-error. i think the difficultl delta from the rest of pactf might have exacerbated the   </span><br><span class="line">difficulties teams faced: perhaps people were expecting a problem closer to the round 1 hard problems.  </span><br><span class="line">additionalll, it’s a fairll non-standard ctf problem. i’d argue that works to the problem’s advantage,  </span><br><span class="line">and from what i’ve seen people who haven’t done too manl ctfs seemed to like it more, but that’s anecdotal.  </span><br><span class="line">if lou disagree, or want to share anlthing else, feel free to contact me! hope lou enπoled the ctf as a whole!  </span><br><span class="line">also, if lou like problems like this, make sure to check out pactf 2019 in manl months’ time.</span><br><span class="line">    -- nicholasm</span><br><span class="line">keep going.</span><br><span class="line">don&#x27;t be evil.</span><br><span class="line">this challenge is intuitive.</span><br><span class="line">here is a tinl shortened clue to the document lou will need. keep lour head in the cloud.</span><br><span class="line">tinlflaglink</span><br><span class="line">--------------------------------</span><br><span class="line">useless chunks of english text to make fre⅔uencl anallsis easier (ignore below this point):</span><br><span class="line"></span><br><span class="line">** REDACTED **</span><br></pre></td></tr></table></figure>
 <p>One thing to note here is, <strong>y</strong> and <strong>l</strong> are same in many places in the text.  I don’t know maybe the organisers messed it up a bit..<br>Also they didn’t even read the decoded text which contains the string <strong>make sure to check out pactf 2019</strong>.<br>I also had trouble finding the flag as the link given was incomplete.<br>After some tinkering I found the flag on the link : <a target="_blank" rel="noopener" href="https://tinyurl.com/tinyflaglink">https://tinyurl.com/tinyflaglink</a>  </p>
 <p>I guessed tinyurl part from the PACTF writeup.   </p>
-<p><a href="/img/redpwn/s2.png" class="gallery-item"><img src="/img/redpwn/s2.png"></a></p>
+<p><a href="/img/redpwn/s2.png" class="post-image-item"><img src="/img/redpwn/s2.png"></a></p>
 <p>And finally we got our intuitive flag. </p>
-<p><a target="_blank" rel="noopener" href="https://media.giphy.com/media/3XEgV9kfwLy1i/giphy.gif" class="gallery-item"><img src="https://media.giphy.com/media/3XEgV9kfwLy1i/giphy.gif"></a></p>
+<p><a target="_blank" rel="noopener" href="https://media.giphy.com/media/3XEgV9kfwLy1i/giphy.gif" class="post-image-item"><img src="https://media.giphy.com/media/3XEgV9kfwLy1i/giphy.gif"></a></p>
 <hr>
 <p>Thanks for Reading this writeup..<br>Subscribe to my Newsletter for more updates regarding CTFs.<br>Also Feedback is always appreciated.<br>It won’t take much time though.    </p>
 <p>And Keep Escalating the Privileges<br>Happy Hacking ;)</p>
-</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
-        var options = {
-            selector: '.gallery-item'
-        };
-        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
-        }</script>
+</div>
   </div>
 </article>
 
@@ -322,6 +321,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </div>
@@ -363,7 +364,7 @@
     Copyright &copy;
     
     
-    2021-2023
+    2021-2024
     Suraj Malhotra
   </div>
   <div class="footer-right">
@@ -377,6 +378,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </nav>
@@ -392,12 +395,47 @@
 <link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
 
 
+<link rel="stylesheet" href="/lib/lightgallery/css/lightgallery.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-zoom.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-thumbnail.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-autoplay.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-transitions.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-fullscreen.css">
+
     <!-- jquery -->
 
 <script src="/lib/jquery/jquery.min.js"></script>
 
 
 <script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- lightgallery -->
+
+<script src="/lib/lightgallery/lightgallery.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/autoplay/lg-autoplay.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
+
+
 
 <!-- clipboard -->
 

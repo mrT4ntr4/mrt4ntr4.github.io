@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="article">
+    <meta name="description" content="HSCTF was a medium level 5 day long CTF.New Challenges were being released every day, so basically it was fun.    Our Team Dc1ph3R finished 19th globally.    I will be discussing a web challenge toda">
+<meta property="og:type" content="article">
 <meta property="og:title" content="HSCTF 6 [ ARIA ]">
 <meta property="og:url" content="https://mrt4ntr4.github.io/HSCTF-ARIA-Writeup/index.html">
 <meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:description" content="HSCTF was a medium level 5 day long CTF.New Challenges were being released every day, so basically it was fun.    Our Team Dc1ph3R finished 19th globally.    I will be discussing a web challenge toda">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/hsctf/thumb.PNG">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/hsctf/chall.PNG">
@@ -108,6 +110,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </span>
@@ -195,25 +199,25 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/hsctf/thumb.PNG" title="banner" class="gallery-item"><img src="/img/hsctf/thumb.PNG" alt="banner"></a></p>
+    <div class=".post-images"><p><a href="/img/hsctf/thumb.PNG" title="banner" class="post-image-item"><img src="/img/hsctf/thumb.PNG" alt="banner"></a></p>
 <p><a target="_blank" rel="noopener" href="https://ctftime.org/event/">HSCTF</a> was a medium level 5 day long CTF.<br>New Challenges were being released every day, so basically it was fun.  </p>
 <blockquote>
 <p>Our Team Dc1ph3R finished 19th globally.  </p>
 </blockquote>
 <p>I will be discussing a web challenge today which is more likely to be a scripting challenge according to me.  </p>
-<p><a href="/img/hsctf/chall.PNG" class="gallery-item"><img src="/img/hsctf/chall.PNG"></a></p>
+<p><a href="/img/hsctf/chall.PNG" class="post-image-item"><img src="/img/hsctf/chall.PNG"></a></p>
 <blockquote>
 <p>Download <a href="/files/hsctf/index.html"  target="_blank">index.html</a></p>
 </blockquote>
 <p>After opening the index.html in our browser we see a Label “Magic Number Generator” along with an input field..  </p>
-<p><a href="/img/hsctf/1.PNG" class="gallery-item"><img src="/img/hsctf/1.PNG"></a></p>
+<p><a href="/img/hsctf/1.PNG" class="post-image-item"><img src="/img/hsctf/1.PNG"></a></p>
 <p>So I tried to tinker around with the web app.<br>I entered some text randomly and it redirected me to a google search with “I like 1”.   </p>
-<p><a href="/img/hsctf/2.PNG" class="gallery-item"><img src="/img/hsctf/2.PNG"></a></p>
+<p><a href="/img/hsctf/2.PNG" class="post-image-item"><img src="/img/hsctf/2.PNG"></a></p>
 <p>I tried once more and again got the same search text…  </p>
 <p>Viewing the source gave some gibberish text within the script tags.  </p>
-<p><a href="/img/hsctf/3.PNG" class="gallery-item"><img src="/img/hsctf/3.PNG"></a></p>
+<p><a href="/img/hsctf/3.PNG" class="post-image-item"><img src="/img/hsctf/3.PNG"></a></p>
 <p>But after opening the Dev Console on the Browser gave some meaningful Javascript and HTML code.  </p>
-<p><a href="/img/hsctf/4.PNG" class="gallery-item"><img src="/img/hsctf/4.PNG"></a></p>
+<p><a href="/img/hsctf/4.PNG" class="post-image-item"><img src="/img/hsctf/4.PNG"></a></p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">role</span>=<span class="string">&quot;option&quot;</span> <span class="attr">aria-posinset</span>=<span class="string">&quot;291&quot;</span> <span class="attr">aria-setsize</span>=<span class="string">&quot;1040&quot;</span>&gt;</span>0<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>There is a DIV with an ID <strong>list</strong> and which is using ARIA (Accessible Rich Internet Applications).<br>More info about ARIA <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/WAI-ARIA">here</a>.  </p>
 <p>So the JS Code basically selects a random child from the DIV and gets the binary digit.<br>It checks whether the key pressed is “ENTER” and then carries a Google search by concatenating the binary digit to the string <strong>“I like “</strong>.<br>So Technically there is no use of our input.. XD  </p>
@@ -231,12 +235,7 @@
 </blockquote>
 <p>Coming up are some writeups from BCA CTF.</p>
 <p>So Make sure to subscribe to the newsletter to learn together with me.<br>Also Comment your feedbacks and share this writeup with your friends.  </p>
-</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
-        var options = {
-            selector: '.gallery-item'
-        };
-        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
-        }</script>
+</div>
   </div>
 </article>
 
@@ -256,6 +255,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </div>
@@ -297,7 +298,7 @@
     Copyright &copy;
     
     
-    2021-2023
+    2021-2024
     Suraj Malhotra
   </div>
   <div class="footer-right">
@@ -311,6 +312,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </nav>
@@ -326,12 +329,47 @@
 <link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
 
 
+<link rel="stylesheet" href="/lib/lightgallery/css/lightgallery.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-zoom.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-thumbnail.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-autoplay.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-transitions.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-fullscreen.css">
+
     <!-- jquery -->
 
 <script src="/lib/jquery/jquery.min.js"></script>
 
 
 <script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- lightgallery -->
+
+<script src="/lib/lightgallery/lightgallery.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/autoplay/lg-autoplay.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
+
+
 
 <!-- clipboard -->
 

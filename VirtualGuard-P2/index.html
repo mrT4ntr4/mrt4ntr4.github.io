@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="article">
+    <meta name="description" content="This is the second part on the VirtualGuard Protector series which focuses on the virtualization techniques. I write a devirt for the VMs implemented in VirtualGuard using AsmResolver. If you missed">
+<meta property="og:type" content="article">
 <meta property="og:title" content="A Tale of .Net Deobfuscation - VirtualGuard Devirtualization">
 <meta property="og:url" content="https://mrt4ntr4.github.io/VirtualGuard-P2/index.html">
 <meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:description" content="This is the second part on the VirtualGuard Protector series which focuses on the virtualization techniques. I write a devirt for the VMs implemented in VirtualGuard using AsmResolver. If you missed">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/virtualguard2/stages.png">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/virtualguard2/croc_vminit1.png">
@@ -113,6 +115,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </span>
@@ -198,7 +202,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<hr>
+    <div class=".post-images"><hr>
 <blockquote>
 <p>This is the second part on the VirtualGuard Protector series which focuses on the virtualization techniques. I write a devirt for the VMs implemented in VirtualGuard using AsmResolver. If you missed the first part about basic deobfuscation techniques in .Net samples, you can read it <a href="/VirtualGuard-P1/">here</a>.  </p>
 </blockquote>
@@ -213,31 +217,31 @@
 <li>Heck yeah! Why Not?  </li>
 </ol>
 <p>I followed the coding standards of other Devirts like <a target="_blank" rel="noopener" href="https://github.com/congviet/MemeVMDevirt">MemeDevirt</a> as it divides a VM Devirt into various stages thus making it easier to follow along.  </p>
-<p><a href="/img/virtualguard2/stages.png" class="gallery-item"><img src="/img/virtualguard2/stages.png"></a></p>
+<p><a href="/img/virtualguard2/stages.png" class="post-image-item"><img src="/img/virtualguard2/stages.png"></a></p>
 <p>We’ll now discuss about all these stages in detail.  </p>
 <h1 id="AnalyzeResources"><a href="#AnalyzeResources" class="headerlink" title="AnalyzeResources"></a>AnalyzeResources</h1><p>The VMInit method gets the resouce “crocodile” from the executable.  </p>
-<p><a href="/img/virtualguard2/croc_vminit1.png" class="gallery-item"><img src="/img/virtualguard2/croc_vminit1.png"></a></p>
+<p><a href="/img/virtualguard2/croc_vminit1.png" class="post-image-item"><img src="/img/virtualguard2/croc_vminit1.png"></a></p>
 <p>This is the VM Bytecode. We can get the resource data using AsmResolver in the following way.  </p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ManifestResource resource = (<span class="keyword">from</span> x <span class="keyword">in</span> module.Resources </span><br><span class="line">                                    <span class="keyword">where</span> x.Name == <span class="string">&quot;crocodile&quot;</span> </span><br><span class="line">                                       	<span class="keyword">select</span> x).First();</span><br><span class="line">VM.CrocodileBytecode = resource.GetData();</span><br></pre></td></tr></table></figure>
 <hr>
 <h1 id="AnalyzeMethod"><a href="#AnalyzeMethod" class="headerlink" title="AnalyzeMethod"></a>AnalyzeMethod</h1><p>We now need to identify all the virtualized methods and gather information about them.  </p>
-<p><a href="/img/virtualguard2/croc_entry.png" class="gallery-item"><img src="/img/virtualguard2/croc_entry.png"></a></p>
+<p><a href="/img/virtualguard2/croc_entry.png" class="post-image-item"><img src="/img/virtualguard2/croc_entry.png"></a></p>
 <p>I just wrote a simple signature for their detection that checks whether a call to the method <strong>A4FD01::2CDA08</strong> exists, ie. the VM Dispatcher. This isn’t a good signature as the method name could be renamed in another executable but for now let’s not worry about it. We need other information such as token used for the method disassembly (disasConst) and the type signatures of the arguments to the dispatcher.  </p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (methodInstr[instrCount - <span class="number">3</span>].OpCode == CilOpCodes.Call</span><br><span class="line">    &amp;&amp; methodInstr[instrCount - <span class="number">3</span>].Operand.ToString().Contains(<span class="string">&quot;A4FD01::2CDA08&quot;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span> disasConst = methodInstr[instrCount - <span class="number">4</span>].GetLdcI4Constant();</span><br><span class="line">    List&lt;TypeSignature&gt; paramTypes = <span class="keyword">new</span> List&lt;TypeSignature&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> methodInstr)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (item.OpCode == CilOpCodes.Ldarg)</span><br><span class="line">        &#123;</span><br><span class="line">            Parameter pp = item.Operand <span class="keyword">as</span> Parameter;</span><br><span class="line">            paramTypes.Add(pp.ParameterType);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    VM.MethodVirt.Add(<span class="keyword">new</span> VMMethod(method.FullName, disasConst, paramTypes, method));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <hr>
 <h1 id="InitializeMethod"><a href="#InitializeMethod" class="headerlink" title="InitializeMethod"></a>InitializeMethod</h1><p>The constructor calls the <strong>VMInit</strong> method with an integer argument. </p>
-<p><a href="/img/virtualguard2/croc_cctor.png" class="gallery-item"><img src="/img/virtualguard2/croc_cctor.png"></a></p>
+<p><a href="/img/virtualguard2/croc_cctor.png" class="post-image-item"><img src="/img/virtualguard2/croc_cctor.png"></a></p>
 <p>Every byte from the VM Bytecode is first xored with this constructor argument. It is also used as a xor operand for calculating the number of VM blocks afterwards. </p>
-<p><a href="/img/virtualguard2/croc_vminit3.png" class="gallery-item"><img src="/img/virtualguard2/croc_vminit3.png"></a></p>
+<p><a href="/img/virtualguard2/croc_vminit3.png" class="post-image-item"><img src="/img/virtualguard2/croc_vminit3.png"></a></p>
 <p>The VMInit function parses the VM Bytecode for block instructions. There are two operands for every instruction. Our code for parsing looks pretty similar.  </p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> numBlocks = _reader.ReadInt32() ^ cctorArg;</span><br><span class="line">List&lt;<span class="built_in">int</span>&gt; blockTokens = <span class="keyword">new</span> List&lt;<span class="built_in">int</span>&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; numBlocks; i++)</span><br><span class="line">&#123;</span><br><span class="line">    List&lt;VMInstruction&gt; blockInstructions = <span class="keyword">new</span> List&lt;VMInstruction&gt;();</span><br><span class="line">    <span class="built_in">int</span> token = _reader.ReadInt32() ^ numBlocks;</span><br><span class="line">    <span class="built_in">int</span> numInstr = _reader.ReadInt32() ^ numBlocks;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; numInstr; j++)</span><br><span class="line">    &#123;</span><br><span class="line">        VMInstruction vmInstr = <span class="keyword">new</span> VMInstruction</span><br><span class="line">        &#123;</span><br><span class="line">            Opcode = _reader.ReadByte(),</span><br><span class="line">            Operand1 = VMInstruction.ReadOperand(_reader),</span><br><span class="line">            Operand2 = VMInstruction.ReadOperand(_reader),</span><br><span class="line">        &#125;;</span><br><span class="line">        blockInstructions.Add(vmInstr);</span><br><span class="line">    &#125;</span><br><span class="line">    VM.Blocks.Add(token, blockInstructions);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <hr>
 <h1 id="InitializeReplace"><a href="#InitializeReplace" class="headerlink" title="InitializeReplace"></a>InitializeReplace</h1><p>Lets talk about disassembling the VM now. We find a typical VM Dispatcher with a while loop executing VM instructions which depends on a State variable to continue execution.  </p>
-<p><a href="/img/virtualguard2/croc_vmdispatcher.png" class="gallery-item"><img src="/img/virtualguard2/croc_vmdispatcher.png"></a></p>
+<p><a href="/img/virtualguard2/croc_vmdispatcher.png" class="post-image-item"><img src="/img/virtualguard2/croc_vmdispatcher.png"></a></p>
 <p>The Execution State is set to CONTINUE. The stack is initialized with a size of 10 elements and local variables list with a size of 60 variables.  </p>
-<p><a href="/img/virtualguard2/croc_handlers.png" class="gallery-item"><img src="/img/virtualguard2/croc_handlers.png"></a></p>
+<p><a href="/img/virtualguard2/croc_handlers.png" class="post-image-item"><img src="/img/virtualguard2/croc_handlers.png"></a></p>
 <p>The Crocodile VM consists of 25 Handlers. </p>
 <h2 id="Push-Instruction"><a href="#Push-Instruction" class="headerlink" title="Push Instruction"></a>Push Instruction</h2><p>Lets take an example of the PUSH instruction implemented in the VM.<br>There are three variants of the PUSH instruction.</p>
 <ul>
@@ -245,9 +249,9 @@
 <li><strong>0x15</strong> : PUSH Constant</li>
 <li><strong>0x12</strong> : PUSH LocalVariable</li>
 </ul>
-<p><a href="/img/virtualguard2/push_variants.png" class="gallery-item"><img src="/img/virtualguard2/push_variants.png"></a></p>
+<p><a href="/img/virtualguard2/push_variants.png" class="post-image-item"><img src="/img/virtualguard2/push_variants.png"></a></p>
 <p>A value is pushed to stack with the following method :</p>
-<p><a href="/img/virtualguard2/push_handler.png" class="gallery-item"><img src="/img/virtualguard2/push_handler.png"></a></p>
+<p><a href="/img/virtualguard2/push_handler.png" class="post-image-item"><img src="/img/virtualguard2/push_handler.png"></a></p>
 <p><strong>0x12</strong> pushes a local variable and is simply devirted into <strong>ldloc</strong></p>
 <p><strong>Some instructions are devirtualized with pattern matching.</strong> </p>
 <ul>
@@ -281,11 +285,11 @@ The above instruction pattern translates to <strong>ldarg.1</strong>. The succee
 <p>Also we now no longer need the module constructor to initialize the VM so we can remove the VMInit call.  </p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> instrs = moduleCtr.CilMethodBody.Instructions;</span><br><span class="line">instrs.RemoveRange(<span class="number">0</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
 <hr>
-<h1 id="The-Crack"><a href="#The-Crack" class="headerlink" title="The Crack"></a>The Crack</h1><p>The devirtualized code could be simplified further with the help of de4dot.blocks to get a better decompilation. I made a simple <a target="_blank" rel="noopener" href="https://github.com/mrT4ntr4/BlockSimplifier">utility</a> for it. This is the devirtualized main method.<br><a href="/img/virtualguard2/devirt_result.png" class="gallery-item"><img src="/img/virtualguard2/devirt_result.png"></a></p>
+<h1 id="The-Crack"><a href="#The-Crack" class="headerlink" title="The Crack"></a>The Crack</h1><p>The devirtualized code could be simplified further with the help of de4dot.blocks to get a better decompilation. I made a simple <a target="_blank" rel="noopener" href="https://github.com/mrT4ntr4/BlockSimplifier">utility</a> for it. This is the devirtualized main method.<br><a href="/img/virtualguard2/devirt_result.png" class="post-image-item"><img src="/img/virtualguard2/devirt_result.png"></a></p>
 <p>The Validate method looks like the following :  </p>
-<p><a href="/img/virtualguard2/validate.png" class="gallery-item"><img src="/img/virtualguard2/validate.png"></a></p>
+<p><a href="/img/virtualguard2/validate.png" class="post-image-item"><img src="/img/virtualguard2/validate.png"></a></p>
 <p>The crack is rather simple and it just checks whether character ‘d’ occurs twice in our password. FYI, There was a bug in the original crackme which compares the password characters to “100” instead of “d” (ie. chr(100)) and to my surprise, my devirt fixed it 😂. </p>
-<p><a href="/img/virtualguard2/bug_fixed.png" class="gallery-item"><img src="/img/virtualguard2/bug_fixed.png"></a></p>
+<p><a href="/img/virtualguard2/bug_fixed.png" class="post-image-item"><img src="/img/virtualguard2/bug_fixed.png"></a></p>
 <hr>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>It was my first time developing a devirt for any crackme so it was a fun adventure. Thanks for it, Mito. I’m looking forward to the next VirtualGuard VM. We may also get to read Mito’s blog on VirtualGuard from a developer’s perspective pretty soon 🤞.  </p>
 <blockquote>
@@ -293,12 +297,7 @@ The above instruction pattern translates to <strong>ldarg.1</strong>. The succee
 </blockquote>
 <hr>
 <h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><p><a target="_blank" rel="noopener" href="https://github.com/congviet/MemeVMDevirt">https://github.com/congviet/MemeVMDevirt</a><br><a target="_blank" rel="noopener" href="https://github.com/Mageland29/CawkVM-Devirter">https://github.com/Mageland29/CawkVM-Devirter</a><br><a target="_blank" rel="noopener" href="https://github.com/Washi1337/OldRod">https://github.com/Washi1337/OldRod</a><br><a target="_blank" rel="noopener" href="https://github.com/saneki/eazdevirt">https://github.com/saneki/eazdevirt</a></p>
-</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
-        var options = {
-            selector: '.gallery-item'
-        };
-        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
-        }</script>
+</div>
   </div>
 </article>
 
@@ -318,6 +317,8 @@ The above instruction pattern translates to <strong>ldarg.1</strong>. The succee
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </div>
@@ -359,7 +360,7 @@ The above instruction pattern translates to <strong>ldarg.1</strong>. The succee
     Copyright &copy;
     
     
-    2021-2023
+    2021-2024
     Suraj Malhotra
   </div>
   <div class="footer-right">
@@ -373,6 +374,8 @@ The above instruction pattern translates to <strong>ldarg.1</strong>. The succee
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </nav>
@@ -388,12 +391,47 @@ The above instruction pattern translates to <strong>ldarg.1</strong>. The succee
 <link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
 
 
+<link rel="stylesheet" href="/lib/lightgallery/css/lightgallery.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-zoom.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-thumbnail.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-autoplay.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-transitions.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-fullscreen.css">
+
     <!-- jquery -->
 
 <script src="/lib/jquery/jquery.min.js"></script>
 
 
 <script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- lightgallery -->
+
+<script src="/lib/lightgallery/lightgallery.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/autoplay/lg-autoplay.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
+
+
 
 <!-- clipboard -->
 

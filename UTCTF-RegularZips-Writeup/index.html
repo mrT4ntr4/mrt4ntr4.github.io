@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="article">
+    <meta name="description" content="To start with, UTCTF 2019 had pretty high scores for every challenge ie. The points were ranged from 100 to 2000.And They were all fun to solve, But I personally liked Regular Zips as I learn a lot a">
+<meta property="og:type" content="article">
 <meta property="og:title" content="UTCTF 19 [ Regular Zips ]">
 <meta property="og:url" content="https://mrt4ntr4.github.io/UTCTF-RegularZips-Writeup/index.html">
 <meta property="og:site_name" content="mrT4ntr4&#39;s Blog">
+<meta property="og:description" content="To start with, UTCTF 2019 had pretty high scores for every challenge ie. The points were ranged from 100 to 2000.And They were all fun to solve, But I personally liked Regular Zips as I learn a lot a">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/utctf/utctfthumb.png">
 <meta property="og:image" content="https://mrt4ntr4.github.io/img/utctf/challthumb.png">
@@ -106,6 +108,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </span>
@@ -193,9 +197,9 @@
   
 
   <div class="content" itemprop="articleBody">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"<p><a href="/img/utctf/utctfthumb.png" title="banner" class="gallery-item"><img src="/img/utctf/utctfthumb.png" alt="banner"></a></p>
+    <div class=".post-images"><p><a href="/img/utctf/utctfthumb.png" title="banner" class="post-image-item"><img src="/img/utctf/utctfthumb.png" alt="banner"></a></p>
 <p>To start with, UTCTF 2019 had pretty high scores for every challenge ie. The points were ranged from 100 to 2000.<br>And They were all fun to solve, But I personally liked <strong>Regular Zips</strong> as I learn a lot about Regular Expressions and ofcourse python’s awesomeness. XD</p>
-<p><a href="/img/utctf/challthumb.png" class="gallery-item"><img src="/img/utctf/challthumb.png"></a></p>
+<p><a href="/img/utctf/challthumb.png" class="post-image-item"><img src="/img/utctf/challthumb.png"></a></p>
 <p>Download <a href="/files/utctf/RegularZips.zip"  target="_blank">RegularZips.zip</a> &amp; <a href="/files/utctf/problem.txt"  target="_blank">problem.txt</a></p>
 <p>Being a 600 pts challenge, it was somewhat a medium level challenge.<br>Thanks to my friend <a href="https://github.com/Himanshukr000"  target="_blank">@HimanshuKr</a> who helped me with this challenge.</p>
 <p>So I started with the given regular expression in the <strong>problem.txt</strong> which was provided to us. Also it was the same regex which was in the challenge description.<br>We were also given a zip which was obviously encrypted and we had to decrypt by brute-forcing it against some words that satisfy the regex.</p>
@@ -208,23 +212,18 @@
 <p>And we got our password…<br>But Be careful with spaces and tabs !!</p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Password found: 	7	y	RUHKKx2 R47gB	N</span><br></pre></td></tr></table></figure>
 <p>But that’s not enough, we have a long journey ahead. lols..  </p>
-<p><a href="/img/utctf/archive.png" class="gallery-item"><img src="/img/utctf/archive.png"></a></p>
+<p><a href="/img/utctf/archive.png" class="post-image-item"><img src="/img/utctf/archive.png"></a></p>
 <p>So after extracting it we get another zipfile as <strong>archive.zip</strong> and a <strong>hint.txt</strong> file which contains another regex sadly.<br>So we can just write a script to extract all of the archives until we are left with none of them. I used <strong>zipfile</strong> library in python to workaround with zip files in python and added some colors to make the automation process more fun.  </p>
 <p>I created a new directory and placed this script along with RegularZips.zip and Problem.txt.</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> zipfile</span><br><span class="line"><span class="keyword">import</span> exrex</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">RED = <span class="keyword">lambda</span> x: <span class="string">&#x27;\033[31m&#x27;</span> + <span class="built_in">str</span>(x)</span><br><span class="line">RESET = <span class="keyword">lambda</span> x: <span class="string">&#x27;\033[0m&#x27;</span> + <span class="built_in">str</span>(x)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tryunzip</span>(<span class="params">file, hint</span>):</span></span><br><span class="line">    <span class="keyword">with</span> zipfile.ZipFile(file) <span class="keyword">as</span> z:</span><br><span class="line">        <span class="keyword">for</span> pwd <span class="keyword">in</span> exrex.generate(hint, limit=exrex.count(hint)):</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                z.extractall(pwd=pwd.encode())</span><br><span class="line">                <span class="built_in">print</span> <span class="string">&quot;Password Found : &quot;</span>,</span><br><span class="line">                <span class="built_in">print</span> RED(pwd)</span><br><span class="line">                <span class="built_in">print</span> RESET(<span class="string">&#x27; &#x27;</span>) </span><br><span class="line">                <span class="keyword">if</span> <span class="string">&quot;flag.txt&quot;</span> <span class="keyword">in</span> z.namelist():</span><br><span class="line">                    <span class="built_in">print</span> <span class="string">&quot;---- Flag Found ----&quot;</span></span><br><span class="line">                    os.system(<span class="string">&#x27;cat flag.txt&#x27;</span>) </span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    tryunzip(<span class="string">&#x27;RegularZips.zip&#x27;</span>, <span class="built_in">open</span>(<span class="string">&#x27;problem.txt&#x27;</span>).read()[<span class="number">1</span>:-<span class="number">1</span>])</span><br><span class="line">    i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> os.path.exists(<span class="string">&#x27;archive.zip&#x27;</span>):</span><br><span class="line">        os.rename(<span class="string">&#x27;archive.zip&#x27;</span>, <span class="string">&#x27;archive&#x27;</span>+<span class="built_in">str</span>(i)+<span class="string">&#x27;.zip&#x27;</span>)</span><br><span class="line">        tryunzip(<span class="string">&#x27;archive&#x27;</span>+<span class="built_in">str</span>(i)+<span class="string">&#x27;.zip&#x27;</span>, <span class="built_in">open</span>(<span class="string">&#x27;hint.txt&#x27;</span>).read()[<span class="number">1</span>:-<span class="number">1</span>])</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;Currently Processing : archive&quot;</span> + <span class="built_in">str</span>(i)</span><br><span class="line">        os.remove(<span class="string">&#x27;archive&#x27;</span>+<span class="built_in">str</span>(i)+<span class="string">&#x27;.zip&#x27;</span>)</span><br><span class="line">        i+=<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 <p>And To our Surprise …<br>There was a flag.txt in <strong>archive998</strong>.</p>
-<p><a href="/img/utctf/flag.png" class="gallery-item"><img src="/img/utctf/flag.png"></a></p>
+<p><a href="/img/utctf/flag.png" class="post-image-item"><img src="/img/utctf/flag.png"></a></p>
 <p>The Flag was : </p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">utflag&#123;bean_pure_omission_production_rally&#125;</span><br></pre></td></tr></table></figure>
 <p>Wasn’t it Sw33t. </p>
 <p>Don’t hesitate to leave a feedback in the comments section and Subscribe if you want to stay updated with other CTF’s writeups and walkthroughs. </p>
 <p>Keep Waiting for my next writeup.<br>Till then Keep Escalating the Priveleges and Happy Hacking !!</p>
-</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
-        var options = {
-            selector: '.gallery-item'
-        };
-        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
-        }</script>
+</div>
   </div>
 </article>
 
@@ -244,6 +243,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </div>
@@ -285,7 +286,7 @@
     Copyright &copy;
     
     
-    2021-2023
+    2021-2024
     Suraj Malhotra
   </div>
   <div class="footer-right">
@@ -299,6 +300,8 @@
           <li><a href="/archives/">Posts</a></li>
          
           <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/art/">Art</a></li>
         
       </ul>
     </nav>
@@ -314,12 +317,47 @@
 <link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
 
 
+<link rel="stylesheet" href="/lib/lightgallery/css/lightgallery.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-zoom.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-thumbnail.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-autoplay.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-transitions.css">
+
+
+<link rel="stylesheet" href="/lib/lightgallery/css/lg-fullscreen.css">
+
     <!-- jquery -->
 
 <script src="/lib/jquery/jquery.min.js"></script>
 
 
 <script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- lightgallery -->
+
+<script src="/lib/lightgallery/lightgallery.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/autoplay/lg-autoplay.min.js"></script>
+
+
+<script src="/lib/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
+
+
 
 <!-- clipboard -->
 
