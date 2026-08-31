@@ -1,0 +1,136 @@
+-	[0]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"meta"	string
+		item_type	"table"	string
+		root_num	0x0000000000000002	long
+		row_id	0x0000000000000001	long
+		sql_statement	"CREATE TABLE meta(key LONGVARCHAR NOT NULL UNIQUE PRIMARY KEY, value LONGVARCHAR)"	string
+
+-	[1]	{emx.emh}	emx.emh
+
+		astable_name	null	string
+		item_name	"sqlite_autoindex_meta_1"	string
+		item_type	"index"	string
+		root_num	0x0000000000000003	long
+		row_id	0x0000000000000002	long
+		sql_statement	""	string
+
+-	[2]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"logins"	string
+		item_type	"table"	string
+		root_num	0x0000000000000004	long
+		row_id	0x0000000000000003	long
+		sql_statement	"CREATE TABLE logins (origin_url VARCHAR NOT NULL, action_url VARCHAR, username_element VARCHAR, username_value VARCHAR, password_element VARCHAR, password_value BLOB, submit_element VARCHAR, signon_realm VARCHAR NOT NULL, preferred INTEGER NOT NULL, date_created INTEGER NOT NULL, blacklisted_by_user INTEGER NOT NULL, scheme INTEGER NOT NULL, password_type INTEGER, times_used INTEGER, form_data BLOB, date_synced INTEGER, display_name VARCHAR, icon_url VARCHAR, federation_url VARCHAR, skip_zero_click INTEGER, generation_upload_status INTEGER, possible_username_pairs BLOB, id INTEGER PRIMARY KEY AUTOINCREMENT, date_last_used INTEGER NOT NULL DEFAULT 0, UNIQUE (origin_url, username_element, username_value, password_element, signon_realm))"	string
+
+-	[3]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"sqlite_autoindex_logins_1"	string
+		item_type	"index"	string
+		root_num	0x0000000000000005	long
+		row_id	0x0000000000000004	long
+		sql_statement	""	string
+		
+-	[4]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"sqlite_sequence"	string
+		item_type	"table"	string
+		root_num	0x0000000000000006	long
+		row_id	0x0000000000000005	long
+		sql_statement	"CREATE TABLE sqlite_sequence(name,seq)"	string
+
+- 	[5]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"logins_signon"	string
+		item_type	"index"	string
+		root_num	0x0000000000000007	long
+		row_id	0x0000000000000006	long
+		sql_statement	"CREATE INDEX logins_signon ON logins (signon_realm)"	string
+
+-	[6]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"sync_entities_metadata"	string
+		item_type	"table"	string
+		root_num	0x0000000000000008	long
+		row_id	0x0000000000000007	long
+		sql_statement	"CREATE TABLE sync_entities_metadata (storage_key INTEGER PRIMARY KEY AUTOINCREMENT, metadata VARCHAR NOT NULL)"	string
+
+-	[7]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"sync_model_metadata"	string
+		item_type	"table"	string
+		root_num	0x0000000000000009	long
+		row_id	0x0000000000000008	long
+		sql_statement	"CREATE TABLE sync_model_metadata (id INTEGER PRIMARY KEY AUTOINCREMENT, model_metadata VARCHAR NOT NULL)"	string
+
+-	[8]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"stats"	string
+		item_type	"table"	string
+		root_num	0x000000000000000A	long
+		row_id	0x0000000000000009	long
+		sql_statement	"CREATE TABLE stats (origin_domain VARCHAR NOT NULL, username_value VARCHAR, dismissal_count INTEGER, update_time INTEGER NOT NULL, UNIQUE(origin_domain, username_value))"	string
+
+-	[9]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"sqlite_autoindex_stats_1"	string
+		item_type	"index"	string
+		root_num	0x000000000000000B	long
+		row_id	0x000000000000000A	long
+		sql_statement	""	string
+
+-	[10]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"stats_origin"	string
+		item_type	"index"	string
+		root_num	0x000000000000000C	long
+		row_id	0x000000000000000B	long
+		sql_statement	"CREATE INDEX stats_origin ON stats(origin_domain)"	string
+
+-	[11]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"compromised_credentials"	string
+		item_type	"table"	string
+		root_num	0x000000000000000D	long
+		row_id	0x000000000000000C	long
+		sql_statement	"CREATE TABLE compromised_credentials (url VARCHAR NOT NULL, username VARCHAR NOT NULL, create_time INTEGER NOT NULL, compromise_type INTEGER NOT NULL, UNIQUE (url, username, compromise_type))"	string
+
+-	[12]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"sqlite_autoindex_compromised_credentials_1"	string
+		item_type	"index"	string
+		root_num	0x000000000000000E	long
+		row_id	0x000000000000000D	long
+		sql_statement	""	string
+
+-	[13]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"compromised_credentials_index"	string
+		item_type	"index"	string
+		root_num	0x0000000000000011	long
+		row_id	0x000000000000000E	long
+		sql_statement	"CREATE INDEX compromised_credentials_index ON compromised_credentials (url, username, compromise_type)"	string
+
+-	[14]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"field_info"	string
+		item_type	"table"	string
+		root_num	0x0000000000000012	long
+		row_id	0x000000000000000F	long
+		sql_statement	"CREATE TABLE field_info (form_signature INTEGER NOT NULL, field_signature INTEGER NOT NULL, field_type INTEGER NOT NULL, create_time INTEGER NOT NULL, UNIQUE (form_signature, field_signature))"	string
+
+-	[15]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"sqlite_autoindex_field_info_1"	string
+		item_type	"index"	string
+		root_num	0x0000000000000013	long
+		row_id	0x0000000000000010	long
+		sql_statement	""	string
+
+-	[16]	{emx.emh}	emx.emh
+		astable_name	null	string
+		item_name	"field_info_index"	string
+		item_type	"index"	string
+		root_num	0x0000000000000014	long
+		row_id	0x0000000000000011	long
+		sql_statement	"CREATE INDEX field_info_index ON field_info (form_signature, field_signature)"	string
